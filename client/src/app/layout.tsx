@@ -5,14 +5,14 @@ import { getLocale, getMessages } from "next-intl/server";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "Aniskwela — Learn. Earn credentials. Grow.",
+  title: "Aniskwela — Learning that grows with you",
   description:
-    "AI-powered adaptive learning with standards-based, blockchain-anchored credentials.",
+    "Learning that grows with you — and stays yours. AI-powered courses, verifiable credentials, built for low-bandwidth learners.",
 };
 
 export const viewport: Viewport = {
   // Light theme only — hard low-resource constraint (AGENTS.md).
-  themeColor: "#ffffff",
+  themeColor: "#FBF8F2",
   colorScheme: "light",
 };
 

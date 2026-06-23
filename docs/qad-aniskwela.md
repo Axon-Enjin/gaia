@@ -60,6 +60,7 @@ npm run db:seed:test   # seeds roles, a sample course, an enrollment ready to co
 | H-04 | Public verification (no login) | Open verify URL/QR | Signature + on-chain hash both check; shows course/learner/date/score = valid | US-04 |
 | H-05 | Funder defines criteria → eligible list | Build program (industry + min XP + badge) → evaluate | Correct eligible-learner list; disbursement runs labelled simulation; audit export | US-05 |
 | H-06 | Language toggle | Toggle EN↔Filipino on any page | All UI text switches in place, no reload; preference persists | US-06 |
+| H-07 | Waitlist signup | Submit email on landing | Row stored; duplicate email → friendly message; consent copy visible | PRD-F8 / BRD-M2 |
 
 ### Sad Paths (edge cases and error handling)
 
@@ -70,6 +71,7 @@ npm run db:seed:test   # seeds roles, a sample course, an enrollment ready to co
 | S-03 | Oversize/invalid upload | >limit or wrong type | 400 with guidance; no generation attempted |
 | S-04 | Slow 3G load | DevTools 3G throttle | Core content < 5s; LCP < 2.5s; no layout break at 375px |
 | S-05 | Duplicate credential issue | Re-trigger issue on same enrollment | Idempotent — 409, single credential (UNIQUE hash) |
+| S-06 | Waitlist without service role | `SUPABASE_SERVICE_ROLE_KEY` unset on server | `503 service_unavailable`; landing still renders |
 
 ### Abuse / Adversarial Paths
 

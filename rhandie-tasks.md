@@ -40,3 +40,25 @@ This document tracks the core implementation tasks tailored to Rhandie's experti
 - [x] **Teacher Dashboard:** Build the "Upload & Generate" flow, including uploading a PDF, extracting text on the server, and polling the AI pipeline for the generated JSON draft. _(`src/app/teacher/page.tsx` + `components/upload-generate-form.tsx` + `POST /api/courses/generate`; PDF/text extraction in `lib/ai/extract-text.ts`. Synchronous bounded call per rfc-aniskwela-002 §State Management — background worker is a noted scale-up.)_
 - [x] **Cost-Gated Interactions:** Ensure the UI never triggers AI on the learner's read path. AI is strictly isolated to the teacher's creation flow. _(Learner catalog `/courses` reads DB only via cached cookieless client; AI only in the teacher route.)_
 - [x] **Low-Resource UI:** Implement the English/Filipino localization toggle and ensure the initial JS payload respects the 220KB budget. _(`components/locale-switcher.tsx`; measured shared initial JS ≈ 174 KB gz < 220 KB via `scripts/measure-bundle.js`.)_
+
+## 5. PRD-F8 — Landing Page + Waitlist
+*Goal: Marketing surface and email capture for BRD-M2 (hackathon / early access).*
+
+- [x] **Waitlist migration:** `client/db/migrations/0003_waitlist.sql` — RLS on, no public policies; service-role insert only.
+- [x] **Waitlist API:** `POST /api/waitlist` — Zod validation, dedupe (`409`), requires `SUPABASE_SERVICE_ROLE_KEY`.
+- [x] **Brand Mode landing:** Full scroll landing at `/` — sticky nav, hero, demo showcase, features, tech stack, CSS mockups, FAQ, closing waitlist CTA. _(`src/components/landing/*`; EN/Fil `Landing` namespace.)_
+- [x] **DSD tokens in CSS:** Earthen brand palette in `globals.css` (warm paper bg, growth/soil accents, weave pattern — no web fonts).
+
+## 6. PRD Implementation — What's Next
+
+| Priority | PRD | Why now |
+|----------|-----|---------|
+| 1 | **F2 + F3** | Learner path: enrollment, quiz submit, XP → merit ledger (schema exists; no blockers) |
+| 2 | **F4 + F5 + F7** | Credential demo for hackathon (RFC-001; needs Stellar testnet + issuer keys) |
+| 3 | **F6 polish** | Course editor, passing score, analytics |
+| 4 | **F10** | Mock funder UI (Postgres-only) |
+| 5 | **F11** | Freighter connect (Should-Have; client-only) |
+
+**Infra still open:** Azure model deploy + Vercel env (§1), apply `0003_waitlist` on any Supabase env missing it.
+
+See [docs/index.md](docs/index.md) §6 for the full PRD status matrix.

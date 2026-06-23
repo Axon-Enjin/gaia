@@ -2,7 +2,7 @@
 
 > **Materialized from [docs/build-aniskwela.md](docs/build-aniskwela.md). Edit the canonical Build Guide and re-materialize — do not hand-edit this file as the source of truth.** This is the operating manual for whoever builds Aniskwela (human or agent); every agent platform (Codex, Cursor, Gemini CLI, Claude Code) reads it.
 
-**Aniskwela** (*ani* harvest + *eskwela* school) — an AI educational tool built for Filipino farmers, with blockchain-anchored, standards-based credentials, engineered for low-bandwidth rural use (Philippines-first, EN + Filipino). The learning engine is content-agnostic, but the product is built for and goes to market with farmers first. Application code: **`client/`** (Next.js 16). Specs: **`docs/`**.
+**Aniskwela** (*ani* harvest + *eskwela* school) — an AI educational tool built for Filipino farmers, with blockchain-anchored, standards-based credentials, engineered for low-bandwidth rural use (Philippines-first, EN + Filipino). The learning engine is content-agnostic, but the product is built for and goes to market with farmers first. Application code: **`client/`** (Next.js 16.2.9). Specs: **`docs/`**. Build progress: [docs/index.md](docs/index.md) §6.
 
 ---
 
@@ -16,6 +16,10 @@ Read in this order before writing code:
 4. **RFCs** — [credential issuance](docs/rfc-aniskwela-credential-issuance.md) (PRD-F4/F5), [AI course generation](docs/rfc-aniskwela-ai-course-generation.md) (PRD-F1).
 5. **DSD** ([docs/dsd-aniskwela.md](docs/dsd-aniskwela.md)) — design tokens, components, low-resource + a11y rules.
 6. **This guide** — stack conventions, patterns, guardrails.
+
+### Build progress
+
+The app is in **`client/`** (Next.js 16.2.9). Living PRD status matrix: **[docs/index.md](docs/index.md) §6**. As of 2026-06-23: **F1, F8 done**; **F2, F6, F9 partial**; **F3–F5, F7, F10–F11 not started**.
 
 **Only build against `Locked` docs.** PRD/SDD/SAD/BUILD + both RFCs are Locked; DSD/QAD/CLR/GTM/OPS are Draft pending the sprint — if you need a Draft doc, flag it. If reality diverges from a Locked doc, do **not** silently code around it — trigger a Change Record (`docs/cr-aniskwela-NNN.md`).
 
