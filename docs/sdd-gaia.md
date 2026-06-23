@@ -2,17 +2,17 @@
 
 **Project:** Gaia
 **Date:** 2026-06-23
-**Version:** 1.0
+**Version:** 1.1
 **Owner:** Carlos Jerico Dela Torre
 **Status:** Locked
-**Last reconciled:** N/A — pre-build
+**Last reconciled:** 2026-06-23
 **PRD:** [prd-gaia.md](prd-gaia.md)
 
 ---
 
 ## 1. Architectural Vision & Principles
 
-**Architecture style:** Serverless monolith on Vercel — Next.js 14 (App Router) front + API routes, Supabase (Postgres/Auth/Storage) as the data plane, Stellar accessed via SDK from server routes. Single deployable; clean module boundaries (`app/`, `lib/`, `db/`, `components/`).
+**Architecture style:** Serverless monolith on Vercel — Next.js 16.2.x (App Router) front + API routes, Supabase (Postgres/Auth/Storage) as the data plane, Stellar accessed via SDK from server routes. Single deployable; clean module boundaries (`app/`, `lib/`, `db/`, `components/`).
 
 **Guiding principles:**
 - **Low-resource first is a constraint, not a goal.** Every architectural choice is checked against sub-3G / 1GB-RAM Android. Server-render by default; ship the minimum JS.
@@ -33,13 +33,13 @@
 
 ```mermaid
 graph TD
-    subgraph Client [Low-resource PWA - Next.js 14]
+    subgraph Client [Low-resource PWA - Next.js 16.2.x]
       UI[Server-rendered pages + minimal JS]
       SW[Service worker - Phase 1 offline cache]
     end
     UI -->|HTTPS| API[Next.js API Routes / Server Actions]
     API --> SB[(Supabase: Postgres + Auth + Storage)]
-    API --> CLAUDE[Anthropic Claude API]
+    API --> AZURE[Azure AI Foundry - GPT-5.4 / GPT-5.4-mini]
     API --> STELLAR[Stellar Horizon - Testnet]
     API --> R2[Cloudflare R2 - large assets]
     UI -.optional.-> FREIGHTER[Freighter wallet ext]
@@ -51,7 +51,7 @@ graph TD
 
 | Layer | Technology | Responsibility |
 |-------|------------|----------------|
-| Client | Next.js 14 App Router, Tailwind, next-intl, next-pwa | Server-first rendering; EN/Filipino i18n; offline cache (Phase 1); minimal client JS |
+| Client | Next.js 16.2.x App Router, Tailwind, next-intl, next-pwa | Server-first rendering; EN/Filipino i18n; offline cache (Phase 1); minimal client JS; `'use cache'` directive for explicit caching; Turbopack default bundler |
 | API / Gateway | Next.js API Routes / Server Actions (serverless on Vercel) | Auth-guarded business logic, AI calls, credential issuance, Stellar anchoring, eligibility evaluation |
 | Service / Compute | Inline server functions (MVP); background worker (Phase 1 for AI/disbursement) | Course generation orchestration, VC signing, criteria evaluation |
 | Data | Supabase Postgres (+ RLS), Supabase Storage, Cloudflare R2 | Users, courses, lessons, quizzes, XP/merit ledger, credentials, grant programs |
@@ -200,7 +200,7 @@ graph TD
 
 | Service | Purpose | Rate Limits / Fallback |
 |---------|---------|------------------------|
-| Anthropic Claude API | Course generation (Sonnet) + cheap tasks (Haiku) | 429 → bounded retry w/ backoff; hard token cap per call; never on learner read path |
+| Azure AI Foundry (OpenAI GPT) | Course generation (`gpt-5.4`) + cheap tasks (`gpt-5.4-mini`) — Azure deployment names use dashes: `gpt-5-4` / `gpt-5-4-mini` | 429 → bounded retry w/ backoff; hard token cap per call; never on learner read path. Auth: `DefaultAzureCredential` (Managed Identity) preferred; `AZURE_OPENAI_API_KEY` fallback. Verify deployment name + region quota at M2. |
 | Supabase | Auth, Postgres, Storage | RLS enforced; pooled connections; storage size limits monitored |
 | Stellar Horizon (Testnet) | Anchor credential hash; read tx for verifier | Public node downtime → `ENABLE_ONCHAIN_ANCHOR=false` mock-anchor fallback for demo; retry on submit |
 | Freighter (wallet) | Client-side Stellar signing (demo) | Not installed → inline "create wallet" guide; learning never requires it |
@@ -214,7 +214,7 @@ graph TD
 
 **Authentication:** Supabase Auth (email/password for MVP).
 **Session management:** Supabase-managed JWT in httpOnly cookies; server validates on every protected route.
-**Authorization model:** Role-based (`learner`/`teacher`/`funder`) + ownership checks enforced by **Postgres Row Level Security on every table** (a learner reads only their own ledger/credentials; a teacher writes only their own courses; the public verifier reads only the minimal credential fields). Ownership is checked server-side / in RLS, never client-side.
+**Authorization model:** Role-based (`learner`/`teacher`/`funder`) + ownership checks enforced by **Postgres Row Level Security on every table** (a learner reads only their own ledger/credentials; a teacher writes only their own courses; the public verifier reads only the minimal credential fields). Ownership is checked server-side / in RLS, never client-side. Auth boundary lives in layouts and Server Actions (`proxy.ts` in Next.js 16 handles redirects/rewrites only).
 
 **Data protection:**
 - Minimal PII at MVP (email for auth/waitlist only — see CLR).
@@ -265,13 +265,13 @@ graph TD
 
 | Agent / Task | Model | Reason |
 |-------------|-------|--------|
-| Course generation | `claude-sonnet-4-6` | Best structure/pedagogy at mid cost; called once per course |
-| Cheap structural tasks (outline diffs, quiz reshuffles, summary cards) | `claude-haiku-4-5` | Fraction of the cost for low-complexity work |
+| Course generation | `gpt-5.4` (model name; Azure deployment name: `gpt-5-4`) | Mid-tier balanced model; best structure/pedagogy at mid cost; called once per course |
+| Cheap structural tasks (outline diffs, quiz reshuffles, summary cards, schema repair) | `gpt-5.4-mini` (model name; Azure deployment name: `gpt-5-4-mini`) | Efficiency-tier; fraction of the cost for low-complexity work |
 
 **Context architecture:**
 - System prompt: fixed pedagogy/format instructions + JSON schema contract.
 - Max context per request: bounded by document size; hard token cap enforced per call.
-- Prompt caching: system prompt + source document cached → repeat/refinement calls hit cache, cutting input cost substantially.
+- **Prompt caching:** Azure OpenAI automatically caches prompt prefixes ≥ 1024 tokens — place static content (system prompt + source document) first in the messages array; variable content (per-request hints) last. No SDK flag required. Azure supports configurable extended retention up to 24h per deployment.
 
 **Tool surface (MCP or function-calling):**
 
@@ -287,7 +287,7 @@ graph TD
 
 | Operation | Est. tokens | Est. cost | Monthly budget assumption |
 |-----------|-------------|-----------|---------------------------|
-| Course generation | ~ source + few-k output, cached | ~ low single-digit cents/course (cache-reduced) | Gated to once per course; dozens/day at demo scale |
+| Course generation | ~ source + few-k output, cached | ~ low single-digit cents/course (Azure prefix cache reduces repeat-call cost) | Gated to once per course; dozens/day at demo scale |
 | Adaptive call (Phase 1) | small, capped | < 1¢ | ~ once per learner per day, session boundaries only |
 
 **Fallback behavior:** On model error, surface a clear message + retry; never silently retry > 2×; never publish partial output.
@@ -304,9 +304,9 @@ graph TD
 | Hallucination causing user harm | Yes | Mandatory teacher review before publish; high-stakes verticals carry extra review + ToS disclaimers (R8) | AI-08 |
 
 **Data sent to model providers:**
-- What leaves our boundary: extracted text of the teacher's uploaded document + generation prompt. No learner PII, no secrets.
-- Provider retention / training terms: Anthropic API — not used for training; reconcile with CLR §1 sub-processors.
-- Region / residency constraint: none modeled at MVP; revisit for PH data-localization in Phase 1.
+- What leaves our boundary: extracted text of the teacher’s uploaded document + generation prompt. No learner PII, no secrets.
+- Provider: **Azure AI Foundry (Microsoft Azure OpenAI Service)** — data processed within the selected Azure region; not used for model training under Azure OpenAI Service terms. Reconcile with CLR §1 sub-processors before production launch. **Phase 1 consideration:** target a Southeast Asia Azure region to meet PH data-localization requirements (CLR §2).
+- Region / residency: configurable via Azure deployment region — a key advantage over direct OpenAI API; plan region selection at M2.
 
 **Trust boundary note:** Uploaded documents and any learner-/teacher-supplied text are untrusted; they can request a course but never command a tool call or privileged action.
 

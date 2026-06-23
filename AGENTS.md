@@ -25,7 +25,7 @@ Read in this order before writing code:
 - **Gaia decides eligibility; a licensed VASP moves money.** Never implement Gaia as a money transmitter. MVP disbursement is a labelled simulation (`grant_programs.simulated = true`).
 - **Credentials = W3C VC + Open Badges 3.0; hash-only on-chain.** No PII on Stellar; no custom memo blob; no NFT badge.
 - **Learners never required to hold a wallet** to learn or earn credentials.
-- **AI is cost-gated** — `claude-sonnet-4-6` once per course (cached), `claude-haiku-4-5` for cheap tasks; never on the learner read path; mandatory teacher review before publish (no auto-publish).
+- **AI is cost-gated** — `gpt-5.4` (Azure AI Foundry) once per course (auto-cached), `gpt-5.4-mini` for cheap tasks; never on the learner read path; mandatory teacher review before publish (no auto-publish).
 - **Low-resource is a hard constraint** — initial JS ≤ 220KB gzipped, images ≤ 80KB WebP, <5s on 3G, light theme only, system fonts only.
 
 ### Traceability map — "to build X, read Y"
@@ -55,32 +55,40 @@ Build agents live in the [SAD](docs/sad-gaia.md), materialized to `.claude/agent
 
 | Layer | Technology | Pinned version | Verified | Source |
 |-------|------------|----------------|----------|--------|
-| Framework | Next.js (App Router) | 14.x (PRD §8) — **verify/confirm major at M2** | not yet | nextjs.org/docs |
+| Framework | Next.js (App Router) | **16.2.x** (Active LTS) | 2026-06-23 | nextjs.org/docs |
 | Styling | Tailwind CSS | TBD | not yet | tailwindcss.com/docs |
 | i18n / PWA | next-intl / next-pwa | TBD | not yet | — |
 | DB/Auth/Storage | Supabase (`@supabase/supabase-js`, `@supabase/ssr`) | TBD | not yet | supabase.com/docs |
 | Blockchain | `stellar-sdk` + Horizon | TBD | not yet | stellar.org/developers |
-| AI | Anthropic SDK (`@anthropic-ai/sdk`) | TBD | not yet | docs.anthropic.com |
+| AI | `openai` + `@azure/openai` + `@azure/identity` via **Azure AI Foundry** | TBD | 2026-06-23 | learn.microsoft.com/azure/ai-foundry |
 | Validation | Zod | TBD | not yet | zod.dev |
 
-> At M2 decide whether to adopt a newer Next.js major than the PRD-pinned 14; if changed, log a Change Record against PRD §8 + SDD. Until pins are set, `schema-stack-guardian` verifies framework code live.
+> At M2 the Next.js major was fixed at **16.2.x**; and the AI provider at **Azure AI Foundry GPT** (`gpt-5.4` / `gpt-5.4-mini`). Remaining TBD rows lock at M2.
 
 ### Deprecations register (overrides training memory; add a row whenever drift is caught)
 
 | ❌ Stale | ✅ Current | Since | Source |
 |---------|-----------|-------|--------|
-| _(none yet — fill as the build surfaces real cases)_ | verify Next.js App Router / Supabase SSR / Anthropic SDK before first use | — | pin at M2 |
+| `middleware.ts` for auth / complex logic | `proxy.ts` for redirects/rewrites only; auth → layouts + Server Actions | Next.js 16 / Oct 2025 | nextjs.org/docs |
+| Implicit `fetch` caching | **`'use cache'`** directive (explicit, opt-in) | Next.js 16 / Oct 2025 | nextjs.org/docs |
+| Sync `cookies()`/`headers()`/`params`/`searchParams` | Must be **`await`ed** | Next.js 16 / Oct 2025 | nextjs.org/docs |
+| `--turbo` flag | Turbopack is **default** — no flag needed | Next.js 16 / Oct 2025 | nextjs.org/docs |
+| `@anthropic-ai/sdk` + `anthropic.messages.create()` | `openai` + `@azure/openai` + `@azure/identity`, `AzureOpenAI` client | 2026-06-23 | learn.microsoft.com/azure/ai-foundry |
+| `claude-sonnet-4-6` | **`gpt-5.4`** Azure AI Foundry deployment (course generation) | 2026-06-23 | learn.microsoft.com/azure/ai-foundry |
+| `claude-haiku-4-5` | **`gpt-5.4-mini`** Azure AI Foundry deployment (cheap tasks) | 2026-06-23 | learn.microsoft.com/azure/ai-foundry |
+| Anthropic explicit `cache_control` blocks | Azure OpenAI **automatic** prefix caching (≥ 1024 tokens) | 2026-06-23 | learn.microsoft.com/azure/ai-services/openai |
+| `new OpenAI()` + `OPENAI_API_KEY` | `new AzureOpenAI({ endpoint, azureADTokenProvider, apiVersion, deployment })` + `DefaultAzureCredential` | 2026-06-23 | learn.microsoft.com/azure/ai-foundry |
 
-**Fast-moving deps requiring live verification:** Next.js server APIs, Supabase SSR/auth helpers, the Anthropic SDK (prompt-caching shape), `stellar-sdk` (tx build + Horizon).
+**Fast-moving deps requiring live verification:** Next.js 16 App Router / `'use cache'` / `proxy.ts`; Supabase SSR/auth helpers; Azure AI Foundry SDK (auth shape and API version); `stellar-sdk` (tx build + Horizon).
 
 ---
 
 ## 4. Golden-Path Patterns
 
-> Minimal shapes — **re-verify against the pinned versions before copying.** The non-negotiable parts are the conventions (validate at boundary, ownership server-side, AI off the read path), not exact signatures. Full samples with rationale live in [docs/build-gaia.md](docs/build-gaia.md) §4. Read the `claude-api` skill before writing real Anthropic calls.
+> Minimal shapes — **re-verify against the pinned versions before copying.** The non-negotiable parts are the conventions (validate at boundary, ownership server-side, AI off the read path), not exact signatures. Full samples with rationale live in [docs/build-gaia.md](docs/build-gaia.md) §4. Verify Azure AI Foundry SDK (`AzureOpenAI` client, auth shape, API version) against current docs before writing real AI calls.
 
 - **Server route:** Zod-validate input at the boundary → SSR Supabase client → `auth.getUser()` → **server-side ownership/eligibility check (RLS-backed), never trust the client** → business logic in `lib/`.
-- **AI call:** `claude-sonnet-4-6`, cached system prompt + source, hard token cap, uploaded text wrapped as **untrusted**, output `Zod.parse`d (one Haiku repair, else 422 — never persist garbage), called **once per course**.
+- **AI call:** `AzureOpenAI` client (`openai` pkg + `@azure/openai` + `@azure/identity`); `DefaultAzureCredential` auth; static system prompt first (auto-cached by Azure ≥ 1024 tokens); source document second; variable hints last; hard token cap; uploaded text wrapped as **untrusted**; output `Zod.parse`d (one `gpt-5.4-mini` repair, else 422 — never persist garbage); called **once per course**.
 - **Stellar anchor:** hash-only memo tx; `ENABLE_ONCHAIN_ANCHOR=false` → labelled mock fallback (demo resilience); retry submit with backoff.
 
 ---
@@ -93,7 +101,7 @@ Build agents live in the [SAD](docs/sad-gaia.md), materialized to `.claude/agent
 
 **Always:** validate external input at the boundary (Zod); decide ownership/eligibility server-side (RLS); keep AI off the learner read path; respect the perf budget on every UI change.
 
-**Never:** commit secrets (Claude/Stellar keys, **VC issuer signing key**); auto-publish AI output; let `xp_delta` go negative; put PII on-chain; use a deprecated API from §3 from memory; move real funds inside Gaia (route via the VASP interface).
+**Never:** commit secrets (`AZURE_OPENAI_API_KEY`, Stellar keys, **VC issuer signing key**); auto-publish AI output; let `xp_delta` go negative; put PII on-chain; use a deprecated API from §3 from memory; move real funds inside Gaia (route via the VASP interface).
 
 **Definition of Done (one task):**
 - [ ] Implements the referenced `PRD-F#` / `US-##` acceptance criteria

@@ -1,0 +1,33 @@
+{
+  "Common": {
+    "appName": "Gaia",
+    "tagline": "Learn. Earn credentials. Grow.",
+    "english": "English",
+    "filipino": "Filipino",
+    "signIn": "Sign in",
+    "signOut": "Sign out",
+    "loading": "Loading…"
+  },
+  "Catalog": {
+    "title": "Courses",
+    "empty": "No published courses yet. Check back soon.",
+    "browse": "Browse courses"
+  },
+  "Teacher": {
+    "dashboardTitle": "Teacher dashboard",
+    "uploadTitle": "Upload & generate a course",
+    "uploadHint": "Upload a document and Gaia drafts an editable, standards-based course. You review and publish — nothing is published automatically.",
+    "industryLabel": "Industry",
+    "titleHintLabel": "Course title (optional)",
+    "fileLabel": "Source document (PDF or text, ≤ 10MB)",
+    "generate": "Generate draft",
+    "generating": "Generating draft… this runs once per course.",
+    "draftReady": "Draft ready",
+    "lessonsCount": "{count} lessons",
+    "quizCount": "{count} quiz questions",
+    "review": "Review draft before publishing",
+    "errorGeneric": "Generation failed. Please try again.",
+    "errorSchema": "The AI draft could not be structured correctly. Please try again with a clearer document.",
+    "errorFile": "That file could not be read. Use a PDF or plain-text file under 10MB."
+  }
+}

@@ -26,3 +26,10 @@ Thumbs.db
 # Office temp / autosave artifacts
 ~$*
 *\[Autosaved\]*
+
+# vercel
+.vercel
+
+# typescript build info
+*.tsbuildinfo
+next-env.d.ts
