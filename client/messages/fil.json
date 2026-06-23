@@ -1,0 +1,28 @@
+{
+  "Common": {
+    "appName": "Gaia",
+    "tagline": "Mag-aral. Kumita ng kredensyal. Lumago.",
+    "english": "Ingles",
+    "filipino": "Filipino",
+    "signIn": "Mag-sign in",
+    "signOut": "Mag-sign out",
+    "loading": "Naglo-load…"
+  },
+  "Teacher": {
+    "dashboardTitle": "Dashboard ng guro",
+    "uploadTitle": "Mag-upload at bumuo ng kurso",
+    "uploadHint": "Mag-upload ng dokumento at gagawa ang Gaia ng draft ng kurso na pwede mong i-edit. Ikaw ang magrirepaso at maglalathala — walang awtomatikong inilalathala.",
+    "industryLabel": "Industriya",
+    "titleHintLabel": "Pamagat ng kurso (opsyonal)",
+    "fileLabel": "Pinagmulang dokumento (PDF o teksto, ≤ 10MB)",
+    "generate": "Bumuo ng draft",
+    "generating": "Binubuo ang draft… isang beses lang ito kada kurso.",
+    "draftReady": "Handa na ang draft",
+    "lessonsCount": "{count} na aralin",
+    "quizCount": "{count} na tanong sa pagsusulit",
+    "review": "Repasuhin ang draft bago ilathala",
+    "errorGeneric": "Nabigo ang pagbuo. Pakisubukang muli.",
+    "errorSchema": "Hindi maayos na nabuo ang draft ng AI. Pakisubukang muli gamit ang mas malinaw na dokumento.",
+    "errorFile": "Hindi mabasa ang file na iyon. Gumamit ng PDF o plain-text na file na wala pang 10MB."
+  }
+}
