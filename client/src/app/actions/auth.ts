@@ -4,6 +4,11 @@ import { redirect } from "next/navigation";
 import { z } from "zod";
 import { createClient } from "@/lib/supabase/server";
 import { ensureProfile } from "@/lib/auth";
+import {
+  createUserWithoutEmail,
+  shouldUseDevAdminSignup,
+} from "@/lib/auth/dev-signup";
+import { serverEnv } from "@/lib/env";
 
 const CredentialsSchema = z.object({
   email: z.string().email(),
@@ -50,15 +55,56 @@ export async function signUpAction(
   if (!parsed.success) return { error: "invalid_signup" };
 
   const supabase = await createClient();
-  const { data, error } = await supabase.auth.signUp({
+  const credentials = {
     email: parsed.data.email,
     password: parsed.data.password,
+  };
+
+  // Dev: Admin API signup never sends confirmation emails (avoids mailer rate limits).
+  if (shouldUseDevAdminSignup(serverEnv.supabaseServiceRoleKey)) {
+    const created = await createUserWithoutEmail(
+      serverEnv.supabaseServiceRoleKey!,
+      { ...credentials, role: parsed.data.role },
+    );
+    if (!created.ok) {
+      return {
+        error:
+          created.reason === "already_registered"
+            ? "already_registered"
+            : "sign_up_failed",
+      };
+    }
+
+    const { error: signInError } =
+      await supabase.auth.signInWithPassword(credentials);
+    if (signInError) return { error: "sign_up_failed" };
+
+    await ensureProfile();
+    redirect(parsed.data.role === "teacher" ? "/teacher" : "/courses");
+  }
+
+  const { data, error } = await supabase.auth.signUp({
+    ...credentials,
     options: { data: { role: parsed.data.role } },
   });
-  if (error) return { error: "sign_up_failed" };
+  if (error) {
+    const code = error.message?.toLowerCase() ?? "";
+    if (
+      code.includes("rate limit") ||
+      error.code === "over_email_send_rate_limit"
+    ) {
+      return { error: "email_rate_limit" };
+    }
+    if (
+      code.includes("already registered") ||
+      error.code === "user_already_exists"
+    ) {
+      return { error: "already_registered" };
+    }
+    return { error: "sign_up_failed" };
+  }
 
-  // If email confirmation is disabled, a session exists now — provision profile
-  // and route. Otherwise, ask the user to confirm their email.
+  // mailer_autoconfirm on → session exists immediately; else confirm via email.
   if (data.session) {
     await ensureProfile();
     redirect(parsed.data.role === "teacher" ? "/teacher" : "/courses");

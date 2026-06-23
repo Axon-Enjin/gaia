@@ -25,7 +25,9 @@ export const publicEnv = {
 
 /** Server-only config — never expose to the client. */
 export const serverEnv = {
-  get supabaseServiceRoleKey() {
+  /** Optional in dev until server routes need it; required for admin signup bypass. */
+  supabaseServiceRoleKey: optional("SUPABASE_SERVICE_ROLE_KEY"),
+  get supabaseServiceRoleKeyRequired() {
     return required("SUPABASE_SERVICE_ROLE_KEY");
   },
   azure: {

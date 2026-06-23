@@ -61,6 +61,8 @@
       "sign_in_failed": "Sign in failed. Check your credentials and try again.",
       "invalid_signup": "Enter a valid email, password (min 8 characters), and role.",
       "sign_up_failed": "Sign up failed. Please try again.",
+      "email_rate_limit": "Too many confirmation emails were sent from this project. Add SUPABASE_SERVICE_ROLE_KEY to .env.local for dev signup without emails, or disable “Confirm email” in Supabase → Authentication → Email.",
+      "already_registered": "An account with this email already exists. Sign in instead, or confirm your email if you just signed up.",
       "confirm_email": "Check your email to confirm your account, then sign in."
     }
   },

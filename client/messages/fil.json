@@ -61,6 +61,8 @@
       "sign_in_failed": "Nabigo ang pag-sign in. Suriin ang iyong kredensyal at subukang muli.",
       "invalid_signup": "Maglagay ng wastong email, password (min 8 na karakter), at tungkulin.",
       "sign_up_failed": "Nabigo ang pag-sign up. Pakisubukang muli.",
+      "email_rate_limit": "Masyadong maraming confirmation email ang ipinadala mula sa project na ito. Idagdag ang SUPABASE_SERVICE_ROLE_KEY sa .env.local para sa dev signup nang walang email, o i-disable ang “Confirm email” sa Supabase → Authentication → Email.",
+      "already_registered": "May account na sa email na ito. Mag-sign in na lang, o kumpirmahin ang email kung kakasign up mo lang.",
       "confirm_email": "Tingnan ang iyong email para kumpirmahin ang account, pagkatapos ay mag-sign in."
     }
   },
