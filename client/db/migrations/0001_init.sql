@@ -1,5 +1,5 @@
--- Gaia — initial schema + Row Level Security
--- Source of truth: sdd-gaia.md §3 (Data Architecture) and §5 (Security & Authorization).
+-- Aniskwela — initial schema + Row Level Security
+-- Source of truth: sdd-aniskwela.md §3 (Data Architecture) and §5 (Security & Authorization).
 -- Forward-only, backward-compatible for one release. RLS ships with its tables.
 --
 -- Invariants enforced here:

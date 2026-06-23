@@ -1,8 +1,8 @@
 # Business Requirements Document (BRD)
 
-**Project:** Gaia
+**Project:** Aniskwela
 **Date:** 2026-06-23
-**Version:** 1.0
+**Version:** 1.1
 **Owner:** Carlos Jerico Dela Torre
 **Status:** Locked
 **Last reconciled:** N/A — pre-build
@@ -11,7 +11,7 @@
 
 ## 1. Executive Summary
 
-Gaia is an AI-powered adaptive learning platform that delivers gamified, blockchain-verified education to anyone with a smartphone and a low-bandwidth connection — including rural communities in emerging markets, starting in the Philippines. Teachers turn raw materials (PDFs, docs) into structured courses in minutes; learners build a persistent, tamper-evident record of consistency and growth; and NGOs, governments, and foundations can fund the most deserving learners against transparent, verifiable criteria. Gaia sits at the intersection of EdTech, Web3, and social impact, and is positioned to win blockchain-ecosystem grants and EdTech investment by being **learning-first** where competitors are reward-first.
+Aniskwela is an AI educational tool built for Filipino farmers — delivering gamified, blockchain-verified agricultural and livelihood education to anyone with a low-end smartphone and a low-bandwidth connection in rural emerging markets, starting in the Philippines. (The learning engine is content-agnostic and can serve any subject; farmers are the deliberate first market and the brand focus.) Teachers turn raw materials (PDFs, docs) into structured courses in minutes; learners build a persistent, tamper-evident record of consistency and growth; and NGOs, governments, and foundations can fund the most deserving learners against transparent, verifiable criteria. Aniskwela sits at the intersection of EdTech, Web3, and social impact, and is positioned to win blockchain-ecosystem grants and EdTech investment by being **learning-first** where competitors are reward-first.
 
 ---
 
@@ -48,8 +48,8 @@ Three sides of one marketplace — rural/low-income **learners** on 1GB-RAM Andr
 - Filipino + English localization and sub-3G low-resource performance as hard constraints.
 
 **Out of Scope:**
-- Gaia acting as a money transmitter — **real disbursement always routes through a licensed VASP / e-money partner**; Gaia is the eligibility-decision layer only.
-- "Learn-to-earn" reward tournaments — Gaia is learning-first; rewards are an outcome, not the hook.
+- Aniskwela acting as a money transmitter — **real disbursement always routes through a licensed VASP / e-money partner**; Aniskwela is the eligibility-decision layer only.
+- "Learn-to-earn" reward tournaments — Aniskwela is learning-first; rewards are an outcome, not the hook.
 - Video upload/processing, the full AI Assist adaptive engine, native mobile apps, and org multi-seat workspaces — all post-MVP (see PRD §6 and roadmap).
 - Drafting legal policies, KYC at scale, and on-chain smart-contract disbursement — deferred / counsel-gated.
 

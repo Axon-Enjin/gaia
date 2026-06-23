@@ -1,12 +1,12 @@
 # System Design Document (SDD)
 
-**Project:** Gaia
+**Project:** Aniskwela
 **Date:** 2026-06-23
 **Version:** 1.1
 **Owner:** Carlos Jerico Dela Torre
 **Status:** Locked
 **Last reconciled:** 2026-06-23
-**PRD:** [prd-gaia.md](prd-gaia.md)
+**PRD:** [prd-aniskwela.md](prd-aniskwela.md)
 
 ---
 
@@ -18,7 +18,7 @@
 - **Low-resource first is a constraint, not a goal.** Every architectural choice is checked against sub-3G / 1GB-RAM Android. Server-render by default; ship the minimum JS.
 - **AI decides, deterministic code does the work.** Claude is called only at course-creation and (Phase 1) session boundaries — never on the learner read path. All money/identity-critical operations are deterministic and auditable.
 - **Open standards over proprietary blobs.** Credentials are W3C VC + Open Badges 3.0; only a hash touches the chain.
-- **Eligibility layer, not money transmitter.** Gaia evaluates criteria and produces verified recipient lists; a licensed VASP moves funds. No private custody of learner funds in the platform.
+- **Eligibility layer, not money transmitter.** Aniskwela evaluates criteria and produces verified recipient lists; a licensed VASP moves funds. No private custody of learner funds in the platform.
 - **Fail loudly in dev, gracefully in prod.** Demo-critical paths (on-chain anchoring) have a labelled fallback.
 
 **Key trade-offs made (documented debt):**

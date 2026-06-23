@@ -1,6 +1,6 @@
 {
   "Common": {
-    "appName": "Gaia",
+    "appName": "Aniskwela",
     "tagline": "Mag-aral. Kumita ng kredensyal. Lumago.",
     "english": "Ingles",
     "filipino": "Filipino",
@@ -16,7 +16,7 @@
   "Teacher": {
     "dashboardTitle": "Dashboard ng guro",
     "uploadTitle": "Mag-upload at bumuo ng kurso",
-    "uploadHint": "Mag-upload ng dokumento at gagawa ang Gaia ng draft ng kurso na pwede mong i-edit. Ikaw ang magrirepaso at maglalathala — walang awtomatikong inilalathala.",
+    "uploadHint": "Mag-upload ng dokumento at gagawa ang Aniskwela ng draft ng kurso na pwede mong i-edit. Ikaw ang magrirepaso at maglalathala — walang awtomatikong inilalathala.",
     "industryLabel": "Industriya",
     "titleHintLabel": "Pamagat ng kurso (opsyonal)",
     "fileLabel": "Pinagmulang dokumento (PDF o teksto, ≤ 10MB)",
@@ -44,7 +44,7 @@
     }
   },
   "Auth": {
-    "appName": "Gaia",
+    "appName": "Aniskwela",
     "signInTitle": "Mag-sign in sa iyong account",
     "signUpTitle": "Gumawa ng iyong account",
     "email": "Email",

@@ -5,7 +5,7 @@ import { getLocale, getMessages } from "next-intl/server";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "Gaia — Learn. Earn credentials. Grow.",
+  title: "Aniskwela — Learn. Earn credentials. Grow.",
   description:
     "AI-powered adaptive learning with standards-based, blockchain-anchored credentials.",
 };
