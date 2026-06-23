@@ -28,6 +28,44 @@
     "review": "Review draft before publishing",
     "errorGeneric": "Generation failed. Please try again.",
     "errorSchema": "The AI draft could not be structured correctly. Please try again with a clearer document.",
-    "errorFile": "That file could not be read. Use a PDF or plain-text file under 10MB."
+    "errorFile": "That file could not be read. Use a PDF or plain-text file under 10MB.",
+    "myCourses": "My courses",
+    "noCourses": "No courses yet. Upload a document above to draft your first one.",
+    "statusPublished": "Published",
+    "published": "Published",
+    "publish": "Publish",
+    "publishing": "Publishing…",
+    "publishError": {
+      "invalid_request": "Invalid request. Please try again.",
+      "unauthorized": "Please sign in to publish.",
+      "forbidden": "You can only publish your own courses.",
+      "not_enough_content": "Add at least one lesson and three quiz questions before publishing.",
+      "publish_failed": "Publishing failed. Please try again."
+    }
+  },
+  "Auth": {
+    "appName": "Gaia",
+    "signInTitle": "Sign in to your account",
+    "signUpTitle": "Create your account",
+    "email": "Email",
+    "password": "Password",
+    "roleLabel": "I am a",
+    "roleLearner": "Learner",
+    "roleTeacher": "Teacher",
+    "signIn": "Sign in",
+    "signUp": "Sign up",
+    "haveAccount": "Already have an account?",
+    "noAccount": "Don't have an account?",
+    "error": {
+      "invalid_credentials": "Enter a valid email and password (min 8 characters).",
+      "sign_in_failed": "Sign in failed. Check your credentials and try again.",
+      "invalid_signup": "Enter a valid email, password (min 8 characters), and role.",
+      "sign_up_failed": "Sign up failed. Please try again.",
+      "confirm_email": "Check your email to confirm your account, then sign in."
+    }
+  },
+  "CourseDetail": {
+    "backToCatalog": "Back to courses",
+    "quiz": "Quiz"
   }
 }

@@ -33,8 +33,9 @@ export const serverEnv = {
       return required("AZURE_OPENAI_ENDPOINT");
     },
     apiVersion: process.env.AZURE_OPENAI_API_VERSION ?? "2026-05-01",
-    deployment: process.env.AZURE_OPENAI_DEPLOYMENT ?? "gpt-5-4",
-    deploymentMini: process.env.AZURE_OPENAI_DEPLOYMENT_MINI ?? "gpt-5-4-mini",
+    deployment: process.env.AZURE_OPENAI_DEPLOYMENT ?? "gaia-gpt-5.4",
+    deploymentMini:
+      process.env.AZURE_OPENAI_DEPLOYMENT_MINI ?? "gaia-gpt-5.4-mini",
     // Local-dev fallback only; prefer DefaultAzureCredential (Managed Identity).
     apiKey: optional("AZURE_OPENAI_API_KEY"),
   },

@@ -28,6 +28,44 @@
     "review": "Repasuhin ang draft bago ilathala",
     "errorGeneric": "Nabigo ang pagbuo. Pakisubukang muli.",
     "errorSchema": "Hindi maayos na nabuo ang draft ng AI. Pakisubukang muli gamit ang mas malinaw na dokumento.",
-    "errorFile": "Hindi mabasa ang file na iyon. Gumamit ng PDF o plain-text na file na wala pang 10MB."
+    "errorFile": "Hindi mabasa ang file na iyon. Gumamit ng PDF o plain-text na file na wala pang 10MB.",
+    "myCourses": "Mga kurso ko",
+    "noCourses": "Wala pang kurso. Mag-upload ng dokumento sa itaas para gumawa ng iyong una.",
+    "statusPublished": "Nailathala",
+    "published": "Nailathala",
+    "publish": "Ilathala",
+    "publishing": "Inilalathala…",
+    "publishError": {
+      "invalid_request": "Hindi wastong kahilingan. Pakisubukang muli.",
+      "unauthorized": "Mag-sign in para makapaglathala.",
+      "forbidden": "Ang sarili mong kurso lang ang pwede mong ilathala.",
+      "not_enough_content": "Magdagdag ng kahit isang aralin at tatlong tanong sa pagsusulit bago ilathala.",
+      "publish_failed": "Nabigo ang paglalathala. Pakisubukang muli."
+    }
+  },
+  "Auth": {
+    "appName": "Gaia",
+    "signInTitle": "Mag-sign in sa iyong account",
+    "signUpTitle": "Gumawa ng iyong account",
+    "email": "Email",
+    "password": "Password",
+    "roleLabel": "Ako ay isang",
+    "roleLearner": "Mag-aaral",
+    "roleTeacher": "Guro",
+    "signIn": "Mag-sign in",
+    "signUp": "Mag-sign up",
+    "haveAccount": "May account ka na?",
+    "noAccount": "Wala ka pang account?",
+    "error": {
+      "invalid_credentials": "Maglagay ng wastong email at password (min 8 na karakter).",
+      "sign_in_failed": "Nabigo ang pag-sign in. Suriin ang iyong kredensyal at subukang muli.",
+      "invalid_signup": "Maglagay ng wastong email, password (min 8 na karakter), at tungkulin.",
+      "sign_up_failed": "Nabigo ang pag-sign up. Pakisubukang muli.",
+      "confirm_email": "Tingnan ang iyong email para kumpirmahin ang account, pagkatapos ay mag-sign in."
+    }
+  },
+  "CourseDetail": {
+    "backToCatalog": "Bumalik sa mga kurso",
+    "quiz": "Pagsusulit"
   }
 }
