@@ -46,6 +46,7 @@ The `docs/` suite is the source of truth. Read in this order before writing code
 | Credential issuance/verify | gaia-rfc-001 §2/§3 → SDD §3 `credentials` | QAD H-03/H-04, AB-01/AB-02 |
 | AI course generation | gaia-rfc-002 §2/§3 → SDD §8/§8.1 | QAD §7 AI-01..AI-08 |
 | A UI surface | DSD §2–§4 + PRD §5 (screen states) | DSD §6 a11y + §8 perf gate |
+| Supabase dev / local setup | [client/README.md](../client/README.md) + [client/db/README.md](../client/db/README.md) | issue #5 acceptance criteria |
 
 ---
 
@@ -178,9 +179,49 @@ export async function anchorHash(hash: string) {
 
 ---
 
-## 5. Conventions & Guardrails
+## 5. Local development setup
 
-**Repo layout:** `app/` routes + API · `lib/` shared logic (`ai/`, `credentials/`, `grants/`) · `components/` UI · `db/` schema + migrations + RLS · `messages/` i18n (en, fil).
+> **Onboarding:** [client/README.md](../client/README.md) · **Migrations:** [client/db/README.md](../client/db/README.md) · **Env contract:** [client/.env.example](../client/.env.example)
+
+The Next.js app lives in **`client/`**. Supabase is the dev data plane (Postgres + Auth + Storage). Dev project provisioning is tracked in [issue #5](https://github.com/Axon-Enjin/gaia/issues/5).
+
+### First run
+
+```bash
+cd client
+cp .env.example .env.local   # fill Supabase URL, anon key, service role key
+npm install
+npm run dev                  # http://localhost:3000
+```
+
+### Supabase migrations (apply in order)
+
+| Migration | Contents |
+|-----------|----------|
+| `client/db/migrations/0001_init.sql` | SDD §3 schema + RLS on all 9 tables |
+| `client/db/migrations/0002_course_sources_storage.sql` | Private `course-sources` bucket + Storage RLS |
+
+Forward-only; RLS ships with tables. New migrations need **schema-stack-guardian** review.
+
+### Dev auth (avoid built-in mailer rate limits)
+
+Supabase Auth email/password for MVP (SDD §5). For local dev:
+
+1. **Dashboard:** Authentication → Providers → Email → **Confirm email off** (`mailer_autoconfirm: true`).
+2. **App (dev only):** with `SUPABASE_SERVICE_ROLE_KEY` set, signup uses the Admin API (`src/lib/auth/dev-signup.ts`) — no confirmation email sent. Disable via `SUPABASE_DEV_ADMIN_SIGNUP=false`.
+3. **Staging/prod:** re-enable confirm email or configure custom SMTP ([Supabase auth SMTP docs](https://supabase.com/docs/guides/auth/auth-smtp)); never use Admin API signup outside development.
+
+Session: Supabase JWT in httpOnly cookies via `@supabase/ssr`; `src/proxy.ts` refreshes session only — auth boundary in layouts + Server Actions.
+
+### Storage
+
+Teacher source uploads (RFC gaia-rfc-002): bucket **`course-sources`**, private, path `{teacher_id}/…`, 10 MB, PDF/text/markdown. Referenced by `courses.source_object_path`.
+
+---
+
+## 6. Conventions & Guardrails
+
+**Repo layout:** `client/src/app/` routes + API · `client/src/lib/` shared logic (`ai/`, `credentials/`, `grants/`, `supabase/`, `auth/`) · `client/src/components/` UI · `client/db/migrations/` schema + RLS · `client/messages/` i18n (en, fil).
 
 **Naming:** files kebab-case; React components PascalCase; DB tables/columns snake_case; events snake_case past-tense (PRD §5.5).
 
@@ -207,7 +248,7 @@ export async function anchorHash(hash: string) {
 
 ---
 
-## 6. Materialization
+## 7. Materialization
 
 | Target | File | Notes |
 |--------|------|-------|

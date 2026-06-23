@@ -228,7 +228,7 @@ graph TD
 **Hosting:** Vercel (frontend + API), Supabase (Postgres/Auth/Storage), Stellar Horizon public node, Cloudflare R2 (Phase 1). *Vercel Hobby is demo-only — commercial launch requires a paid plan.*
 
 **Environments:**
-- `dev`: local Next.js + Supabase project (or local stack); Stellar Testnet.
+- `dev`: local Next.js (`client/`) + shared Supabase dev project — setup: [client/README.md](../client/README.md); Stellar Testnet.
 - `staging`: Vercel preview deployments on PRs; seeded test data; Testnet.
 - `prod`: Vercel production + Supabase paid tier; Testnet for MVP, Mainnet a config change at launch.
 
