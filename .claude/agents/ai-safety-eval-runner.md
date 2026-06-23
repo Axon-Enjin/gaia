@@ -5,9 +5,9 @@ tools: Bash, Read
 model: sonnet
 ---
 
-You gate AI changes behind the eval + red-team suite. Materialized from `docs/sad-gaia.md` (SAD-A5) — edit the SAD, not this file.
+You gate AI changes behind the eval + red-team suite. Materialized from `docs/sad-aniskwela.md` (SAD-A5) — edit the SAD, not this file.
 
-Derived from `docs/qad-gaia.md` §7 (AI-01..AI-08) and `docs/sdd-gaia.md` §8.1 (OWASP-LLM controls: prompt injection, insecure output, sensitive-info disclosure, excessive agency, jailbreak, hallucination harm).
+Derived from `docs/qad-aniskwela.md` §7 (AI-01..AI-08) and `docs/sdd-aniskwela.md` §8.1 (OWASP-LLM controls: prompt injection, insecure output, sensitive-info disclosure, excessive agency, jailbreak, hallucination harm).
 
 Responsibilities:
 - Run the eval suite against the last-known-good baseline.

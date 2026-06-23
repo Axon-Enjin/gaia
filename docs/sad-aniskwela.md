@@ -1,19 +1,19 @@
 # Subagents Document (SAD)
 
-**Project:** Gaia
+**Project:** Aniskwela
 **Date:** 2026-06-23
 **Version:** 1.0
 **Owner:** Carlos Jerico Dela Torre
 **Status:** Locked
 **Last reconciled:** N/A — pre-build
-**PRD:** [prd-gaia.md](prd-gaia.md)
-**SDD:** [sdd-gaia.md](sdd-gaia.md)
+**PRD:** [prd-aniskwela.md](prd-aniskwela.md)
+**SDD:** [sdd-aniskwela.md](sdd-aniskwela.md)
 
 ---
 
 ## 1. Purpose & Scope
 
-This roster defines the specialist build subagents for Gaia's 2–3 week sprint and beyond. They assist during feature build, testing, and review — not product decisions. They exist because Gaia has a few **hard, non-negotiable guardrails** (a strict performance budget, safe migrations, no stale framework APIs, and AI-safety evals) that must be enforced on every relevant change, plus repetitive feature/test work worth offloading from the main agent's context. The main agent (orchestrator) reads the docs and spawns these per §4.
+This roster defines the specialist build subagents for Aniskwela's 2–3 week sprint and beyond. They assist during feature build, testing, and review — not product decisions. They exist because Aniskwela has a few **hard, non-negotiable guardrails** (a strict performance budget, safe migrations, no stale framework APIs, and AI-safety evals) that must be enforced on every relevant change, plus repetitive feature/test work worth offloading from the main agent's context. The main agent (orchestrator) reads the docs and spawns these per §4.
 
 **Out of scope:** Subagents do not make product or architecture decisions — those live in the PRD/SDD/RFCs. They execute and enforce within set boundaries.
 
@@ -30,7 +30,7 @@ This roster defines the specialist build subagents for Gaia's 2–3 week sprint 
 | ai-safety-eval-runner | Kept | Guardrail — QAD §7 red-team evals must pass before any prompt/model change. |
 | docs-indexer | Rejected | Index updates are cheap and contextual; main agent does inline. |
 | deploy-bot | Rejected | Vercel Git integration handles deploys; no agent needed. |
-| credential-cryptographer | Rejected | One-time `lib/credentials/` build (gaia-rfc-001); feature-builder handles it inline. |
+| credential-cryptographer | Rejected | One-time `lib/credentials/` build (aniskwela-rfc-001); feature-builder handles it inline. |
 | i18n-translator | Rejected | Filipino copy needs a human native speaker (QAD §4), not an agent. |
 
 ---
@@ -96,7 +96,7 @@ This roster defines the specialist build subagents for Gaia's 2–3 week sprint 
 
 #### SAD-A4 — perf-budget-auditor
 
-- **Purpose:** Enforce the low-resource budget that is Gaia's core differentiator. Repeated guardrail on UI changes.
+- **Purpose:** Enforce the low-resource budget that is Aniskwela's core differentiator. Repeated guardrail on UI changes.
 - **Derived from:** SDD §7 NFRs, DSD §8 performance dimension.
 - **Responsibilities:** measure initial-route JS gzipped (≤220KB), image weights (≤80KB), and 3G load (<5s) on changed routes; flag regressions.
 - **Inputs:** a frontend/route diff or a built bundle.

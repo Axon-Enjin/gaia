@@ -1,7 +1,7 @@
 import { z } from "zod";
 
 /**
- * Course JSON contract (rfc-gaia-002 §3). Shared between AI generation and the
+ * Course JSON contract (rfc-aniskwela-002 §3). Shared between AI generation and the
  * Course Editor. The AI model returns DATA in this shape — never executed.
  *
  * Bounds are deliberately tight: they cap model output size (cost/perf) and
@@ -48,7 +48,7 @@ export const courseSchema = z
     industry: z.string().min(1).max(120),
     modules: z.array(moduleSchema).min(1).max(20),
   })
-  // Success criterion (rfc-gaia-002 §1): a course has at least 3 quiz questions.
+  // Success criterion (rfc-aniskwela-002 §1): a course has at least 3 quiz questions.
   .refine(
     (c) =>
       c.modules.reduce(

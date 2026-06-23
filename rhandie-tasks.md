@@ -1,7 +1,7 @@
-# Rhandie's Task Board — Gaia
+# Rhandie's Task Board — Aniskwela
 
 **Role:** Lead Engineer (Full-Stack, Azure Infrastructure, AI Foundry)
-**Context:** Gaia `v1.1` (Next.js 16.2.x + Supabase + Azure AI Foundry GPT)
+**Context:** Aniskwela `v1.1` (Next.js 16.2.x + Supabase + Azure AI Foundry GPT)
 
 This document tracks the core implementation tasks tailored to Rhandie's expertise, bridging the Azure infrastructure, the AI generation pipeline, and the Next.js full-stack foundation.
 
@@ -18,7 +18,7 @@ This document tracks the core implementation tasks tailored to Rhandie's experti
 - [ ] **Vercel Setup:** Initialize the Vercel project and inject the necessary environment variables (`AZURE_OPENAI_ENDPOINT`, Supabase URL/Anon keys). _(Infra — Vercel dashboard; env contract documented in `client/.env.example`.)_
 
 ## 2. Next.js 16 Full-Stack Foundation
-*Goal: Lay the boilerplate following the strict `build-gaia.md` guardrails.*
+*Goal: Lay the boilerplate following the strict `build-aniskwela.md` guardrails.*
 
 - [x] **Initialize Next.js 16.2.x:** Setup the App Router with Turbopack and Tailwind CSS. _(`client/` — Next 16.2.9, src-dir, Turbopack default.)_
 - [x] **Authentication Boundary:** Implement Supabase SSR auth. Avoid using `middleware.ts` for complex logic; use `proxy.ts` for headers/redirects and handle auth in layouts and Server Actions. _(`src/proxy.ts` refreshes session only; role/ownership in `src/app/teacher/page.tsx` + RLS.)_
@@ -36,6 +36,6 @@ This document tracks the core implementation tasks tailored to Rhandie's experti
 ## 4. Feature UI & Edge Integrations
 *Goal: Connect the backend pipelines to the low-resource frontend.*
 
-- [x] **Teacher Dashboard:** Build the "Upload & Generate" flow, including uploading a PDF, extracting text on the server, and polling the AI pipeline for the generated JSON draft. _(`src/app/teacher/page.tsx` + `components/upload-generate-form.tsx` + `POST /api/courses/generate`; PDF/text extraction in `lib/ai/extract-text.ts`. Synchronous bounded call per rfc-gaia-002 §State Management — background worker is a noted scale-up.)_
+- [x] **Teacher Dashboard:** Build the "Upload & Generate" flow, including uploading a PDF, extracting text on the server, and polling the AI pipeline for the generated JSON draft. _(`src/app/teacher/page.tsx` + `components/upload-generate-form.tsx` + `POST /api/courses/generate`; PDF/text extraction in `lib/ai/extract-text.ts`. Synchronous bounded call per rfc-aniskwela-002 §State Management — background worker is a noted scale-up.)_
 - [x] **Cost-Gated Interactions:** Ensure the UI never triggers AI on the learner's read path. AI is strictly isolated to the teacher's creation flow. _(Learner catalog `/courses` reads DB only via cached cookieless client; AI only in the teacher route.)_
 - [x] **Low-Resource UI:** Implement the English/Filipino localization toggle and ensure the initial JS payload respects the 220KB budget. _(`components/locale-switcher.tsx`; measured shared initial JS ≈ 174 KB gz < 220 KB via `scripts/measure-bundle.js`.)_

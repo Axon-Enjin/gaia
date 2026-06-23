@@ -5,16 +5,16 @@
 **Author:** Carlos Jerico Dela Torre
 **Status:** `Approved`
 **Last reconciled:** 2026-06-23
-**PRD Reference:** [prd-gaia.md](prd-gaia.md) §3 (PRD-F1), §7, US-01
-**SDD Reference:** [sdd-gaia.md](sdd-gaia.md) §8, §8.1, §3 (`courses`/`lessons`/`quiz_questions`), §4
-**RFC ID:** `gaia-rfc-002`
+**PRD Reference:** [prd-aniskwela.md](prd-aniskwela.md) §3 (PRD-F1), §7, US-01
+**SDD Reference:** [sdd-aniskwela.md](sdd-aniskwela.md) §8, §8.1, §3 (`courses`/`lessons`/`quiz_questions`), §4
+**RFC ID:** `aniskwela-rfc-002`
 
 ---
 
 ## 1. Context & Objective
 
 **The problem this solves:**
-Teachers cannot build structured courses from scratch. Gaia must turn an uploaded document into an editable, pedagogically-sound course draft in minutes, at a cost that survives free-tier/grant economics, and without ever auto-publishing unreviewed AI output.
+Teachers cannot build structured courses from scratch. Aniskwela must turn an uploaded document into an editable, pedagogically-sound course draft in minutes, at a cost that survives free-tier/grant economics, and without ever auto-publishing unreviewed AI output.
 
 **Reference in PRD/SDD:**
 Implements PRD-F1; governed by the SDD §8 AI architecture and §8.1 safety controls.

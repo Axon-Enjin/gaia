@@ -17,7 +17,7 @@ const FieldsSchema = z.object({
 });
 
 /**
- * POST /api/courses/generate  (PRD-F1, rfc-gaia-002 §3)
+ * POST /api/courses/generate  (PRD-F1, rfc-aniskwela-002 §3)
  *
  * multipart/form-data: file (PDF/text), industry, title_hint?
  * Persists a DRAFT course owned by the authenticated teacher. Never publishes.

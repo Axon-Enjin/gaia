@@ -1,6 +1,6 @@
 {
   "Common": {
-    "appName": "Gaia",
+    "appName": "Aniskwela",
     "tagline": "Learn. Earn credentials. Grow.",
     "english": "English",
     "filipino": "Filipino",
@@ -16,7 +16,7 @@
   "Teacher": {
     "dashboardTitle": "Teacher dashboard",
     "uploadTitle": "Upload & generate a course",
-    "uploadHint": "Upload a document and Gaia drafts an editable, standards-based course. You review and publish — nothing is published automatically.",
+    "uploadHint": "Upload a document and Aniskwela drafts an editable, standards-based course. You review and publish — nothing is published automatically.",
     "industryLabel": "Industry",
     "titleHintLabel": "Course title (optional)",
     "fileLabel": "Source document (PDF or text, ≤ 10MB)",
@@ -44,7 +44,7 @@
     }
   },
   "Auth": {
-    "appName": "Gaia",
+    "appName": "Aniskwela",
     "signInTitle": "Sign in to your account",
     "signUpTitle": "Create your account",
     "email": "Email",

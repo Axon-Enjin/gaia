@@ -5,22 +5,22 @@
 **Author:** Carlos Jerico Dela Torre
 **Status:** `Approved`
 **Last reconciled:** N/A — pre-build
-**PRD Reference:** [prd-gaia.md](prd-gaia.md) §3 (PRD-F4, PRD-F5), US-03, US-04
-**SDD Reference:** [sdd-gaia.md](sdd-gaia.md) §3 (`credentials`), §4, §5
-**RFC ID:** `gaia-rfc-001`
+**PRD Reference:** [prd-aniskwela.md](prd-aniskwela.md) §3 (PRD-F4, PRD-F5), US-03, US-04
+**SDD Reference:** [sdd-aniskwela.md](sdd-aniskwela.md) §3 (`credentials`), §4, §5
+**RFC ID:** `aniskwela-rfc-001`
 
 ---
 
 ## 1. Context & Objective
 
 **The problem this solves:**
-On course completion, a learner must receive a credential that is (a) portable and verifiable by third parties without Gaia's involvement, and (b) tamper-evident via the blockchain — without putting PII on-chain or requiring the learner to own a wallet.
+On course completion, a learner must receive a credential that is (a) portable and verifiable by third parties without Aniskwela's involvement, and (b) tamper-evident via the blockchain — without putting PII on-chain or requiring the learner to own a wallet.
 
 **Reference in PRD/SDD:**
 This RFC implements PRD-F4 (issuance) and PRD-F5 (public verifier), built on the SDD `credentials` table.
 
 **Success criteria:**
-- A completed course yields a signed W3C Verifiable Credential using the Open Badges 3.0 profile, verifiable in any OB 3.0 / VC-compatible verifier (not just Gaia's).
+- A completed course yields a signed W3C Verifiable Credential using the Open Badges 3.0 profile, verifiable in any OB 3.0 / VC-compatible verifier (not just Aniskwela's).
 - Only a SHA-256 hash of the canonical credential is written on-chain; no PII on Stellar.
 - The public verifier confirms both the signature and that the on-chain hash matches, with no login.
 - If Stellar Testnet is unavailable during a live demo, issuance degrades to a clearly-labelled mock anchor rather than failing.
@@ -31,7 +31,7 @@ This RFC implements PRD-F4 (issuance) and PRD-F5 (public verifier), built on the
 
 **Approach:**
 1. Learner passes the final assessment at/above the course's `passing_score`.
-2. Server builds a VC (W3C VC Data Model 2.0, Open Badges 3.0 profile) as JSON-LD: subject = learner identifier (opaque, not raw email), achievement = course, issuer = **Gaia (platform-level DID)**, plus date and score.
+2. Server builds a VC (W3C VC Data Model 2.0, Open Badges 3.0 profile) as JSON-LD: subject = learner identifier (opaque, not raw email), achievement = course, issuer = **Aniskwela (platform-level DID)**, plus date and score.
 3. Server canonicalizes the VC and computes `credential_hash = SHA-256(canonical)`.
 4. Server signs the VC with the issuer key (held server-side in the secrets store).
 5. Server submits a Stellar transaction whose memo/data carries `credential_hash` (hash only) and records `stellar_tx_hash` + `network`.
@@ -62,7 +62,7 @@ Request:
 Response 200:
 {
   "credential_id": "uuid",
-  "verify_url": "https://gaia.app/verify/<id>",
+  "verify_url": "https://aniskwela.app/verify/<id>",
   "qr_png_base64": "...",
   "network": "testnet" | "mock",
   "stellar_tx_hash": "..." | null
@@ -92,16 +92,16 @@ Issuance is idempotent per enrollment (UNIQUE `credential_hash`; `409` on re-iss
 
 | Option | Why Rejected |
 |--------|-------------|
-| Custom Stellar memo blob as the credential (v1 design) | Only Gaia's own verifier can read it — contradicts the "verifiable across borders and industries" promise; not interoperable with HR systems / Europass. |
+| Custom Stellar memo blob as the credential (v1 design) | Only Aniskwela's own verifier can read it — contradicts the "verifiable across borders and industries" promise; not interoperable with HR systems / Europass. |
 | Write the full credential on-chain | Puts PII on a public ledger; cost and privacy non-starter. Hash-only anchoring gives tamper-evidence without exposure. |
 | NFT-style badge on Stellar (v1 design) | Conflates collectible/speculative framing with a merit credential; not an accepted credential standard; learner would need a wallet/trustline. |
-| Require learner to hold a Stellar account to receive the credential | Imposes XLM trustline-funding burden on every learner — rejected; Gaia is learning-first and wallet is only relevant at grant-receipt (PRD §5.5). |
+| Require learner to hold a Stellar account to receive the credential | Imposes XLM trustline-funding burden on every learner — rejected; Aniskwela is learning-first and wallet is only relevant at grant-receipt (PRD §5.5). |
 
 ---
 
 ## 5. AI / Agent Implementation Notes
 
-No AI component in this feature — issuance and verification are fully deterministic. (AI is confined to course generation, gaia-rfc-002.)
+No AI component in this feature — issuance and verification are fully deterministic. (AI is confined to course generation, aniskwela-rfc-002.)
 
 ---
 

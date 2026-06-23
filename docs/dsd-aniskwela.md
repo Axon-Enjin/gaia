@@ -1,12 +1,12 @@
 # Design System Document (DSD)
 
-**System Name:** Gaia Foundation (the Gaia design language)
+**System Name:** Aniskwela Foundation (the Aniskwela design language)
 **Date:** 2026-06-23
-**Version:** 0.1
+**Version:** 0.2
 **Owner:** Carlos Jerico Dela Torre
 **Status:** Draft
 **Last reconciled:** N/A — pre-build
-**PRD:** [prd-gaia.md](prd-gaia.md)
+**PRD:** [prd-aniskwela.md](prd-aniskwela.md)
 
 > **Status note:** Draft until the Week-1 build materializes these tokens into a Tailwind config / CSS variables and the §8 Impeccable audit is run. §0 is locked intent; §2–§8 firm up during M2/M3.
 
@@ -24,7 +24,7 @@
 
 ### Mode
 
-- [x] **Both** — **Brand Mode** for the landing/marketing surface (impression-first: the Gaia "growing earth" story, a committed earthen palette, learner imagery). **Product Mode** for the app UI (task-first: fluent density, semantic states, repeatable components, ruthless byte budget).
+- [x] **Both** — **Brand Mode** for the landing/marketing surface (impression-first: the Aniskwela "harvest school" story — *ani* (harvest) + *eskwela* (school), learning you sow, reap, and keep — a committed earthen palette, learner/farmer imagery). **Product Mode** for the app UI (task-first: fluent density, semantic states, repeatable components, ruthless byte budget).
 
 **Selected mode:** `Both` — Brand Mode = landing (PRD-F8); Product Mode = dashboards, course viewer, verifier (PRD-F2/F5/F6/F7/F10).
 
@@ -42,7 +42,7 @@
 
 | Anti-reference | Why it's forbidden here |
 |---|---|
-| Duolingo's gamified-casino energy (streak-panic, confetti, mascot guilt) | Gaia is **learning-first, not reward-first** (PRD §5.3) — dopamine-pump UX undercuts the merit-ledger credibility funders rely on. |
+| Duolingo's gamified-casino energy (streak-panic, confetti, mascot guilt) | Aniskwela is **learning-first, not reward-first** (PRD §5.3) — dopamine-pump UX undercuts the merit-ledger credibility funders rely on. |
 | Crypto/Web3 "neon-on-black, glow, hexagons" aesthetic | Our users distrust crypto hype and run low-end screens on a light-only theme; the chain is plumbing, not the brand. |
 | Generic B2B SaaS (indigo gradient, Inter, glass cards) | It's the exact slop default above and erases the Filipino, agricultural, earned-growth identity that is the moat. |
 
@@ -65,7 +65,7 @@
 
 ## 2. Brand Primitives
 
-> Values below are the locked intent; generate exact ramps via the impeccable / ui-ux-pro-max skill during M2 and paste final tokens here. Primary `--color-primary` carries forward the PRD §10.2 locked Indigo `#4B6BF1` (trust/CTA); the **growth-green and clay** tokens carry Gaia's identity. *If the Gaia rebrand should promote green to primary, that changes a Locked PRD decision — raise a Change Record, don't silently swap.*
+> Values below are the locked intent; generate exact ramps via the impeccable / ui-ux-pro-max skill during M2 and paste final tokens here. Primary `--color-primary` carries forward the PRD §10.2 locked Indigo `#4B6BF1` (trust/CTA); the **growth-green and clay** tokens carry Aniskwela's identity. *If the Aniskwela rebrand should promote green to primary, that changes a Locked PRD decision — raise a Change Record, don't silently swap.*
 
 ### Colors
 

@@ -1,12 +1,12 @@
 # Go-To-Market (GTM) Strategy
 
-**Project:** Gaia
+**Project:** Aniskwela
 **Date:** 2026-06-23
-**Version:** 0.1
+**Version:** 0.2
 **Owner:** Carlos Jerico Dela Torre
 **Status:** Draft
 **Last reconciled:** N/A — pre-build
-**PRD:** [prd-gaia.md](prd-gaia.md)
+**PRD:** [prd-aniskwela.md](prd-aniskwela.md)
 
 > **Status:** Draft — the immediate motion is the hackathon demo + waitlist; the broader launch motion firms up post-demo. Public launch is gated on **CLR clearance** (§6).
 
@@ -14,7 +14,7 @@
 
 ## 1. Product Summary (GTM View)
 
-**What it does (one sentence):** Gaia turns any document into an AI-built course, lets low-bandwidth learners earn a verifiable, blockchain-anchored credential, and lets NGOs fund the most consistent learners transparently.
+**What it does (one sentence):** Aniskwela is an AI educational tool for Filipino farmers — it turns any document into an AI-built course, lets low-bandwidth rural learners earn a verifiable, blockchain-anchored credential, and lets NGOs fund the most consistent learners transparently.
 
 **Who it's for:** Rural and low-income learners and the teachers/NGOs/funders who serve them in the Philippines and emerging markets — people the global EdTech incumbents price and engineer out.
 
@@ -52,16 +52,16 @@
 
 **Pricing rationale:** Adoption and public-good positioning first; teachers keep the large majority of revenue at a low promotional take rate. **Open decision (PRD §7.3):** a 1% take rate does not cover ~3% payment processing + infra + support; revisit toward an industry-competitive ~15–20% ("lowest in market") or time-box the promo before scale. Ecosystem grants subsidize the near-term.
 
-**Payment processor:** course payments and any disbursement route through a **licensed PH VASP / e-money rail** (Phase 1) — Gaia does not process funds directly.
+**Payment processor:** course payments and any disbursement route through a **licensed PH VASP / e-money rail** (Phase 1) — Aniskwela does not process funds directly.
 
 ---
 
 ## 4. Positioning & Messaging
 
-**Tagline:** `Learning that grows with you — and stays yours.`
+**Tagline:** `Magsaka. Mag-aral. Mag-ani ng patunay.` (Farm. Learn. Harvest the proof.)
 
 **Primary message (landing hero):**
-"Gaia turns any lesson into a course in minutes, runs on the slowest phone, and gives every learner a credential the world can verify. Learning-first — rewards are earned, not dangled."
+"Aniskwela turns any farming lesson into a course in minutes, runs on the slowest phone, and gives every farmer a credential the world can verify. Learning-first — rewards are earned, not dangled."
 
 **Proof points:**
 - Live: upload → AI course → learner completion → W3C credential anchored on Stellar, verifiable with no login.
@@ -99,7 +99,7 @@
 **Content assets needed before launch:**
 - [ ] Landing page with clear CTA + the three proof points (PRD-F8)
 - [ ] 60–90s demo video of the full flow
-- [ ] One-pager / pitch deck **rebranded LearnChain → Gaia** (current deck still says LearnChain)
+- [ ] One-pager / pitch deck **rebranded LearnChain → Aniskwela** (current deck still says LearnChain)
 - [ ] Public verifier demo link + sample credential
 
 ---
@@ -110,7 +110,7 @@
 |-------|------------------|-------------|------|
 | **Demo / Alpha** | Core flows pass QAD; 0 P0/P1 | End of 3-week sprint | Judge score ≥8/10 (BRD-M1); waitlist live |
 | **Beta** (invite/waitlist) | Demo feedback addressed; no P0 | Months 1–2 | 3 pilot NGOs + 2 gov agencies; early learners/teachers |
-| **Public Launch** | Beta retention hit; **CLR cleared** (no open §3 counsel flags — DPO/NPC, ToS, "Gaia" trademark — see [clr-gaia.md](clr-gaia.md)); VASP rail live | Month 3+ | 500 learners, 50 courses (BRD-M3/M4) |
+| **Public Launch** | Beta retention hit; **CLR cleared** (no open §3 counsel flags — DPO/NPC, ToS, "Aniskwela" trademark — see [clr-aniskwela.md](clr-aniskwela.md)); VASP rail live | Month 3+ | 500 learners, 50 courses (BRD-M3/M4) |
 | **Post-launch** | — | Month 3+ | First partner-funded grant program (BRD-M7); 10 Mainnet credentials (BRD-M6) |
 
 ---
@@ -133,7 +133,7 @@
 
 - [x] §2 ICP specific enough to name real organizations (PH NGOs, TESDA/DepEd, Stellar ecosystem)
 - [x] §3 pricing has a clear gate + the take-rate sustainability decision flagged
-- [ ] §5 content assets created before launch (incl. **deck rebrand to Gaia**)
+- [ ] §5 content assets created before launch (incl. **deck rebrand to Aniskwela**)
 - [x] §6 phase criteria are binary; public launch gated on CLR
 - [x] §7 metrics trace to BRD-M# and PRD §5.5 events (measurable day 1)
 - [x] Drafted before launch, not as a retrospective
