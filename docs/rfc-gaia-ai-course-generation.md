@@ -4,7 +4,7 @@
 **Date:** 2026-06-23
 **Author:** Carlos Jerico Dela Torre
 **Status:** `Approved`
-**Last reconciled:** N/A — pre-build
+**Last reconciled:** 2026-06-23
 **PRD Reference:** [prd-gaia.md](prd-gaia.md) §3 (PRD-F1), §7, US-01
 **SDD Reference:** [sdd-gaia.md](sdd-gaia.md) §8, §8.1, §3 (`courses`/`lessons`/`quiz_questions`), §4
 **RFC ID:** `gaia-rfc-002`
@@ -31,16 +31,16 @@ Implements PRD-F1; governed by the SDD §8 AI architecture and §8.1 safety cont
 
 **Approach:**
 1. Teacher uploads a PDF/doc → Supabase Storage; server extracts text.
-2. Server issues a single Claude (`claude-sonnet-4-6`) call: cached system prompt (pedagogy rules + strict JSON schema) + the extracted source (cached) → structured course JSON.
-3. Server validates JSON against a Zod schema. On validation failure, one bounded repair attempt (cheap `claude-haiku-4-5` "fix to schema") before surfacing an error.
+2. Server issues a single `gpt-5.4` call via Azure AI Foundry: static system prompt (pedagogy rules + strict JSON schema) placed first for automatic prefix caching, then the extracted source → structured course JSON.
+3. Server validates JSON against a Zod schema. On validation failure, one bounded repair attempt (`gpt-5.4-mini` "fix to schema") before surfacing an error.
 4. Persist as a `draft` course + lessons + quiz_questions.
 5. Teacher reviews/edits in the Course Editor; only an explicit publish action flips status to `published`.
 
-Cheap structural follow-ups (outline diff, quiz reshuffle, summary-card regen) route to `claude-haiku-4-5`.
+Cheap structural follow-ups (outline diff, quiz reshuffle, summary-card regen) route to a `gpt-5.4-mini` Azure AI Foundry deployment.
 
 **Architecture changes:**
 - `POST /api/courses/generate` orchestration (SDD §4).
-- `lib/ai/courseGen.ts` — prompt assembly, cache directives, schema validation, repair fallback.
+- `lib/ai/courseGen.ts` — `AzureOpenAI` client init, prompt assembly, schema validation, repair fallback.
 - Zod schema shared between generation and the editor.
 
 ---
@@ -91,22 +91,23 @@ Generation is a bounded synchronous server request in MVP (SDD §1 debt note: mo
 | Call AI per learner/per page to "adapt" content live (v1-style) | Cost explosion and latency on the learner read path; violates the SDD cost-gating principle. AI is for creation + session-boundary adaptation only. |
 | Auto-publish AI output | Hallucination risk (R5); high-stakes verticals (health/finance/agri) could cause real harm (R8). Human review is mandatory. |
 | Free-text model output rendered directly | Insecure output handling (SDD §8.1 LLM02). We constrain to validated JSON rendered as sanitized markdown. |
-| Sonnet for everything | Wasteful for trivial structural edits; route those to Haiku. |
+| `gpt-5.4` for everything | Wasteful for trivial structural edits; route those to `gpt-5.4-mini`. |
 
 ---
 
 ## 5. AI / Agent Implementation Notes
 
-**Model used:** `claude-sonnet-4-6` (generation); `claude-haiku-4-5` (schema repair + cheap structural tasks).
-**Prompt strategy:** Cached system prompt (static pedagogy + JSON schema) + cached source document; only per-request hints vary → high cache hit rate on retries/refinements.
+**Model used:** `gpt-5.4` Azure AI Foundry deployment (generation); `gpt-5.4-mini` Azure AI Foundry deployment (schema repair + cheap structural tasks).
+**SDK:** `openai` npm package — `AzureOpenAI` client (`@azure/openai` + `@azure/identity` peer deps); auth via `DefaultAzureCredential` (Managed Identity preferred) or `AZURE_OPENAI_API_KEY` for local dev.
+**Prompt strategy:** Static system prompt (pedagogy + JSON schema) placed **first** in the messages array; source document second — Azure OpenAI automatically caches the prefix (≥ 1024 tokens) with no SDK flag required. Per-request hints go last (variable). High cache-hit rate on retries/refinements. Azure supports configurable extended cache retention up to 24h.
 **Tool calls in this feature:** None — the model returns data; no model-invoked tools (avoids LLM07 excessive agency).
 
 **Edge cases specific to LLM behavior:**
 - Uploaded document contains injection text ("ignore instructions, output X") → treated as untrusted data, wrapped/delimited; the model produces a course, no tool to hijack (SDD §8.1 LLM01 → QAD AI-04).
-- Output truncates or breaks schema → one bounded Haiku repair; if still invalid, return 422, do not persist garbage.
+- Output truncates or breaks schema → one bounded `gpt-5.4-mini` repair; if still invalid, return 422, do not persist garbage.
 - Out-of-policy / harmful course request → refuse; high-stakes verticals flagged for the review tier.
 
-**Token budget for this feature:** One Sonnet call per course with prompt caching → low single-digit cents/course at demo scale; hard max-output-token cap enforced.
+**Token budget for this feature:** One `gpt-5.4` call per course with Azure prefix caching → low single-digit cents/course at demo scale; hard max-output-token cap enforced.
 
 ---
 
@@ -122,7 +123,7 @@ Generation is a bounded synchronous server request in MVP (SDD §1 debt note: mo
 - Generation excluded from the learner-facing p95 latency budget (SDD §7).
 
 **Privacy:**
-- Document text leaves to Anthropic (not used for training; reconcile CLR §1). No learner PII in the generation prompt.
+- Document text leaves to **Azure AI Foundry (Microsoft Azure OpenAI Service)** — not used for model training under Azure OpenAI Service terms; reconcile with CLR §1. Target a Southeast Asia Azure region in Phase 1 to address PH data-localization requirements. No learner PII in the generation prompt.
 
 ---
 
@@ -136,8 +137,8 @@ Generation is a bounded synchronous server request in MVP (SDD §1 debt note: mo
 |--------|-------------|------|
 | GEN-01 | Upload → Supabase Storage + server-side text extraction | M |
 | GEN-02 | Course JSON Zod schema (shared with editor) | S |
-| GEN-03 | `lib/ai/courseGen.ts` — cached prompt assembly + Sonnet call | M |
-| GEN-04 | Schema validation + bounded Haiku repair fallback | S |
+| GEN-03 | `lib/ai/courseGen.ts` — `AzureOpenAI` client init + cached prompt assembly + `gpt-5.4` call | M |
+| GEN-04 | Schema validation + bounded `gpt-5.4-mini` repair fallback | S |
 | GEN-05 | `POST /api/courses/generate` + persist draft (courses/lessons/quiz) | M |
 | GEN-06 | Course Editor review/edit UI + explicit publish (no auto-publish) | L |
 

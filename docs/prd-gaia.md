@@ -2,13 +2,13 @@
 
 **Project:** Gaia
 **Date:** 2026-06-23
-**Version:** 1.0
+**Version:** 1.1
 **Owner:** Carlos Jerico Dela Torre
 **Status:** Locked
-**Last reconciled:** N/A — pre-build
+**Last reconciled:** 2026-06-23
 **BRD:** [brd-gaia.md](brd-gaia.md)
 
-> **History:** Supersedes the standalone `LearnChain_PRD_v2.md` (which itself superseded v1). v2 already applied partner-review fixes — updated Claude model IDs + prompt caching; honest "near-zero" cost language; W3C VC + Open Badges 3.0 in place of a custom Stellar memo; evidence-based learning science in place of VARK learning-styles; learning-first (not learn-to-earn) reframe; eligibility-layer-only grant posture; offline caching pulled to Phase 1; competitive landscape and data-privacy sections added; DAU/MAU reset to 15–18%. This document carries those decisions forward under the name **Gaia**.
+> **History:** Supersedes the standalone `LearnChain_PRD_v2.md` (which itself superseded v1). v2 applied partner-review fixes — honest "near-zero" cost language; W3C VC + Open Badges 3.0 in place of a custom Stellar memo; evidence-based learning science in place of VARK learning-styles; learning-first (not learn-to-earn) reframe; eligibility-layer-only grant posture; offline caching pulled to Phase 1; competitive landscape and data-privacy sections added; DAU/MAU reset to 15–18%. The framework is pinned to Next.js 16.2.x and the AI provider is OpenAI GPT-5.4/GPT-5.4-mini via Azure AI Foundry.
 
 ---
 
@@ -215,8 +215,8 @@ flowchart TD
 ## 7. AI / Agent Feature Specifications
 
 **AI Component:** Course generation (PRD-F1) and, in Phase 1, the adaptive engine (PRD-F12). See [rfc-gaia-ai-course-generation.md](rfc-gaia-ai-course-generation.md).
-**Model(s) considered:** Claude Sonnet 4.6, Claude Haiku 4.5.
-**Selected model:** `claude-sonnet-4-6` for course generation (best structure/reasoning at mid cost); `claude-haiku-4-5` for cheap structural tasks (outline diffs, quiz reshuffles, summary-card generation) — *reason: cost discipline; route low-complexity work to the cheaper model.*
+**Model(s) considered:** GPT-5.4, GPT-5.4 Mini.
+**Selected model:** `gpt-5.4` for course generation (mid-tier; balanced structure/reasoning at mid cost); `gpt-5.4-mini` for cheap structural tasks (outline diffs, quiz reshuffles, summary-card generation, schema repair) — *reason: cost discipline; route low-complexity work to the efficiency model.*
 
 **What the AI does:**
 Analyzes uploaded source material and produces a structured course: module outline → chapters → sub-lessons, quiz questions/assessments, summary cards, audio-friendly text, and difficulty tags (Beginner/Intermediate/Advanced).
@@ -225,6 +225,7 @@ Analyzes uploaded source material and produces a structured course: module outli
 - Input: extracted text from the uploaded PDF/doc + a structured generation prompt (system prompt + source cached).
 - Output: validated JSON course structure (outline, lessons, quizzes, tags).
 - Latency expectation: course generated within a single bounded call (target < ~60s for a typical document; show progress).
+- **Prompt caching:** Azure OpenAI automatically caches prompt prefixes ≥ 1024 tokens — place system prompt + source document first in the messages array; variable hints last. No SDK configuration required. Azure optionally supports extended retention up to 24h (configurable per deployment).
 
 **Human-in-the-loop points:**
 - Mandatory teacher review-and-edit before any course is published (no auto-publish — R5).
@@ -241,7 +242,7 @@ Course generation is called **once per course** with prompt caching (system prom
 ## 8. Dependencies & Assumptions
 
 **Dependencies:**
-- Anthropic Claude API access (server-side key).
+- Azure AI Foundry access — `AZURE_OPENAI_ENDPOINT` + `DefaultAzureCredential` (Managed Identity) or `AZURE_OPENAI_API_KEY` fallback for local dev. Never client-side. Verify deployment names (`gpt-5-4`, `gpt-5-4-mini`) and region quota at project setup.
 - Supabase project (Postgres, Auth, Storage) with Row Level Security.
 - Stellar Testnet + Horizon (public node) for MVP; Freighter for demo wallet.
 - VC issuer signing key in a secure secrets store (issuer = Gaia at the platform level).
@@ -259,7 +260,7 @@ Course generation is called **once per course** with prompt caching (system prom
 | # | Phase / Milestone | Entry criteria | Exit criteria (DoD) | Deliverable | Depends on | Owner (DRI) | Top risk |
 |---|-------------------|----------------|----------------------|-------------|------------|-------------|----------|
 | M1 | Planning & specs locked | BRD/PRD drafted | This suite Locked; MVP scope (§3) frozen | Approved doc suite | — | Owner | Scope creep |
-| M2 | Design (UX + system) | PRD locked | DSD + SDD approved; tokens in code | Design system + architecture | M1 | Owner | Slop defaults / perf budget |
+| M2 | Design (UX + system) | PRD locked | DSD + SDD approved; tokens in code | Design system + architecture | M1 (Next.js 16.2.x; OpenAI GPT) | Owner | Slop defaults / perf budget |
 | M3 | Week 1 build | Design signed off | Landing (EN/Fil), auth, upload, AI generation working | Demo-able teacher flow | M2 | Owner | AI cost / output quality |
 | M4 | Week 2 build | Week 1 features stable | Course viewer, XP/badges, VC issuance + verifier | Demo-able learner flow | M3 | Owner | Stellar Testnet downtime |
 | M5 | Week 3 build + QA | Core flows pass | Funder mock UI, wallet connect, QAD release criteria met, 0 P0/P1 | Hackathon-ready build | M4 | Owner | Time / polish |

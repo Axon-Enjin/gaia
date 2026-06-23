@@ -13,12 +13,12 @@
 | Document | File | Version | Status | Last Updated | Last Reconciled |
 |----------|------|---------|--------|--------------|-----------------|
 | BRD — Business Requirements | [brd-gaia.md](brd-gaia.md) | 1.0 | Locked | 2026-06-23 | N/A — pre-build |
-| PRD — Product Requirements | [prd-gaia.md](prd-gaia.md) | 1.0 | Locked | 2026-06-23 | N/A — pre-build |
+| PRD — Product Requirements | [prd-gaia.md](prd-gaia.md) | 1.1 | Locked | 2026-06-23 | 2026-06-23 |
 | DSD — Design System | [dsd-gaia.md](dsd-gaia.md) | 0.1 | Draft | 2026-06-23 | N/A — pre-build |
-| SDD — System Design | [sdd-gaia.md](sdd-gaia.md) | 1.0 | Locked | 2026-06-23 | N/A — pre-build |
+| SDD — System Design | [sdd-gaia.md](sdd-gaia.md) | 1.1 | Locked | 2026-06-23 | 2026-06-23 |
 | QAD — QA & Test Plan | [qad-gaia.md](qad-gaia.md) | 0.1 | Draft | 2026-06-23 | N/A — pre-build |
 | SAD — Subagents | [sad-gaia.md](sad-gaia.md) | 1.0 | Locked | 2026-06-23 | N/A — pre-build |
-| BUILD — Build Guide | [build-gaia.md](build-gaia.md) | 1.0 | Locked | 2026-06-23 | N/A — pre-build |
+| BUILD — Build Guide | [build-gaia.md](build-gaia.md) | 1.1 | Locked | 2026-06-23 | 2026-06-23 |
 | CLR — Compliance & Legal | [clr-gaia.md](clr-gaia.md) | 0.1 | Draft | 2026-06-23 | N/A — pre-build |
 | GTM — Go-To-Market | [gtm-gaia.md](gtm-gaia.md) | 0.1 | Draft | 2026-06-23 | N/A — pre-build |
 | OPS — Ops & Observability | [ops-gaia.md](ops-gaia.md) | 0.1 | Draft | 2026-06-23 | N/A — pre-build |
@@ -38,7 +38,7 @@ Every material change to a Locked document is recorded as a Change Record. Newes
 
 | CR ID | Date | Summary | Trigger doc | Docs touched | File |
 |-------|------|---------|-------------|--------------|------|
-| — | — | No change records yet. Suite created from LearnChain PRD v2 at v1.0. | — | — | — |
+| — | — | No change records yet. Suite created from LearnChain PRD v2 at v1.0, updated to 1.1 with Next.js 16 and Azure AI Foundry. | — | — | — |
 
 > Provenance: this suite supersedes the standalone `LearnChain_PRD_v2.md` (and v1). The PRD content was migrated into [prd-gaia.md](prd-gaia.md) and rebranded LearnChain → Gaia. The original PRD markdown files were removed as superseded; the v2 changelog is preserved inside the PRD's history note.
 
@@ -64,7 +64,7 @@ Quick triage an agent runs at the start of a session. Anything that fails gets s
 - [x] Feature IDs (`PRD-F#`) referenced by SDD / RFC / QAD / SAD / BUILD still exist in the PRD.
 - [x] Metric IDs (`BRD-M#`) flow to the GTM and have a feeding event in PRD §5.5.
 - [x] The SAD roster matches the materialized agent files (`.claude/agents/`).
-- [ ] The BUILD guide's pinned versions and golden-path samples have been re-verified recently. *(Pin dates 2026-06-23; re-verify at sprint start — frameworks move fast.)*
+- [x] The BUILD guide's pinned versions and golden-path samples have been re-verified recently. *(Next.js 16.2.x verified 2026-06-23 via nextjs.org; Azure AI Foundry GPT models verified 2026-06-23 via learn.microsoft.com.)*
 - [x] Every open Postmortem's action items are closed. *(None.)*
 
 ---

@@ -33,7 +33,7 @@
 | Waitlist | Early-access list | email, locale | prospects | Supabase, PostHog | US/EU (vendor regions) | until launch or unsubscribe | consent |
 | Authentication | Account access | email, hashed pw | learners/teachers/funders | Supabase Auth | vendor region | life of account + grace | contract / legitimate interest |
 | Learning activity | XP/merit ledger, progress | course IDs, scores, timestamps, hashed user id | learners | Supabase | vendor region | life of account | contract |
-| Course generation | Build courses | teacher-uploaded document text | teachers (and any persons named in docs) | Anthropic (not trained on) | US (Anthropic) | transient prompt; output stored | contract / legitimate interest |
+| Course generation | Build courses | teacher-uploaded document text | teachers (and any persons named in docs) | **Azure AI Foundry / Microsoft Azure OpenAI Service** (not trained on; Azure region configurable — target SE Asia in Phase 1 for PH data-localization) | Azure region (configurable) | transient prompt; output stored | contract / legitimate interest |
 | Credential issuance | Verifiable credentials | learner display name, course, score, **hash on-chain only** | learners | Stellar (public ledger — hash only), Supabase | public ledger (hash) | indefinite (credential) | consent / contract |
 | Analytics | Product improvement | hashed user id, events (no PII values) | all users | PostHog, Vercel Analytics | vendor region | per tool default | legitimate interest / consent |
 | Grant disbursement (Phase 1) | Pay eligible learners | recipient list, payout refs | learners | **licensed VASP / e-money partner** | per partner | per partner + audit | consent + partner KYC |
@@ -57,7 +57,7 @@
 | Item | Done? | Evidence link | Counsel needed? |
 |------|-------|---------------|-----------------|
 | Every processing activity has a retention period | Partial (Draft) | — | No |
-| Every sub-processor named + DPA in place | No — Phase 1 | — | Yes (DPAs with Supabase/Anthropic/PostHog/VASP) |
+| Every sub-processor named + DPA in place | No — Phase 1 | — | Yes (DPAs with Supabase/**Azure**/**Microsoft**/PostHog/VASP) |
 | Inventory dated and treated as living | Yes (2026-06-23) | this doc | No |
 
 ---
@@ -130,7 +130,7 @@
 | Open-source license compliance — SBOM (SPDX/CycloneDX) | Not done — Phase 1 | — |
 | Copyleft scan (GPL/AGPL/LGPL) | Not done | — |
 | Third-party assets licensed (fonts/icons/images) | System fonts only (DSD) reduces risk | — |
-| AI training-data provenance + output ownership/indemnity | Review Anthropic terms | Yes |
+| AI training-data provenance + output ownership/indemnity | Review **Azure OpenAI Service** terms (not used for training; IP ownership per Microsoft agreement) | Yes |
 | DMCA / takedown process (teacher uploads can infringe) | Not done — Phase 1 | Yes |
 | Written IP assignment from contractors/contributors | Not done | Yes |
 
