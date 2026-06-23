@@ -9,7 +9,7 @@ export interface PersistedDraft {
 
 /**
  * Persist a validated AI draft as a `draft` course + its lessons + quiz
- * questions (rfc-gaia-002 §2 step 4). The SDD schema has lessons directly under
+ * questions (rfc-aniskwela-002 §2 step 4). The SDD schema has lessons directly under
  * courses, so modules are flattened into a continuous `order_index`.
  *
  * RLS enforces that `teacherId` owns the inserted rows — the caller must pass

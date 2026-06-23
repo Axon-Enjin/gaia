@@ -1,12 +1,12 @@
 # Operations & Observability Runbook (OPS)
 
-**Project:** Gaia
+**Project:** Aniskwela
 **Date:** 2026-06-23
 **Version:** 0.1
 **Owner:** Carlos Jerico Dela Torre
 **Status:** Draft
 **Last reconciled:** N/A — pre-production
-**SDD:** [sdd-gaia.md](sdd-gaia.md)
+**SDD:** [sdd-aniskwela.md](sdd-aniskwela.md)
 
 > **Status:** Draft — the MVP runs at demo scale; this runbook becomes Locked before the first production deployment handling real learner data (Phase 1).
 
@@ -68,7 +68,7 @@ Pull targets from SDD §7. This is where they become measured commitments.
 3. **Mitigate first, diagnose later** — roll back per PRD §9 (redeploy previous tag), flip a kill switch (`ENABLE_ONCHAIN_ANCHOR`, `ENABLE_AI_GENERATION`), or scale up.
 4. **Communicate** — status note + a line to affected users if user-facing; for any disbursement/credential issue, notify the relevant partner.
 5. **Resolve & verify** — confirm SLIs back to normal.
-6. **Postmortem** — for any P0/P1, write `docs/pm-gaia-NNN.md` within 48h; fold action items back into QAD/OPS/Build Guide.
+6. **Postmortem** — for any P0/P1, write `docs/pm-aniskwela-NNN.md` within 48h; fold action items back into QAD/OPS/Build Guide.
 
 **Rollback trigger & mechanism:** see PRD §9 (single source of truth) — redeploy previous tagged Vercel release; migrations backward-compatible one release; `ENABLE_ONCHAIN_ANCHOR=false` falls back to mock anchoring.
 

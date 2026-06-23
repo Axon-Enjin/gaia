@@ -1,8 +1,8 @@
-# AGENTS.md — Gaia
+# AGENTS.md — Aniskwela
 
-> **Materialized from [docs/build-gaia.md](docs/build-gaia.md). Edit the canonical Build Guide and re-materialize — do not hand-edit this file as the source of truth.** This is the operating manual for whoever builds Gaia (human or agent); every agent platform (Codex, Cursor, Gemini CLI, Claude Code) reads it.
+> **Materialized from [docs/build-aniskwela.md](docs/build-aniskwela.md). Edit the canonical Build Guide and re-materialize — do not hand-edit this file as the source of truth.** This is the operating manual for whoever builds Aniskwela (human or agent); every agent platform (Codex, Cursor, Gemini CLI, Claude Code) reads it.
 
-**Gaia** — AI-powered adaptive learning with standards-based, blockchain-anchored credentials, built learning-first for low-bandwidth emerging markets (Philippines-first, EN + Filipino). Pre-build: the spec suite in `docs/` is the source of truth; there is no application code yet.
+**Aniskwela** (*ani* harvest + *eskwela* school) — an AI educational tool built for Filipino farmers, with blockchain-anchored, standards-based credentials, engineered for low-bandwidth rural use (Philippines-first, EN + Filipino). The learning engine is content-agnostic, but the product is built for and goes to market with farmers first.
 
 ---
 
@@ -11,18 +11,19 @@
 Read in this order before writing code:
 
 1. **[docs/index.md](docs/index.md)** — manifest: what exists, status, what's stale. Start here every session.
-2. **PRD** ([docs/prd-gaia.md](docs/prd-gaia.md)) — what to build and why (`PRD-F#`, user stories, flows).
-3. **SDD** ([docs/sdd-gaia.md](docs/sdd-gaia.md)) — architecture, schema, APIs, security, AI architecture + safety.
-4. **RFCs** — [credential issuance](docs/rfc-gaia-credential-issuance.md) (PRD-F4/F5), [AI course generation](docs/rfc-gaia-ai-course-generation.md) (PRD-F1).
-5. **DSD** ([docs/dsd-gaia.md](docs/dsd-gaia.md)) — design tokens, components, low-resource + a11y rules.
+2. **PRD** ([docs/prd-aniskwela.md](docs/prd-aniskwela.md)) — what to build and why (`PRD-F#`, user stories, flows).
+3. **SDD** ([docs/sdd-aniskwela.md](docs/sdd-aniskwela.md)) — architecture, schema, APIs, security, AI architecture + safety.
+4. **RFCs** — [credential issuance](docs/rfc-aniskwela-credential-issuance.md) (PRD-F4/F5), [AI course generation](docs/rfc-aniskwela-ai-course-generation.md) (PRD-F1).
+5. **DSD** ([docs/dsd-aniskwela.md](docs/dsd-aniskwela.md)) — design tokens, components, low-resource + a11y rules.
 6. **This guide** — stack conventions, patterns, guardrails.
 
-**Only build against `Locked` docs.** PRD/SDD/SAD/BUILD + both RFCs are Locked; DSD/QAD/CLR/GTM/OPS are Draft pending the sprint — if you need a Draft doc, flag it. If reality diverges from a Locked doc, do **not** silently code around it — trigger a Change Record (`docs/cr-gaia-NNN.md`).
+**Only build against `Locked` docs.** PRD/SDD/SAD/BUILD + both RFCs are Locked; DSD/QAD/CLR/GTM/OPS are Draft pending the sprint — if you need a Draft doc, flag it. If reality diverges from a Locked doc, do **not** silently code around it — trigger a Change Record (`docs/cr-aniskwela-NNN.md`).
 
-### Non-negotiable product invariants (violating any one changes Gaia's positioning/regulatory posture — stop and flag)
+### Non-negotiable product invariants (violating any one changes Aniskwela's positioning/regulatory posture — stop and flag)
 
+- **Farmer-first.** Built for Filipino farmers and rural learners; agriculture-first go-to-market. The engine is content-agnostic, but default content, examples, and copy target farming/livelihood.
 - **Learning-first, not learn-to-earn.** XP/badges are cumulative merit signals, never spent/burned. No reward tournaments. (`merit_ledger.xp_delta` always ≥ 0.)
-- **Gaia decides eligibility; a licensed VASP moves money.** Never implement Gaia as a money transmitter. MVP disbursement is a labelled simulation (`grant_programs.simulated = true`).
+- **Aniskwela decides eligibility; a licensed VASP moves money.** Never implement Aniskwela as a money transmitter. MVP disbursement is a labelled simulation (`grant_programs.simulated = true`).
 - **Credentials = W3C VC + Open Badges 3.0; hash-only on-chain.** No PII on Stellar; no custom memo blob; no NFT badge.
 - **Learners never required to hold a wallet** to learn or earn credentials.
 - **AI is cost-gated** — `gpt-5.4` (Azure AI Foundry) once per course (auto-cached), `gpt-5.4-mini` for cheap tasks; never on the learner read path; mandatory teacher review before publish (no auto-publish).
@@ -35,15 +36,15 @@ Read in this order before writing code:
 | A feature `PRD-F#` | PRD §3/§4 → SDD components → its RFC | QAD scenarios tagged with its `US-##` |
 | A schema change | SDD §3 → the RFC's Data Model Changes | SDD §3 migration strategy (backward-compatible one release) |
 | An API endpoint | SDD §4 → RFC §3 contracts | QAD sad/abuse paths |
-| Credential issuance/verify | gaia-rfc-001 §2/§3 → SDD §3 `credentials` | QAD H-03/H-04, AB-01/AB-02 |
-| AI course generation | gaia-rfc-002 §2/§3 → SDD §8/§8.1 | QAD §7 AI-01..AI-08 |
+| Credential issuance/verify | aniskwela-rfc-001 §2/§3 → SDD §3 `credentials` | QAD H-03/H-04, AB-01/AB-02 |
+| AI course generation | aniskwela-rfc-002 §2/§3 → SDD §8/§8.1 | QAD §7 AI-01..AI-08 |
 | A UI surface | DSD §2–§4 + PRD §5 (screen states) | DSD §6 a11y + §8 perf gate |
 
 ---
 
 ## 2. Subagents
 
-Build agents live in the [SAD](docs/sad-gaia.md), materialized to `.claude/agents/`: `feature-builder`, `test-runner`, `schema-stack-guardian`, `perf-budget-auditor`, `ai-safety-eval-runner`. Spawn per SAD §4. With no SAD context, the main agent works inline but still honors the guardrails.
+Build agents live in the [SAD](docs/sad-aniskwela.md), materialized to `.claude/agents/`: `feature-builder`, `test-runner`, `schema-stack-guardian`, `perf-budget-auditor`, `ai-safety-eval-runner`. Spawn per SAD §4. With no SAD context, the main agent works inline but still honors the guardrails.
 
 ---
 
@@ -85,7 +86,7 @@ Build agents live in the [SAD](docs/sad-gaia.md), materialized to `.claude/agent
 
 ## 4. Golden-Path Patterns
 
-> Minimal shapes — **re-verify against the pinned versions before copying.** The non-negotiable parts are the conventions (validate at boundary, ownership server-side, AI off the read path), not exact signatures. Full samples with rationale live in [docs/build-gaia.md](docs/build-gaia.md) §4. Verify Azure AI Foundry SDK (`AzureOpenAI` client, auth shape, API version) against current docs before writing real AI calls.
+> Minimal shapes — **re-verify against the pinned versions before copying.** The non-negotiable parts are the conventions (validate at boundary, ownership server-side, AI off the read path), not exact signatures. Full samples with rationale live in [docs/build-aniskwela.md](docs/build-aniskwela.md) §4. Verify Azure AI Foundry SDK (`AzureOpenAI` client, auth shape, API version) against current docs before writing real AI calls.
 
 - **Server route:** Zod-validate input at the boundary → SSR Supabase client → `auth.getUser()` → **server-side ownership/eligibility check (RLS-backed), never trust the client** → business logic in `lib/`.
 - **AI call:** `AzureOpenAI` client (`openai` pkg + `@azure/openai` + `@azure/identity`); `DefaultAzureCredential` auth; static system prompt first (auto-cached by Azure ≥ 1024 tokens); source document second; variable hints last; hard token cap; uploaded text wrapped as **untrusted**; output `Zod.parse`d (one `gpt-5.4-mini` repair, else 422 — never persist garbage); called **once per course**.
@@ -101,7 +102,7 @@ Build agents live in the [SAD](docs/sad-gaia.md), materialized to `.claude/agent
 
 **Always:** validate external input at the boundary (Zod); decide ownership/eligibility server-side (RLS); keep AI off the learner read path; respect the perf budget on every UI change.
 
-**Never:** commit secrets (`AZURE_OPENAI_API_KEY`, Stellar keys, **VC issuer signing key**); auto-publish AI output; let `xp_delta` go negative; put PII on-chain; use a deprecated API from §3 from memory; move real funds inside Gaia (route via the VASP interface).
+**Never:** commit secrets (`AZURE_OPENAI_API_KEY`, Stellar keys, **VC issuer signing key**); auto-publish AI output; let `xp_delta` go negative; put PII on-chain; use a deprecated API from §3 from memory; move real funds inside Aniskwela (route via the VASP interface).
 
 **Definition of Done (one task):**
 - [ ] Implements the referenced `PRD-F#` / `US-##` acceptance criteria
@@ -115,5 +116,5 @@ Build agents live in the [SAD](docs/sad-gaia.md), materialized to `.claude/agent
 ## Claude Code notes
 
 - When the user types a `/<skill-name>`, invoke it via the Skill tool.
-- The SAD (`docs/sad-gaia.md`) is canonical; `.claude/agents/*.md` are materialized artifacts — edit the SAD and re-materialize, never hand-edit the agent files as source of truth.
-- This file is materialized from `docs/build-gaia.md`; edit there.
+- The SAD (`docs/sad-aniskwela.md`) is canonical; `.claude/agents/*.md` are materialized artifacts — edit the SAD and re-materialize, never hand-edit the agent files as source of truth.
+- This file is materialized from `docs/build-aniskwela.md`; edit there.

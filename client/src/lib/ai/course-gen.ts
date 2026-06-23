@@ -37,7 +37,7 @@ function extractJson(raw: string | null | undefined): unknown {
 /**
  * Generate a structured course from untrusted source text.
  *
- * Flow (rfc-gaia-002 §2):
+ * Flow (rfc-aniskwela-002 §2):
  *   1. One gpt-5.4 call — static system prompt first (auto-cached), untrusted
  *      source + hints last.
  *   2. Validate against the Zod schema.

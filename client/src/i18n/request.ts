@@ -5,7 +5,7 @@ export const locales = ["en", "fil"] as const;
 export type Locale = (typeof locales)[number];
 export const defaultLocale: Locale = "en";
 
-export const LOCALE_COOKIE = "gaia_locale";
+export const LOCALE_COOKIE = "aniskwela_locale";
 
 function isLocale(value: string | undefined): value is Locale {
   return value === "en" || value === "fil";

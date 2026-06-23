@@ -1,20 +1,20 @@
 # Product Requirements Document (PRD)
 
-**Project:** Gaia
+**Project:** Aniskwela
 **Date:** 2026-06-23
-**Version:** 1.1
+**Version:** 1.2
 **Owner:** Carlos Jerico Dela Torre
 **Status:** Locked
 **Last reconciled:** 2026-06-23
-**BRD:** [brd-gaia.md](brd-gaia.md)
+**BRD:** [brd-aniskwela.md](brd-aniskwela.md)
 
-> **History:** Supersedes the standalone `LearnChain_PRD_v2.md` (which itself superseded v1). v2 applied partner-review fixes — honest "near-zero" cost language; W3C VC + Open Badges 3.0 in place of a custom Stellar memo; evidence-based learning science in place of VARK learning-styles; learning-first (not learn-to-earn) reframe; eligibility-layer-only grant posture; offline caching pulled to Phase 1; competitive landscape and data-privacy sections added; DAU/MAU reset to 15–18%. The framework is pinned to Next.js 16.2.x and the AI provider is OpenAI GPT-5.4/GPT-5.4-mini via Azure AI Foundry.
+> **History:** Supersedes the standalone `LearnChain_PRD_v2.md` (which itself superseded v1). v2 applied partner-review fixes — honest "near-zero" cost language; W3C VC + Open Badges 3.0 in place of a custom Stellar memo; evidence-based learning science in place of VARK learning-styles; learning-first (not learn-to-earn) reframe; eligibility-layer-only grant posture; offline caching pulled to Phase 1; competitive landscape and data-privacy sections added; DAU/MAU reset to 15–18%. The framework is pinned to Next.js 16.2.x and the AI provider is OpenAI GPT-5.4/GPT-5.4-mini via Azure AI Foundry. The product name was locked to **Aniskwela** (*ani* harvest + *eskwela* school) on 2026-06-23 (see [cr-aniskwela-001.md](cr-aniskwela-001.md)), which also sharpened the positioning to **farmer-first**; the earlier placeholders "LearnChain" and "Gaia" are retired.
 
 ---
 
 ## 1. Product Purpose & Value Proposition
 
-Gaia is an AI-powered adaptive learning platform that delivers gamified, blockchain-verified education to anyone with a smartphone and a low-bandwidth connection. Teachers turn raw materials into structured courses in minutes; learners follow evidence-based, reinforcement-scheduled lessons and build a persistent, tamper-evident merit record; and every completed course issues a portable, standards-based credential whose tamper-evidence hash is anchored on Stellar. Gaia is **learning-first**: gamification is optional and rewards are an outcome of sustained learning, never the hook. Its differentiators — AI course creation, a merit ledger tied to verifiable grant eligibility, and open-standard credentials — are wrapped in Filipino-first localization and sub-3G performance that global incumbents do not build for.
+Aniskwela is an AI educational tool built for Filipino farmers: it delivers gamified, blockchain-verified agricultural and livelihood education to anyone with a low-end smartphone and a low-bandwidth connection. The learning engine is content-agnostic — the same pipeline serves any subject — but the product is designed for, and goes to market with, farmers and rural learners first. Teachers turn raw materials into structured courses in minutes; learners follow evidence-based, reinforcement-scheduled lessons and build a persistent, tamper-evident merit record; and every completed course issues a portable, standards-based credential whose tamper-evidence hash is anchored on Stellar. Aniskwela is **learning-first**: gamification is optional and rewards are an outcome of sustained learning, never the hook. Its differentiators — AI course creation, a merit ledger tied to verifiable grant eligibility, and open-standard credentials — are wrapped in Filipino-first localization and sub-3G performance that global incumbents do not build for.
 
 ---
 
@@ -45,7 +45,7 @@ MoSCoW. Each feature has a stable `PRD-F#` ID — permanent, never renumbered. D
 | PRD-F1 | AI Course Generation | Teacher uploads PDF/doc; Claude generates module outline, sub-lessons, quizzes, summary cards, difficulty tags. Never auto-published. | Must-Have |
 | PRD-F2 | Course Viewer & Quiz | Learner-facing lesson reader (text + image) and quiz component; records completion/score. | Must-Have |
 | PRD-F3 | Gamification & Merit Ledger | XP, streaks, badges, levels (Seed→Sprout→Scholar→Expert→Mentor); cumulative, never spent; the substrate funders evaluate. | Must-Have |
-| PRD-F4 | Verifiable Credential Issuance | On passing the final assessment, issue a W3C VC (Open Badges 3.0 profile); anchor only the credential hash on Stellar Testnet. → [rfc-gaia-credential-issuance.md](rfc-gaia-credential-issuance.md) | Must-Have |
+| PRD-F4 | Verifiable Credential Issuance | On passing the final assessment, issue a W3C VC (Open Badges 3.0 profile); anchor only the credential hash on Stellar Testnet. → [rfc-aniskwela-credential-issuance.md](rfc-aniskwela-credential-issuance.md) | Must-Have |
 | PRD-F5 | Public Credential Verifier | No-login URL + QR; verifies signature and confirms the on-chain hash matches; interoperable with any OB 3.0 / VC verifier. | Must-Have |
 | PRD-F6 | Teacher Dashboard | Upload, review/edit AI structure, set price/mode/passing score, view learner analytics. | Must-Have |
 | PRD-F7 | Learner Dashboard & Credential Wallet | XP bar, level, streak, my courses, credential wallet with share links/QR, grant status. | Must-Have |
@@ -108,7 +108,7 @@ Acceptance Criteria:
 
 ## 5. App Flow & UX Intent
 
-**Design reference:** [dsd-gaia.md](dsd-gaia.md)
+**Design reference:** [dsd-aniskwela.md](dsd-aniskwela.md)
 
 ### 5.1 Screen Inventory
 
@@ -214,7 +214,7 @@ flowchart TD
 
 ## 7. AI / Agent Feature Specifications
 
-**AI Component:** Course generation (PRD-F1) and, in Phase 1, the adaptive engine (PRD-F12). See [rfc-gaia-ai-course-generation.md](rfc-gaia-ai-course-generation.md).
+**AI Component:** Course generation (PRD-F1) and, in Phase 1, the adaptive engine (PRD-F12). See [rfc-aniskwela-ai-course-generation.md](rfc-aniskwela-ai-course-generation.md).
 **Model(s) considered:** GPT-5.4, GPT-5.4 Mini.
 **Selected model:** `gpt-5.4` for course generation (mid-tier; balanced structure/reasoning at mid cost); `gpt-5.4-mini` for cheap structural tasks (outline diffs, quiz reshuffles, summary-card generation, schema repair) — *reason: cost discipline; route low-complexity work to the efficiency model.*
 
@@ -245,13 +245,13 @@ Course generation is called **once per course** with prompt caching (system prom
 - Azure AI Foundry access — `AZURE_OPENAI_ENDPOINT` + `DefaultAzureCredential` (Managed Identity) or `AZURE_OPENAI_API_KEY` fallback for local dev. Never client-side. Verify deployment names (`gpt-5-4`, `gpt-5-4-mini`) and region quota at project setup.
 - Supabase project (Postgres, Auth, Storage) with Row Level Security.
 - Stellar Testnet + Horizon (public node) for MVP; Freighter for demo wallet.
-- VC issuer signing key in a secure secrets store (issuer = Gaia at the platform level).
+- VC issuer signing key in a secure secrets store (issuer = Aniskwela at the platform level).
 - Vercel (Hobby for demo; paid plan required for any commercial launch).
 
 **Assumptions:**
 - Demo-scale traffic fits free tiers (~1,000 users); production at ~1,000 users is ~$50–150/month (honest, not zero-cost).
 - Learners access primarily from low-end Android on sub-3G; **learners are not required to hold a Stellar account** (wallet/custody only matters at grant-receipt time).
-- Real disbursement is always partner-executed; Gaia is the eligibility-decision layer and not a money transmitter.
+- Real disbursement is always partner-executed; Aniskwela is the eligibility-decision layer and not a money transmitter.
 
 ---
 
@@ -272,7 +272,7 @@ Course generation is called **once per course** with prompt caching (system prom
 - *Trigger criteria:* any P0 in the first 24h of a public deploy, error rate > 2%, or Stellar anchoring failures affecting issuance.
 - *Revert mechanism:* redeploy the previous tagged Vercel release; DB migrations kept backward-compatible for one release; `ENABLE_ONCHAIN_ANCHOR` flag falls back to mock anchoring for the demo.
 
-**RFC cross-reference:** credential issuance → [rfc-gaia-credential-issuance.md](rfc-gaia-credential-issuance.md) §7; AI course generation → [rfc-gaia-ai-course-generation.md](rfc-gaia-ai-course-generation.md) §7.
+**RFC cross-reference:** credential issuance → [rfc-aniskwela-credential-issuance.md](rfc-aniskwela-credential-issuance.md) §7; AI course generation → [rfc-aniskwela-ai-course-generation.md](rfc-aniskwela-ai-course-generation.md) §7.
 
 ---
 

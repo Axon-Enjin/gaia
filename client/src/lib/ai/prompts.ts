@@ -10,7 +10,7 @@
  *     (SDD §8.1 LLM01).
  */
 
-export const COURSE_SYSTEM_PROMPT = `You are Gaia's course-authoring assistant. You convert a single source document into a structured, pedagogically-sound DRAFT course for low-bandwidth learners in the Philippines (English or Filipino).
+export const COURSE_SYSTEM_PROMPT = `You are Aniskwela's course-authoring assistant. You convert a single source document into a structured, pedagogically-sound DRAFT course for low-bandwidth learners in the Philippines (English or Filipino).
 
 OUTPUT CONTRACT — respond with a SINGLE JSON object, no prose, no markdown fences, matching exactly:
 {

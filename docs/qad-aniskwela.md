@@ -1,13 +1,13 @@
 # QA & Test Plan (QAD)
 
-**Project:** Gaia
+**Project:** Aniskwela
 **Date:** 2026-06-23
 **Version:** 0.1
 **Owner:** Carlos Jerico Dela Torre
 **Status:** Draft
 **Last reconciled:** N/A — pre-build
-**PRD:** [prd-gaia.md](prd-gaia.md)
-**RFC(s):** [rfc-gaia-credential-issuance.md](rfc-gaia-credential-issuance.md), [rfc-gaia-ai-course-generation.md](rfc-gaia-ai-course-generation.md)
+**PRD:** [prd-aniskwela.md](prd-aniskwela.md)
+**RFC(s):** [rfc-aniskwela-credential-issuance.md](rfc-aniskwela-credential-issuance.md), [rfc-aniskwela-ai-course-generation.md](rfc-aniskwela-ai-course-generation.md)
 
 > **Status:** Draft — authored alongside the build; executed as the launch gate before the hackathon demo and any public deploy.
 
