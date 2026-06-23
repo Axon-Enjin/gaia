@@ -6,6 +6,8 @@
 
 > **Gaia** (formerly "LearnChain") — AI-powered adaptive learning with standards-based, blockchain-anchored credentials, built learning-first for low-bandwidth emerging markets (Philippines-first, EN + Filipino). The name evokes the Earth — "education for every human on Earth" — and the growth metaphor already in the product (learner levels Seed → Sprout → Scholar → Expert → Mentor).
 
+**Application code:** [client/README.md](../client/README.md) (Next.js 16 in `client/`).
+
 ---
 
 ## 1. Document Suite
@@ -58,7 +60,7 @@ Every P0/P1 incident gets a Postmortem. Newest first.
 
 Quick triage an agent runs at the start of a session. Anything that fails gets surfaced to the user.
 
-- [x] Every Locked doc's **Last Reconciled** date is newer than the last code change to its area. *(N/A — no code yet.)*
+- [x] Every Locked doc's **Last Reconciled** date is newer than the last code change to its area. *(BUILD §5 local-dev + client README updated 2026-06-23 for issue #5.)*
 - [ ] No doc has been in `Draft` longer than expected without movement. *(DSD/QAD/CLR/GTM/OPS are Draft pending the build sprint — expected.)*
 - [x] Every open Change Record has propagated to all docs listed in its "Docs touched" column. *(None open.)*
 - [x] Feature IDs (`PRD-F#`) referenced by SDD / RFC / QAD / SAD / BUILD still exist in the PRD.
@@ -72,5 +74,6 @@ Quick triage an agent runs at the start of a session. Anything that fails gets s
 ## 5. Notes
 
 - **Scale:** Full (public users, three roles, NGO/government partners, regulated-adjacent flows, compliance program). All 11 numbered docs apply.
+- **Application onboarding:** [client/README.md](../client/README.md) — env, Supabase dev, migrations, auth.
 - **Two source-of-truth materializations:** the BUILD guide materializes to root `AGENTS.md` (+ `CLAUDE.md` pointer); the SAD materializes to `.claude/agents/`. Edit the canonical `docs/` copies, then re-materialize — never hand-edit the materialized copies.
 - **Pitch deck:** `LearnChain_VC_Pitch_Deck.pptx/.pdf` still carry the old name and need a rebrand pass to Gaia before any external use.

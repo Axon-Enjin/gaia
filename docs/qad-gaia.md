@@ -36,6 +36,7 @@
 
 ## 2. Test Environments & Data
 
+**Local dev:** [client/README.md](../client/README.md) — Supabase dev project, `.env.local`, migrations `0001`/`0002`.
 **Staging URL:** Vercel preview deployment per PR (Stellar Testnet).
 **Test credentials:** seeded teacher/learner/funder accounts; stored in the project secret manager, never committed.
 **Data policy:** seeded test data in the staging Supabase project; never production PII; Stellar Testnet only.

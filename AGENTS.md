@@ -2,7 +2,7 @@
 
 > **Materialized from [docs/build-gaia.md](docs/build-gaia.md). Edit the canonical Build Guide and re-materialize — do not hand-edit this file as the source of truth.** This is the operating manual for whoever builds Gaia (human or agent); every agent platform (Codex, Cursor, Gemini CLI, Claude Code) reads it.
 
-**Gaia** — AI-powered adaptive learning with standards-based, blockchain-anchored credentials, built learning-first for low-bandwidth emerging markets (Philippines-first, EN + Filipino). Pre-build: the spec suite in `docs/` is the source of truth; there is no application code yet.
+**Gaia** — AI-powered adaptive learning with standards-based, blockchain-anchored credentials, built learning-first for low-bandwidth emerging markets (Philippines-first, EN + Filipino). Application code: **`client/`** (Next.js 16). Specs: **`docs/`**.
 
 ---
 
@@ -38,6 +38,7 @@ Read in this order before writing code:
 | Credential issuance/verify | gaia-rfc-001 §2/§3 → SDD §3 `credentials` | QAD H-03/H-04, AB-01/AB-02 |
 | AI course generation | gaia-rfc-002 §2/§3 → SDD §8/§8.1 | QAD §7 AI-01..AI-08 |
 | A UI surface | DSD §2–§4 + PRD §5 (screen states) | DSD §6 a11y + §8 perf gate |
+| Supabase dev / local setup | [client/README.md](client/README.md) + [client/db/README.md](client/db/README.md) | issue #5 acceptance criteria |
 
 ---
 
@@ -93,9 +94,25 @@ Build agents live in the [SAD](docs/sad-gaia.md), materialized to `.claude/agent
 
 ---
 
-## 5. Conventions & Guardrails
+## 5. Local development setup
 
-**Repo layout:** `app/` routes + API · `lib/` shared logic (`ai/`, `credentials/`, `grants/`) · `components/` UI · `db/` schema + migrations + RLS · `messages/` i18n (en, fil).
+> **Onboarding:** [client/README.md](client/README.md) · **Migrations:** [client/db/README.md](client/db/README.md) · **Env:** [client/.env.example](client/.env.example)
+
+```bash
+cd client && cp .env.example .env.local && npm install && npm run dev
+```
+
+Fill `NEXT_PUBLIC_SUPABASE_*` and `SUPABASE_SERVICE_ROLE_KEY` from Supabase Dashboard → Settings → API.
+
+**Migrations (order):** `client/db/migrations/0001_init.sql` (schema + RLS) → `0002_course_sources_storage.sql` (private `course-sources` bucket).
+
+**Dev auth:** Confirm email **off** in Supabase (Authentication → Email). With service role key set, dev signup uses Admin API (`src/lib/auth/dev-signup.ts`) — no confirmation emails / no mailer rate limits. Never use Admin signup outside `NODE_ENV=development`.
+
+---
+
+## 6. Conventions & Guardrails
+
+**Repo layout:** `client/src/app/` · `client/src/lib/` · `client/src/components/` · `client/db/migrations/` · `client/messages/`.
 
 **Naming:** files kebab-case; components PascalCase; DB snake_case; events snake_case past-tense (PRD §5.5).
 
