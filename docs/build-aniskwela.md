@@ -25,6 +25,10 @@ The `docs/` suite is the source of truth. Read in this order before writing code
 5. **DSD** ([dsd-aniskwela.md](dsd-aniskwela.md)) — design tokens, components, the low-resource + a11y rules.
 6. **This guide** — stack conventions, patterns, guardrails.
 
+### Build progress
+
+The app is in **`client/`** (Next.js 16.2.9). Living PRD status matrix: **[docs/index.md](index.md) §6**. As of 2026-06-23: **F1, F8 done**; **F2, F6, F9 partial**; **F3–F5, F7, F10–F11 not started**.
+
 **Only build against `Locked` docs.** PRD/SDD/SAD/BUILD + both RFCs are Locked; DSD/QAD/CLR/GTM/OPS are Draft pending the sprint — if you need a Draft doc, flag it, don't guess. If reality diverges from a Locked doc, do **not** silently code around it — trigger a Change Record (`docs/cr-aniskwela-NNN.md`).
 
 ### Non-negotiable product invariants (violating any one changes Aniskwela's positioning/regulatory posture — stop and flag)

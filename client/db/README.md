@@ -1,6 +1,6 @@
-# Database migrations — Gaia
+# Database migrations — Aniskwela
 
-**Source of truth for schema:** [docs/sdd-gaia.md](../../docs/sdd-gaia.md) §3 (tables) and §5 (RLS).
+**Source of truth for schema:** [docs/sdd-aniskwela.md](../../docs/sdd-aniskwela.md) §3 (tables) and §5 (RLS).
 
 Migrations are **forward-only** and must stay **backward-compatible for one release** (SDD §3 migration strategy). RLS policies ship in the same migration as their tables.
 
@@ -10,10 +10,11 @@ Migrations are **forward-only** and must stay **backward-compatible for one rele
 |------|---------|
 | `0001_init.sql` | 9 tables (`profiles`, `courses`, `lessons`, `quiz_questions`, `enrollments`, `merit_ledger`, `badges`, `credentials`, `grant_programs`), indexes, RLS |
 | `0002_course_sources_storage.sql` | Private Storage bucket `course-sources` + teacher-scoped object policies |
+| `0003_waitlist.sql` | PRD-F8 waitlist table (service-role insert via `POST /api/waitlist` only) |
 
 ## Apply to a Supabase project
 
-**Dev project:** already applied (issue #5).
+**Dev project:** migrations `0001`–`0003` applied as of 2026-06-23 (issue #5 + PRD-F8).
 
 For a fresh project:
 
@@ -50,10 +51,10 @@ Run Supabase **security advisors** (Dashboard or MCP `get_advisors`) — no tabl
 
 - `profiles.id` FK → `auth.users.id` (no DB trigger; app creates rows via `ensureProfile()` on first login).
 - RLS uses `auth.uid()` — JWT must come from Supabase Auth (SSR client in `src/lib/supabase/server.ts`).
-- Server-only writes (XP, badges, credentials INSERT) use `SUPABASE_SERVICE_ROLE_KEY` — learners have SELECT-only RLS on those tables.
+- Server-only writes (XP, badges, credentials, waitlist INSERT) use `SUPABASE_SERVICE_ROLE_KEY` — learners have SELECT-only RLS on merit tables.
 
 ## Changing schema
 
 1. Read SDD §3; add a new `000N_*.sql` migration.
 2. Run **schema-stack-guardian** review (RLS + backward compatibility).
-3. If breaking a Locked doc assumption → Change Record (`docs/cr-gaia-NNN.md`).
+3. If breaking a Locked doc assumption → Change Record (`docs/cr-aniskwela-NNN.md`).

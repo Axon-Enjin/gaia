@@ -5,7 +5,7 @@
 **Version:** 1.1
 **Owner:** Carlos Jerico Dela Torre
 **Status:** Locked
-**Last reconciled:** 2026-06-23
+**Last reconciled:** 2026-06-23 — `waitlist` table + PRD-F8 landing/waitlist API
 **PRD:** [prd-aniskwela.md](prd-aniskwela.md)
 
 ---
@@ -167,6 +167,18 @@ graph TD
 | `amount_per_learner` | NUMERIC | Yes | — | — | display only in MVP |
 | `simulated` | BOOLEAN | No | true | — | **MVP: always true (no real funds)** |
 | `created_at` | TIMESTAMPTZ | No | now() | — | — |
+
+**Table: `waitlist`** *(PRD-F8 — landing email capture; inserts via service role only)*
+
+| Column | Type | Null? | Default | Key / Index | Constraint |
+|--------|------|-------|---------|-------------|------------|
+| `id` | UUID | No | gen_random_uuid() | PK | — |
+| `email` | TEXT | No | — | UNIQUE idx on `lower(email)` | — |
+| `locale` | TEXT | No | `'en'` | — | CHECK in ('en','fil') |
+| `source` | TEXT | Yes | `'landing'` | — | e.g. landing, campaign |
+| `created_at` | TIMESTAMPTZ | No | now() | — | — |
+
+RLS enabled; **no** anon/auth policies — public capture only through `POST /api/waitlist` (server service role).
 
 **Key relationships:**
 - `profiles` 1:N `courses` (teacher), `enrollments` / `merit_ledger` / `badges` / `credentials` (learner), `grant_programs` (funder).

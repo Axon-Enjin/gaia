@@ -16,7 +16,7 @@ function ScreenMock({
     <article className="flex flex-col gap-4">
       <div className="overflow-hidden rounded-2xl border border-border-brand bg-surface-brand shadow-sm">
         <div className="border-b border-border-brand bg-bg-brand px-4 py-2 text-xs font-medium text-text-muted-brand">
-          Gaia
+          Aniskwela
         </div>
         <div className="space-y-2 p-4">
           {variant === "upload" && (

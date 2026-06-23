@@ -6,7 +6,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project state
 
-Application code lives in **`client/`** (Next.js 16.2.x). Start at [docs/index.md](docs/index.md), then PRD/SDD/RFCs. Local dev: [client/README.md](client/README.md) (`npm run dev` in `client/` — confirm scripts in `client/package.json`).
+Application code lives in **`client/`** (Next.js 16.2.9). Start at [docs/index.md](docs/index.md) — §6 lists PRD-F# implementation status. Local dev: [client/README.md](client/README.md) (`npm run dev` in `client/` — confirm scripts in `client/package.json`).
 
 ## Claude-Code-specific notes
 

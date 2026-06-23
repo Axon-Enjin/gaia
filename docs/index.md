@@ -2,7 +2,7 @@
 
 **Project slug:** `aniskwela`
 **Maintained by:** Carlos Jerico Dela Torre
-**Last updated:** 2026-06-23
+**Last updated:** 2026-06-23 (build progress §6 refreshed)
 
 > **Aniskwela** (formerly "LearnChain", then "Gaia") — an AI educational tool built for Filipino farmers, with blockchain-anchored, standards-based credentials, engineered for low-bandwidth rural use (Philippines-first, EN + Filipino). The name is *ani* (harvest) + *eskwela* (school) — "harvest school": you learn, you reap, and the proof is yours to keep (echoed in the learner levels Seed → Sprout → Scholar → Expert → Mentor). The learning engine is content-agnostic, but the product is built for, and goes to market with, farmers first.
 
@@ -60,7 +60,7 @@ Every P0/P1 incident gets a Postmortem. Newest first.
 
 Quick triage an agent runs at the start of a session. Anything that fails gets surfaced to the user.
 
-- [x] Every Locked doc's **Last Reconciled** date is newer than the last code change to its area. *(BUILD §5 local-dev + client README updated 2026-06-23 for issue #5.)*
+- [x] Every Locked doc's **Last Reconciled** date is newer than the last code change to its area. *(BUILD §5 local-dev + client README updated 2026-06-23 for issue #5; SDD §3 waitlist table reconciled for PRD-F8.)*
 - [ ] No doc has been in `Draft` longer than expected without movement. *(DSD/QAD/CLR/GTM/OPS are Draft pending the build sprint — expected.)*
 - [x] Every open Change Record has propagated to all docs listed in its "Docs touched" column. *(None open.)*
 - [x] Feature IDs (`PRD-F#`) referenced by SDD / RFC / QAD / SAD / BUILD still exist in the PRD.
@@ -77,3 +77,34 @@ Quick triage an agent runs at the start of a session. Anything that fails gets s
 - **Application onboarding:** [client/README.md](../client/README.md) — env, Supabase dev, migrations, auth.
 - **Two source-of-truth materializations:** the BUILD guide materializes to root `AGENTS.md` (+ `CLAUDE.md` pointer); the SAD materializes to `.claude/agents/`. Edit the canonical `docs/` copies, then re-materialize — never hand-edit the materialized copies.
 - **Pitch deck:** `LearnChain_VC_Pitch_Deck.pptx/.pdf` still carry the old name and need a rebrand pass to Aniskwela before any external use.
+
+---
+
+## 6. Build Progress (M3 — living tracker)
+
+The application lives in **`client/`** (Next.js 16.2.9, Supabase, Azure AI Foundry). Migrations: `client/db/migrations/` (`0001_init`, `0002_course_sources_storage`, `0003_waitlist`).
+
+| PRD-F# | Feature | Status | Notes |
+|--------|---------|--------|-------|
+| F1 | AI course generation | **Done** | `POST /api/courses/generate`, RFC-002 |
+| F2 | Course viewer & quiz | **Partial** | Read-only catalog + lesson display; no enrollment, interactive quiz, or completion API |
+| F3 | Gamification & merit ledger | **Not started** | Schema ready; no XP/streak/badge UI or APIs |
+| F4 | VC issuance | **Not started** | RFC-001; `lib/credentials/` not yet built |
+| F5 | Public verifier | **Not started** | `GET /api/verify/[id]` not yet built |
+| F6 | Teacher dashboard | **Partial** | Upload/generate + publish; no course editor, analytics, passing-score UI |
+| F7 | Learner dashboard & wallet | **Not started** | No learner home, credential wallet, or grant status |
+| F8 | Landing + waitlist | **Done** | Brand Mode `/`, `POST /api/waitlist`, PR [#14](https://github.com/Axon-Enjin/gaia/pull/14) |
+| F9 | Localization EN/Fil | **Partial** | `next-intl` + locale switcher on landing, auth, catalog; not all app surfaces |
+| F10 | Funder grant (mock) | **Not started** | Schema ready; no funder UI or `/api/grants/evaluate` |
+| F11 | Freighter wallet | **Not started** | Should-Have demo |
+| F12–F15 | Phase 1 / out of MVP | **Deferred** | Per PRD §6 |
+
+### Suggested next PRDs (no blockers beyond env/infra)
+
+1. **PRD-F2 + F3** — Enrollment, interactive quiz, lesson completion → `merit_ledger` (unblocks learner demo path).
+2. **PRD-F4 + F5 + F7** — Credentials + public verifier + wallet (RFC-001; needs Stellar testnet key + issuer key).
+3. **PRD-F6 polish** — Course review/edit UI, passing score, teacher analytics.
+4. **PRD-F10** — Mock funder program (Postgres-only; no chain).
+5. **Infra** — Vercel (issue #4), Azure model deploy (rhandie-tasks §1).
+
+Task board detail: [rhandie-tasks.md](../rhandie-tasks.md).

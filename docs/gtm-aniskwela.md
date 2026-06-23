@@ -85,7 +85,7 @@
 
 | Channel | Audience Size | Planned Action |
 |---------|--------------|----------------|
-| Landing page (EN/Filipino) + waitlist | building | The pitch artifact + conversion tool; demo CTA |
+| Landing page (EN/Filipino) + waitlist | live (PR #14) | Pitch artifact + conversion; demo CTA |
 | Founder network / DTI–TESDA contacts | small/warm | Direct partner intros for pilot NGOs |
 
 **Community / earned channels:**
@@ -133,7 +133,7 @@
 
 - [x] §2 ICP specific enough to name real organizations (PH NGOs, TESDA/DepEd, Stellar ecosystem)
 - [x] §3 pricing has a clear gate + the take-rate sustainability decision flagged
-- [ ] §5 content assets created before launch (incl. **deck rebrand to Aniskwela**)
+- [x] §5 content assets — landing page shipped (demo video still TBD); **deck rebrand to Aniskwela** pending
 - [x] §6 phase criteria are binary; public launch gated on CLR
 - [x] §7 metrics trace to BRD-M# and PRD §5.5 events (measurable day 1)
 - [x] Drafted before launch, not as a retrospective
