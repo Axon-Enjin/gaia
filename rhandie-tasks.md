@@ -23,6 +23,7 @@ This document tracks the core implementation tasks tailored to Rhandie's experti
 - [x] **Initialize Next.js 16.2.x:** Setup the App Router with Turbopack and Tailwind CSS. _(`client/` — Next 16.2.9, src-dir, Turbopack default.)_
 - [x] **Authentication Boundary:** Implement Supabase SSR auth. Avoid using `middleware.ts` for complex logic; use `proxy.ts` for headers/redirects and handle auth in layouts and Server Actions. _(`src/proxy.ts` refreshes session only; role/ownership in `src/app/teacher/page.tsx` + RLS.)_
 - [x] **Database & RLS:** Scaffold the initial Supabase Postgres tables (`courses`, `lessons`, `merit_ledger`) and enforce Row Level Security so ownership is strictly checked server-side. _(`db/migrations/0001_init.sql` — all SDD §3 tables, RLS on every table.)_
+- [x] **Supabase dev project (issue #5):** Cloud dev project provisioned; migrations `0001_init` + `0002_course_sources_storage` applied; env contract in `client/.env.example`; dev docs in `client/README.md` + `client/db/README.md`. _([#5](https://github.com/Axon-Enjin/gaia/issues/5), PR #11.)_
 - [x] **Explicit Caching:** Establish data fetching patterns utilizing the new `'use cache'` directive where applicable, strictly avoiding legacy Next.js 14 sync APIs. _(`cacheComponents: true`; `src/lib/courses/catalog.ts` uses `'use cache'` + `cacheTag`/`cacheLife` on the cookieless public read path.)_
 
 ## 3. AI Course Generation Pipeline (PRD-F1)
