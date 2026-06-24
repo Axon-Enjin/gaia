@@ -1,5 +1,5 @@
 import type { SupabaseClient } from "@supabase/supabase-js";
-import type { CourseDetail, DetailLesson, DetailQuestion } from "@/lib/courses/detail";
+import type { CourseDetail, DetailLesson, EditorQuestion } from "@/lib/courses/detail";
 
 export interface TeacherCourse {
   id: string;
@@ -49,8 +49,13 @@ export function getTeacherCourseStats(
   return { publishedCount, draftCount };
 }
 
-export interface TeacherCourseDetail extends CourseDetail {
+export interface EditorLesson extends DetailLesson {
+  questions: EditorQuestion[];
+}
+
+export interface TeacherCourseEditorDetail extends CourseDetail {
   status: "draft" | "published";
+  lessons: EditorLesson[];
 }
 
 /** Teacher-owned course detail — draft or published; not cached. */
@@ -58,7 +63,7 @@ export async function getTeacherCourseDetail(
   supabase: SupabaseClient,
   courseId: string,
   teacherId: string,
-): Promise<TeacherCourseDetail | null> {
+): Promise<TeacherCourseEditorDetail | null> {
   const { data: course } = await supabase
     .from("courses")
     .select("id, title, industry, passing_score, status, teacher_id")
@@ -80,18 +85,23 @@ export async function getTeacherCourseDetail(
   const { data: questions } = lessonIds.length
     ? await supabase
         .from("quiz_questions")
-        .select("id, lesson_id, prompt, choices")
+        .select("id, lesson_id, prompt, choices, answer_index")
         .in("lesson_id", lessonIds)
-    : { data: [] as { id: string; lesson_id: string; prompt: string; choices: string[] }[] };
+    : { data: [] as { id: string; lesson_id: string; prompt: string; choices: string[]; answer_index: number }[] };
 
-  const byLesson = new Map<string, DetailQuestion[]>();
+  const byLesson = new Map<string, EditorQuestion[]>();
   for (const q of questions ?? []) {
     const list = byLesson.get(q.lesson_id) ?? [];
-    list.push({ id: q.id, prompt: q.prompt, choices: q.choices });
+    list.push({
+      id: q.id,
+      prompt: q.prompt,
+      choices: q.choices,
+      answer_index: q.answer_index as number,
+    });
     byLesson.set(q.lesson_id, list);
   }
 
-  const detailLessons: DetailLesson[] = lessonRows.map((l) => ({
+  const detailLessons: EditorLesson[] = lessonRows.map((l) => ({
     id: l.id as string,
     order_index: l.order_index as number,
     title: l.title as string,

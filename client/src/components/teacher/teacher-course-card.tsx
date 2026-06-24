@@ -9,6 +9,7 @@ export interface TeacherCourseCardProps {
   status: "draft" | "published";
   lessonsLabel: string;
   previewLabel: string;
+  editLabel: string;
   statusPublishedLabel: string;
   statusDraftLabel: string;
   viewPublicLabel: string;
@@ -23,6 +24,7 @@ export function TeacherCourseCard({
   status,
   lessonsLabel,
   previewLabel,
+  editLabel,
   statusPublishedLabel,
   statusDraftLabel,
   viewPublicLabel,
@@ -33,7 +35,10 @@ export function TeacherCourseCard({
   return (
     <li className="rounded-xl border border-border-brand bg-surface-brand p-4 transition hover:border-soil-brand/30 hover:shadow-sm">
       <div className="flex flex-wrap items-start justify-between gap-4">
-        <Link href={`/teacher/courses/${id}`} className="min-w-0 flex-1">
+        <Link
+          href={isPublished ? `/teacher/courses/${id}` : `/teacher/courses/${id}/edit`}
+          className="min-w-0 flex-1"
+        >
           <div className="flex items-start gap-3">
             <div className="course-thumb text-sm" aria-hidden>
               {initial}
@@ -60,7 +65,7 @@ export function TeacherCourseCard({
                 {title}
               </h2>
               <p className="mt-2 text-sm font-medium text-growth-brand">
-                {previewLabel} →
+                {isPublished ? previewLabel : editLabel} →
               </p>
             </div>
           </div>

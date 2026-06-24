@@ -13,10 +13,11 @@ Migrations are **forward-only** and must stay **backward-compatible for one rele
 | `0003_waitlist.sql` | PRD-F8 waitlist table (service-role insert via `POST /api/waitlist` only) |
 | `0004_dev_demo_course.sql` | Demo lessons + quiz for dev published test course (optional; idempotent) |
 | `0005_credentials_rfc.sql` | PRD-F4/F5: credential idempotency index + `get_credential_for_verify` RPC |
+| `0006_teacher_analytics_rls.sql` | PRD-F6: teacher SELECT on enrollments/credentials for owned courses |
 
 ## Apply to a Supabase project
 
-**Dev project:** migrations `0001`–`0005` applied (issue #5 + PRD-F8 + demo seed + credentials RFC).
+**Dev project:** migrations `0001`–`0006` applied (issue #5 + PRD-F8 + demo seed + credentials RFC + teacher analytics RLS).
 
 For a fresh project:
 

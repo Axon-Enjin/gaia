@@ -82,7 +82,7 @@ Quick triage an agent runs at the start of a session. Anything that fails gets s
 
 ## 6. Build Progress (M3 — living tracker)
 
-The application lives in **`client/`** (Next.js 16.2.9, Supabase, Azure AI Foundry). Migrations: `client/db/migrations/` (`0001_init`, `0002_course_sources_storage`, `0003_waitlist`, `0004_dev_demo_course`, `0005_credentials_rfc`).
+The application lives in **`client/`** (Next.js 16.2.9, Supabase, Azure AI Foundry). Migrations: `client/db/migrations/` (`0001_init`, `0002_course_sources_storage`, `0003_waitlist`, `0004_dev_demo_course`, `0005_credentials_rfc`, `0006_teacher_analytics_rls`).
 
 | PRD-F# | Feature | Status | Notes |
 |--------|---------|--------|-------|
@@ -91,7 +91,7 @@ The application lives in **`client/`** (Next.js 16.2.9, Supabase, Azure AI Found
 | F3 | Gamification & merit ledger | **Done** | `merit_ledger` + badges + learner dashboard (`/learner`) |
 | F4 | VC issuance | **Done** | `POST /api/credentials/issue`, OB 3.0 JSON-LD + Ed25519, Stellar hash anchor |
 | F5 | Public verifier | **Done** | `GET /api/verify/[id]`, `/verify/[id]` page |
-| F6 | Teacher dashboard | **Partial** | Upload/generate + publish; no course editor, analytics, passing-score UI |
+| F6 | Teacher dashboard | **Done** | Course editor, passing score, publish, learner analytics per course |
 | F7 | Learner dashboard & wallet | **Partial** | `/learner/credentials` wallet slice; grant status deferred |
 | F8 | Landing + waitlist | **Done** | Brand Mode `/`, `POST /api/waitlist`, PR [#14](https://github.com/Axon-Enjin/feat/prd-f8-landing-waitlist) |
 | F9 | Localization EN/Fil | **Partial** | `next-intl` + locale switcher on landing, auth, catalog, learner |
@@ -101,9 +101,9 @@ The application lives in **`client/`** (Next.js 16.2.9, Supabase, Azure AI Found
 
 ### Suggested next PRDs (no blockers beyond env/infra)
 
-1. **PRD-F6 polish** — Course review/edit UI, passing score config, teacher analytics.
-2. **PRD-F10** — Mock funder program (Postgres-only; no chain).
-3. **PRD-F7 completion** — Grant status on learner dashboard (F10 dependency).
+1. **PRD-F10** — Mock funder program (Postgres-only; no chain).
+2. **PRD-F7 completion** — Grant status on learner dashboard (F10 dependency).
+3. **PRD-F9 completion** — Full EN/FIL coverage on remaining surfaces.
 4. **Infra** — Vercel deploy, production Stellar/issuer secrets in secrets manager.
 
 Task board detail: [rhandie-tasks.md](../rhandie-tasks.md).

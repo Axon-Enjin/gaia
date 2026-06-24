@@ -44,7 +44,8 @@ export function UploadGenerateForm() {
         return;
       }
 
-      setResult((await res.json()) as DraftResult);
+      const data = (await res.json()) as DraftResult;
+      router.push(`/teacher/courses/${data.course_id}/edit`);
       router.refresh();
     } catch {
       setError(t("errorGeneric"));
@@ -96,13 +97,13 @@ export function UploadGenerateForm() {
           </p>
           <p className="mt-2 text-sm text-text-muted-brand">{t("reviewHint")}</p>
           <div className="mt-4 flex flex-wrap items-center gap-3">
-            <PublishButton courseId={result.course_id} />
             <Link
-              href={`/teacher/courses/${result.course_id}`}
-              className="text-sm font-medium text-primary-brand hover:underline"
+              href={`/teacher/courses/${result.course_id}/edit`}
+              className="site-btn site-btn-primary min-h-10 text-sm"
             >
-              {t("previewCourse")} →
+              {t("editCourse")} →
             </Link>
+            <PublishButton courseId={result.course_id} />
           </div>
         </div>
       ) : null}

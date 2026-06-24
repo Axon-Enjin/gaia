@@ -86,6 +86,7 @@ export default async function TeacherHomePage() {
                 status={course.status}
                 lessonsLabel={t("lessonsCount", { count: course.lessonCount })}
                 previewLabel={t("previewCourse")}
+                editLabel={t("editCourse")}
                 statusPublishedLabel={t("statusPublished")}
                 statusDraftLabel={t("statusDraft")}
                 viewPublicLabel={t("viewPublic")}
