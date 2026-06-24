@@ -1,5 +1,6 @@
 import { getTranslations } from "next-intl/server";
 import { SectionHeading } from "@/components/landing/section-heading";
+import { Reveal } from "@/components/landing/reveal";
 
 export async function HowItWorksSection() {
   const t = await getTranslations("Landing");
@@ -19,13 +20,15 @@ export async function HowItWorksSection() {
         subtitle={t("flowSubtitle")}
       />
       <ol className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-        {steps.map((s) => (
-          <li
+        {steps.map((s, i) => (
+          <Reveal
+            as="li"
             key={s.num}
-            className="rounded-xl border border-border-brand bg-surface-brand p-5"
+            delay={i * 70}
+            className="relative rounded-[var(--radius-surface)] border border-border-brand bg-surface-brand p-5"
           >
             <span
-              className="mb-3 block text-3xl font-bold tabular-nums text-growth-brand/80"
+              className="display-font mb-3 block text-4xl font-bold tabular-nums text-growth-brand/70"
               aria-hidden
             >
               {s.num}
@@ -34,7 +37,7 @@ export async function HowItWorksSection() {
             <p className="text-sm leading-relaxed text-text-muted-brand">
               {s.desc}
             </p>
-          </li>
+          </Reveal>
         ))}
       </ol>
     </section>

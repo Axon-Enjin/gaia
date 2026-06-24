@@ -30,18 +30,27 @@ export function EnrollButton({ courseId }: { courseId: string }) {
 
   if (state === "done") {
     return (
-      <p className="text-sm text-growth-brand">{t("enrolled")}</p>
+      <p className="inline-alert inline-alert--success" role="status">
+        {t("enrolled")}
+      </p>
     );
   }
 
   return (
-    <button
-      type="button"
-      onClick={enroll}
-      disabled={state === "loading"}
-      className="min-h-11 rounded-lg bg-growth-brand px-6 font-medium text-white hover:opacity-90 disabled:opacity-60"
-    >
-      {state === "loading" ? t("enrolling") : t("enroll")}
-    </button>
+    <>
+      <button
+        type="button"
+        onClick={enroll}
+        disabled={state === "loading"}
+        className="btn btn-growth"
+      >
+        {state === "loading" ? t("enrolling") : t("enroll")}
+      </button>
+      {state === "error" && (
+        <p className="inline-alert inline-alert--error mt-2" role="alert">
+          {t("submitFailed")}
+        </p>
+      )}
+    </>
   );
 }

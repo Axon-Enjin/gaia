@@ -7,6 +7,7 @@ import { getTeacherCourseDetail } from "@/lib/courses/teacher";
 import { getTeacherCourseAnalytics } from "@/lib/courses/teacher-analytics";
 import { CourseEditorForm } from "@/components/teacher/course-editor-form";
 import { TeacherCourseAnalyticsPanel } from "@/components/teacher/teacher-course-analytics";
+import { IconArrowRight } from "@/components/icons";
 
 export default async function TeacherCourseEditPage({
   params,
@@ -35,9 +36,10 @@ export default async function TeacherCourseEditPage({
     <div>
       <Link
         href={`/teacher/courses/${id}`}
-        className="text-sm font-medium text-primary-brand hover:underline"
+        className="inline-flex items-center gap-1 text-sm font-medium text-primary-brand hover:underline"
       >
-        ← {t("backToPreview")}
+        <IconArrowRight className="rotate-180" aria-hidden="true" />
+        {t("backToPreview")}
       </Link>
 
       <div className="mt-4 mb-8">

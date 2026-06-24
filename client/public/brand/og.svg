@@ -1,0 +1,24 @@
+<svg width="1200" height="630" viewBox="0 0 1200 630" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="1200" height="630" fill="#FBF8F2"/>
+  <g stroke="#6B4F3A" opacity="0.05" stroke-width="1">
+    <path d="M0 80h1200M0 160h1200M0 240h1200M0 320h1200M0 400h1200M0 480h1200M0 560h1200"/>
+  </g>
+  <g transform="translate(96 150)">
+    <g stroke="#6B4F3A" stroke-width="3" opacity="0.3">
+      <path d="M14 118h8M30 118h8M46 118h8M62 118h8" stroke-linecap="round"/>
+    </g>
+    <path d="M8 104h80" stroke="#6B4F3A" stroke-width="9" stroke-linecap="round"/>
+    <path d="M48 104V42" stroke="#2F7548" stroke-width="9" stroke-linecap="round"/>
+    <path d="M48 62c1-17 13-28 28-29 0 17-12 28-28 29z" fill="#3F8E5B"/>
+    <path d="M48 72c-1-14-12-24-25-25 0 14 11 24 25 25z" fill="#2F7548"/>
+    <circle cx="48" cy="30" r="8" fill="#3F8E5B"/>
+  </g>
+  <text x="210" y="232" font-family="Georgia, 'Times New Roman', serif" font-size="64" font-weight="700" fill="#6B4F3A">Aniskwela</text>
+  <text x="96" y="360" font-family="system-ui, Segoe UI, Roboto, sans-serif" font-size="52" font-weight="700" fill="#241F1A">Magsaka. Mag-aral.</text>
+  <text x="96" y="426" font-family="system-ui, Segoe UI, Roboto, sans-serif" font-size="52" font-weight="700" fill="#241F1A">Mag-ani ng patunay.</text>
+  <text x="96" y="492" font-family="system-ui, Segoe UI, Roboto, sans-serif" font-size="28" font-weight="400" fill="#6E665B">Farm. Learn. Harvest the proof  credentials the world can verify.</text>
+  <g transform="translate(96 540)">
+    <rect width="232" height="44" rx="22" fill="#3F8E5B" opacity="0.12"/>
+    <text x="116" y="29" text-anchor="middle" font-family="system-ui, sans-serif" font-size="18" font-weight="600" fill="#2F7548">Built for Filipino farmers</text>
+  </g>
+</svg>

@@ -4,6 +4,8 @@ import { createClient } from "@/lib/supabase/server";
 import { getSessionUser } from "@/lib/auth";
 import { getTeacherCourses } from "@/lib/courses/teacher";
 import { TeacherCourseCard } from "@/components/teacher/teacher-course-card";
+import { EmptyState } from "@/components/states/empty-state";
+import { IconLayers } from "@/components/icons";
 
 export default async function TeacherCoursesPage() {
   const t = await getTranslations("Teacher");
@@ -16,7 +18,7 @@ export default async function TeacherCoursesPage() {
   return (
     <>
       <div className="mb-8 flex flex-col gap-2">
-        <p className="text-xs font-semibold uppercase tracking-widest text-growth-brand">
+        <p className="text-xs font-semibold uppercase tracking-widest text-growth-strong-brand">
           {t("coursesEyebrow")}
         </p>
         <h1 className="text-2xl font-bold tracking-tight text-soil-brand sm:text-3xl">
@@ -28,15 +30,15 @@ export default async function TeacherCoursesPage() {
       </div>
 
       {courses.length === 0 ? (
-        <div className="callout-card text-center">
-          <p className="text-text-muted-brand">{t("noCoursesEmpty")}</p>
-          <Link
-            href="/teacher"
-            className="mt-3 inline-block text-sm font-medium text-primary-brand hover:underline"
-          >
-            ← {t("navHome")}
-          </Link>
-        </div>
+        <EmptyState
+          icon={<IconLayers />}
+          text={t("noCoursesEmpty")}
+          action={
+            <Link href="/teacher" className="btn btn-secondary btn-sm">
+              {t("navHome")}
+            </Link>
+          }
+        />
       ) : (
         <ul className="flex flex-col gap-4">
           {courses.map((course) => (

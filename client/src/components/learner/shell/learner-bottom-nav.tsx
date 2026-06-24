@@ -1,116 +1,71 @@
 import { NavItem } from "@/components/shell/nav-item";
-
-
+import {
+  IconHome,
+  IconBook,
+  IconAward,
+  IconUser,
+} from "@/components/icons";
 
 export interface LearnerBottomNavProps {
-
   pathname: string;
-
-  navLabels: { home: string; courses: string; credentials: string; profile: string };
-
+  navLabels: {
+    home: string;
+    courses: string;
+    credentials: string;
+    profile: string;
+  };
 }
-
-
 
 function isHomeActive(pathname: string): boolean {
-
   return pathname === "/learner";
-
 }
-
-
 
 function isCoursesActive(pathname: string): boolean {
-
   return pathname.startsWith("/learner/courses");
-
 }
-
-
 
 function isCredentialsActive(pathname: string): boolean {
   return pathname.startsWith("/learner/credentials");
 }
 
 function isProfileActive(pathname: string): boolean {
-
   return pathname.startsWith("/learner/profile");
-
 }
-
-
 
 export function LearnerBottomNav({
-
   pathname,
-
   navLabels,
-
 }: LearnerBottomNavProps) {
-
   return (
-
     <nav className="dashboard-bottom-nav" aria-label="Learner navigation">
-
       <NavItem
-
         href="/learner"
-
         label={navLabels.home}
-
-        icon="⌂"
-
+        icon={<IconHome />}
         active={isHomeActive(pathname)}
-
         variant="bottom"
-
       />
-
       <NavItem
-
         href="/learner/courses"
-
         label={navLabels.courses}
-
-        icon="☰"
-
+        icon={<IconBook />}
         active={isCoursesActive(pathname)}
-
         variant="bottom"
-
       />
-
       <NavItem
-
         href="/learner/credentials"
-
         label={navLabels.credentials}
-
-        icon="◆"
-
+        icon={<IconAward />}
         active={isCredentialsActive(pathname)}
-
         variant="bottom"
-
       />
-
       <NavItem
-
         href="/learner/profile"
-
         label={navLabels.profile}
-
-        icon="◉"
-
+        icon={<IconUser />}
         active={isProfileActive(pathname)}
-
         variant="bottom"
-
       />
-
     </nav>
-
   );
-
 }
-

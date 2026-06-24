@@ -64,11 +64,11 @@ export function LearnerShell({
 
       />
 
-      <div className="dashboard-main">
+      <main id="main-content" className="dashboard-main">
 
         <div className="dashboard-main-inner">{children}</div>
 
-      </div>
+      </main>
 
       <LearnerBottomNav pathname={pathname} navLabels={navLabels} />
 

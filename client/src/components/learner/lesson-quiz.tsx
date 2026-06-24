@@ -40,7 +40,7 @@ export function LessonQuiz({
 
   if (alreadyComplete) {
     return (
-      <p className="rounded-lg border border-growth-brand/30 bg-growth-brand/10 px-4 py-3 text-sm text-growth-brand">
+      <p className="inline-alert inline-alert--success" role="status">
         {t("lessonDone")}
       </p>
     );
@@ -48,7 +48,7 @@ export function LessonQuiz({
 
   if (state === "success" && result) {
     return (
-      <p className="rounded-lg border border-growth-brand/30 bg-growth-brand/10 px-4 py-3 text-sm text-growth-brand">
+      <p className="inline-alert inline-alert--success" role="status">
         {result.courseCompleted
           ? t("courseComplete", { xp: result.xp })
           : t("lessonComplete", { xp: result.xp })}
@@ -125,22 +125,31 @@ export function LessonQuiz({
               {qi + 1}. {q.prompt}
             </p>
             <ul className="flex flex-col gap-2">
-              {q.choices.map((choice, ci) => (
-                <li key={ci}>
-                  <label className="flex cursor-pointer items-start gap-2 rounded-lg border border-border-brand px-3 py-2 hover:bg-bg-brand">
-                    <input
-                      type="radio"
-                      name={`q-${q.id}`}
-                      checked={selections[q.id] === ci}
-                      onChange={() =>
-                        setSelections((s) => ({ ...s, [q.id]: ci }))
-                      }
-                      className="mt-1"
-                    />
-                    <span className="text-sm">{choice}</span>
-                  </label>
-                </li>
-              ))}
+              {q.choices.map((choice, ci) => {
+                const selected = selections[q.id] === ci;
+                return (
+                  <li key={ci}>
+                    <label
+                      className={`flex cursor-pointer items-start gap-2.5 rounded-[var(--radius-control)] border px-3 py-2.5 transition-colors ${
+                        selected
+                          ? "border-primary-brand bg-primary-brand/8"
+                          : "border-border-brand hover:bg-bg-brand"
+                      }`}
+                    >
+                      <input
+                        type="radio"
+                        name={`q-${q.id}`}
+                        checked={selected}
+                        onChange={() =>
+                          setSelections((s) => ({ ...s, [q.id]: ci }))
+                        }
+                        className="mt-0.5 accent-[var(--color-primary)]"
+                      />
+                      <span className="text-sm text-text-brand">{choice}</span>
+                    </label>
+                  </li>
+                );
+              })}
             </ul>
           </li>
         ))}
@@ -148,12 +157,12 @@ export function LessonQuiz({
       <button
         type="submit"
         disabled={state === "submitting"}
-        className="min-h-11 w-fit rounded-lg bg-primary-brand px-6 font-medium text-white hover:bg-primary-hover-brand disabled:opacity-60"
+        className="btn btn-primary w-fit"
       >
         {state === "submitting" ? t("submitting") : t("submitQuiz")}
       </button>
       {state === "error" && errorMsg && (
-        <p className="text-sm text-error-brand" role="alert">
+        <p className="inline-alert inline-alert--error" role="alert">
           {errorMsg}
         </p>
       )}

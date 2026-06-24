@@ -1,4 +1,5 @@
 import { NavItem } from "@/components/shell/nav-item";
+import { IconHome, IconLayers, IconUser } from "@/components/icons";
 
 export interface TeacherBottomNavProps {
   pathname: string;
@@ -26,21 +27,21 @@ export function TeacherBottomNav({
       <NavItem
         href="/teacher"
         label={navLabels.home}
-        icon="⌂"
+        icon={<IconHome />}
         active={isHomeActive(pathname)}
         variant="bottom"
       />
       <NavItem
         href="/teacher/courses"
         label={navLabels.courses}
-        icon="☰"
+        icon={<IconLayers />}
         active={isCoursesActive(pathname)}
         variant="bottom"
       />
       <NavItem
         href="/teacher/profile"
         label={navLabels.profile}
-        icon="◉"
+        icon={<IconUser />}
         active={isProfileActive(pathname)}
         variant="bottom"
       />

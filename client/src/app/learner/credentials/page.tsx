@@ -3,6 +3,8 @@ import { getTranslations } from "next-intl/server";
 import { createClient } from "@/lib/supabase/server";
 import { getSessionUser } from "@/lib/auth";
 import { listLearnerCredentials } from "@/lib/credentials/list";
+import { EmptyState } from "@/components/states/empty-state";
+import { IconAward, IconArrowRight } from "@/components/icons";
 
 export default async function LearnerCredentialsPage() {
   const user = await getSessionUser();
@@ -15,7 +17,7 @@ export default async function LearnerCredentialsPage() {
 
   return (
     <div>
-      <p className="text-xs font-semibold uppercase tracking-wider text-growth-brand">
+      <p className="text-xs font-semibold uppercase tracking-wider text-growth-strong-brand">
         {tc("eyebrow")}
       </p>
       <h1 className="mt-2 text-2xl font-bold text-soil-brand sm:text-3xl">
@@ -26,14 +28,16 @@ export default async function LearnerCredentialsPage() {
       </p>
 
       {credentials.length === 0 ? (
-        <div className="mt-10 rounded-2xl border border-dashed border-border-brand bg-surface-brand px-6 py-10 text-center">
-          <p className="text-text-muted-brand">{tc("empty")}</p>
-          <Link
-            href="/learner/courses"
-            className="site-btn-primary mt-6 inline-flex"
-          >
-            {t("browseCourses")}
-          </Link>
+        <div className="mt-10">
+          <EmptyState
+            icon={<IconAward />}
+            text={tc("empty")}
+            action={
+              <Link href="/learner/courses" className="btn btn-primary btn-sm">
+                {t("browseCourses")}
+              </Link>
+            }
+          />
         </div>
       ) : (
         <ul className="mt-8 flex flex-col gap-4">
@@ -66,11 +70,12 @@ export default async function LearnerCredentialsPage() {
                       {cred.final_score !== null &&
                         ` · ${tc("score", { score: cred.final_score })}`}
                     </p>
-                    <p className="mt-2 text-sm font-medium text-growth-brand">
+                    <p className="mt-2 inline-flex items-center gap-1 text-sm font-semibold text-growth-strong-brand">
                       {tc("viewVerify")}
-                      <span className="ml-1 inline-block transition-transform group-hover:translate-x-0.5">
-                        →
-                      </span>
+                      <IconArrowRight
+                        className="transition-transform group-hover:translate-x-0.5"
+                        aria-hidden="true"
+                      />
                     </p>
                   </div>
                 </div>

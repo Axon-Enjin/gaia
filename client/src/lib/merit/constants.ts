@@ -30,3 +30,12 @@ export function nextLevelMinXp(totalXp: number): number | null {
   }
   return null;
 }
+
+/** Minimum XP of the learner's current level (floor of the current tier). */
+export function levelFloorXp(totalXp: number): number {
+  let floor = 0;
+  for (const tier of LEVELS) {
+    if (totalXp >= tier.minXp) floor = tier.minXp;
+  }
+  return floor;
+}

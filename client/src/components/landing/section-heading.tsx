@@ -4,28 +4,34 @@ export function SectionHeading({
   subtitle,
   id,
   className = "",
+  compact = false,
 }: {
   eyebrow?: string;
   title: string;
   subtitle?: string;
   id?: string;
   className?: string;
+  compact?: boolean;
 }) {
   return (
-    <div className={`mb-8 max-w-2xl ${className}`}>
-      {eyebrow && (
-        <p className="mb-2 text-sm font-medium uppercase tracking-wide text-growth-brand">
-          {eyebrow}
-        </p>
-      )}
+    <div className={`max-w-2xl ${compact ? "mb-5" : "mb-8"} ${className}`}>
+      {eyebrow && <p className="eyebrow mb-2">{eyebrow}</p>}
       <h2
         id={id}
-        className="text-2xl font-bold leading-tight text-soil-brand sm:text-3xl"
+        className={`display-font font-bold leading-[1.15] text-soil-brand ${
+          compact ? "text-2xl sm:text-3xl" : "text-3xl sm:text-4xl"
+        }`}
       >
         {title}
       </h2>
       {subtitle && (
-        <p className="mt-3 text-base leading-relaxed text-text-muted-brand sm:text-lg">
+        <p
+          className={`mt-2 text-text-muted-brand ${
+            compact
+              ? "text-sm leading-relaxed"
+              : "text-base leading-relaxed sm:text-lg"
+          }`}
+        >
           {subtitle}
         </p>
       )}

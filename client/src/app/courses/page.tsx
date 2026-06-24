@@ -3,6 +3,8 @@ import { getTranslations } from "next-intl/server";
 import { ProductHeader } from "@/components/product/product-header";
 import { CourseCard } from "@/components/product/course-card";
 import { getPublishedCourses } from "@/lib/courses/catalog";
+import { EmptyState } from "@/components/states/empty-state";
+import { IconBook } from "@/components/icons";
 import {
   getSessionDashboardHref,
   navCtaHref,
@@ -26,9 +28,12 @@ export default async function CoursesPage() {
     <div className="product-page flex min-h-full flex-col">
       <ProductHeader cta={cta} />
 
-      <main className="mx-auto flex w-full max-w-3xl flex-1 flex-col gap-8 px-6 py-8 sm:py-10">
+      <main
+        id="main-content"
+        className="mx-auto flex w-full max-w-3xl flex-1 flex-col gap-8 px-6 py-8 sm:py-10"
+      >
         <div className="flex flex-col gap-2">
-          <p className="text-xs font-semibold uppercase tracking-widest text-growth-brand">
+          <p className="text-xs font-semibold uppercase tracking-widest text-growth-strong-brand">
             {t("eyebrow")}
           </p>
           <h1 className="text-3xl font-bold tracking-tight text-soil-brand sm:text-4xl">
@@ -40,15 +45,15 @@ export default async function CoursesPage() {
         </div>
 
         {courses.length === 0 ? (
-          <div className="callout-card text-center">
-            <p className="text-text-muted-brand">{t("empty")}</p>
-            <Link
-              href="/"
-              className="mt-3 inline-block text-sm font-medium text-primary-brand hover:underline"
-            >
-              {t("backHome")}
-            </Link>
-          </div>
+          <EmptyState
+            icon={<IconBook />}
+            text={t("empty")}
+            action={
+              <Link href="/" className="btn btn-secondary btn-sm">
+                {t("backHome")}
+              </Link>
+            }
+          />
         ) : (
           <ul className="flex flex-col gap-4">
             {courses.map((course) => (

@@ -3,8 +3,10 @@ import { getTranslations } from "next-intl/server";
 import { createClient } from "@/lib/supabase/server";
 import { getSessionUser } from "@/lib/auth";
 import { getMeritSummary } from "@/lib/merit/ledger";
-import { levelFromXp, nextLevelMinXp } from "@/lib/merit/constants";
 import { parseProgress } from "@/lib/enrollments/progress";
+import { MeritPanel } from "@/components/learner/merit-panel";
+import { EmptyState } from "@/components/states/empty-state";
+import { IconAward, IconArrowRight } from "@/components/icons";
 
 function courseFromJoin(raw: unknown): {
   title: string;
@@ -34,9 +36,6 @@ export default async function LearnerHomePage() {
     merit = { totalXp: 0, streakDays: 0, badgeTypes: [] };
   }
 
-  const level = levelFromXp(merit.totalXp);
-  const nextXp = nextLevelMinXp(merit.totalXp);
-
   const supabase = await createClient();
   const { count: credentialCount } = await supabase
     .from("credentials")
@@ -59,56 +58,38 @@ export default async function LearnerHomePage() {
         <p className="text-sm text-text-muted-brand">{t("homeSubtitle")}</p>
       </div>
 
-      <section className="course-hero mb-8">
-        <div className="flex flex-wrap items-end justify-between gap-4">
-          <div>
-            <p className="text-sm text-text-muted-brand">{t("totalXp")}</p>
-            <p className="text-3xl font-bold text-growth-brand">
-              {merit.totalXp.toLocaleString()}
-            </p>
-          </div>
-          <div>
-            <p className="text-sm text-text-muted-brand">{t("level")}</p>
-            <p className="text-lg font-semibold capitalize text-soil-brand">
-              {t(`levels.${level}`)}
-            </p>
-          </div>
-          <div>
-            <p className="text-sm text-text-muted-brand">{t("streak")}</p>
-            <p className="text-lg font-semibold text-soil-brand">
-              {t("streakDays", { count: merit.streakDays })}
-            </p>
-          </div>
-        </div>
-        {nextXp !== null && (
-          <p className="mt-4 text-sm text-text-muted-brand">
-            {t("nextLevel", { xp: nextXp - merit.totalXp })}
-          </p>
-        )}
-        {merit.badgeTypes.length > 0 && (
-          <ul className="mt-4 flex flex-wrap gap-2">
-            {merit.badgeTypes.map((b) => (
-              <li
-                key={b}
-                className="rounded-full bg-growth-brand/10 px-3 py-1 text-xs font-medium text-growth-brand"
-              >
-                {t(`badges.${b}` as "badges.first_lesson")}
-              </li>
-            ))}
-          </ul>
-        )}
-      </section>
+      <div className="mb-8">
+        <MeritPanel
+          totalXp={merit.totalXp}
+          streakDays={merit.streakDays}
+          badgeTypes={merit.badgeTypes}
+        />
+      </div>
 
       {(credentialCount ?? 0) > 0 && (
         <section className="mb-8">
           <Link
             href="/learner/credentials"
-            className="callout-card block transition hover:border-growth-brand/40"
+            className="callout-card flex items-center gap-3 transition hover:border-growth-brand/40"
           >
-            <p className="font-semibold text-soil-brand">{t("navCredentials")}</p>
-            <p className="mt-1 text-sm text-text-muted-brand">
-              {t("credentialsTeaser", { count: credentialCount ?? 0 })}
-            </p>
+            <span
+              className="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-full bg-growth-brand/12 text-lg text-growth-strong-brand"
+              aria-hidden
+            >
+              <IconAward />
+            </span>
+            <span className="min-w-0 flex-1">
+              <span className="block font-semibold text-soil-brand">
+                {t("navCredentials")}
+              </span>
+              <span className="mt-0.5 block text-sm text-text-muted-brand">
+                {t("credentialsTeaser", { count: credentialCount ?? 0 })}
+              </span>
+            </span>
+            <IconArrowRight
+              className="flex-shrink-0 text-text-muted-brand"
+              aria-hidden="true"
+            />
           </Link>
         </section>
       )}
@@ -120,22 +101,22 @@ export default async function LearnerHomePage() {
           </h2>
           <Link
             href="/learner/courses"
-            className="text-sm font-medium text-primary-brand hover:underline"
+            className="inline-flex items-center gap-1 text-sm font-medium text-primary-brand hover:underline"
           >
-            {t("browseCourses")} →
+            {t("browseCourses")} <IconArrowRight aria-hidden="true" />
           </Link>
         </div>
 
         {!enrollments?.length ? (
-          <div className="callout-card text-center">
-            <p className="text-text-muted-brand">{t("noEnrollments")}</p>
-            <Link
-              href="/learner/courses"
-              className="mt-3 inline-block text-sm font-medium text-primary-brand hover:underline"
-            >
-              {t("browseCourses")}
-            </Link>
-          </div>
+          <EmptyState
+            icon={<IconAward />}
+            text={t("noEnrollments")}
+            action={
+              <Link href="/learner/courses" className="btn btn-primary btn-sm">
+                {t("browseCourses")}
+              </Link>
+            }
+          />
         ) : (
           <ul className="flex flex-col gap-3">
             {enrollments.map((row) => {

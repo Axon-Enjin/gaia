@@ -31,9 +31,9 @@ export function TeacherShell({
         roleLabel={roleLabel}
         navLabels={navLabels}
       />
-      <div className="dashboard-main">
+      <main id="main-content" className="dashboard-main">
         <div className="dashboard-main-inner">{children}</div>
-      </div>
+      </main>
       <TeacherBottomNav pathname={pathname} navLabels={navLabels} />
     </div>
   );

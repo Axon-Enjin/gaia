@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { IconArrowRight } from "@/components/icons";
 
 export interface CourseCardProps {
   id: string;
@@ -42,14 +43,12 @@ export function CourseCard({
             <h2 className="text-lg font-semibold leading-snug text-text-brand group-hover:text-soil-brand">
               {title}
             </h2>
-            <p className="mt-2 text-sm font-medium text-growth-brand">
+            <p className="mt-2 inline-flex items-center gap-1 text-sm font-semibold text-growth-strong-brand">
               {viewLabel}
-              <span
-                className="ml-1 inline-block transition-transform group-hover:translate-x-0.5"
-                aria-hidden
-              >
-                →
-              </span>
+              <IconArrowRight
+                className="transition-transform group-hover:translate-x-0.5"
+                aria-hidden="true"
+              />
             </p>
           </div>
         </div>

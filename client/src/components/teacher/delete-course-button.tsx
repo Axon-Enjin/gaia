@@ -66,7 +66,7 @@ export function DeleteCourseButton({
 
   const triggerClassName =
     variant === "destructive"
-      ? "min-h-9 rounded-lg border border-error-brand/40 bg-error-brand/5 px-3 py-1.5 text-sm font-medium text-error-brand hover:bg-error-brand/10 disabled:opacity-60"
+      ? "btn btn-sm border border-error-brand/40 bg-error-brand/5 text-error-brand hover:bg-error-brand/10"
       : "text-sm font-medium text-error-brand hover:underline disabled:opacity-60";
 
   return (
@@ -88,14 +88,15 @@ export function DeleteCourseButton({
 
       {open ? (
         <div
-          className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 p-4"
+          className="fixed inset-0 z-50 flex items-center justify-center p-4"
+          style={{ background: "rgba(36, 31, 26, 0.4)" }}
           onClick={closeDialog}
         >
           <div
             role="dialog"
             aria-modal="true"
             aria-labelledby={titleId}
-            className="w-full max-w-md rounded-xl border border-border-brand bg-surface-brand p-5 shadow-lg"
+            className="w-full max-w-md rounded-[var(--radius-lg)] border border-border-brand bg-surface-brand p-5 shadow-[var(--shadow-lg)]"
             onClick={(event) => event.stopPropagation()}
           >
             <h2
@@ -111,10 +112,10 @@ export function DeleteCourseButton({
             <form onSubmit={onSubmit} className="mt-4 flex flex-col gap-4">
               <input type="hidden" name="courseId" value={courseId} />
 
-              <div className="flex flex-col gap-1.5">
+              <div className="field">
                 <label
                   htmlFor={`delete-confirm-${courseId}`}
-                  className="text-sm font-medium text-text-brand"
+                  className="field-label"
                 >
                   {t("deleteConfirmLabel", { phrase: confirmPhrase })}
                 </label>
@@ -125,12 +126,12 @@ export function DeleteCourseButton({
                   onChange={(event) => setConfirmText(event.target.value)}
                   autoComplete="off"
                   autoFocus
-                  className="rounded-lg border border-border-brand bg-surface-brand px-3 py-2 text-sm text-text-brand"
+                  className="field-input"
                 />
               </div>
 
               {state.error ? (
-                <span role="alert" className="text-sm text-error-brand">
+                <span role="alert" className="inline-alert inline-alert--error">
                   {t(`deleteError.${state.error}`)}
                 </span>
               ) : null}
@@ -140,14 +141,14 @@ export function DeleteCourseButton({
                   type="button"
                   onClick={closeDialog}
                   disabled={pending}
-                  className="min-h-9 rounded-lg border border-border-brand px-3 py-1.5 text-sm font-medium text-text-brand hover:bg-gray-50 disabled:opacity-60"
+                  className="btn btn-ghost btn-sm border border-border-brand"
                 >
                   {t("deleteConfirmCancel")}
                 </button>
                 <button
                   type="submit"
                   disabled={pending || !phraseMatches}
-                  className="min-h-9 rounded-lg bg-error-brand px-3 py-1.5 text-sm font-medium text-white hover:opacity-90 disabled:opacity-60"
+                  className="btn btn-destructive btn-sm"
                 >
                   {pending ? t("deleting") : t("deleteCourse")}
                 </button>

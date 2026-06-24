@@ -1,80 +1,107 @@
 import Link from "next/link";
 import { getTranslations } from "next-intl/server";
+import {
+  IconArrowRight,
+  IconGlobe,
+  IconShieldCheck,
+  IconSprout,
+} from "@/components/icons";
+
+const CHIP_ICONS = [IconGlobe, IconSprout, IconShieldCheck];
 
 export async function HeroSection() {
   const t = await getTranslations("Landing");
 
-  const chips = [
-    t("chipSub3G"),
-    t("chipFilipino"),
-    t("chipCredentials"),
-  ];
+  const chips = [t("chipSub3G"), t("chipFilipino"), t("chipCredentials")];
 
   return (
-    <section className="section-pad grid gap-10 lg:grid-cols-2 lg:items-center lg:gap-12">
-      <div className="flex flex-col gap-6">
-        <p className="text-sm font-medium uppercase tracking-wide text-growth-brand">
-          {t("heroEyebrow")}
-        </p>
-        <h1 className="text-4xl font-bold leading-tight text-soil-brand sm:text-5xl">
-          {t("heroTitle")}
+    <section className="section-pad grid items-center gap-8 lg:grid-cols-[1.1fr_0.9fr] lg:gap-10">
+      <div className="reveal is-visible flex flex-col gap-4">
+        <p className="eyebrow">{t("heroEyebrow")}</p>
+
+        <h1 className="display-font text-3xl font-bold leading-[1.12] text-soil-brand sm:text-4xl">
+          {t("heroTagline")}
         </h1>
-        <p className="text-lg leading-relaxed text-text-muted-brand">
+        <p className="text-sm font-medium text-growth-strong-brand">
+          {t("heroTaglineSub")}
+        </p>
+
+        <p className="max-w-lg text-base leading-relaxed text-text-muted-brand">
           {t("heroBody")}
         </p>
-        <div className="flex flex-wrap gap-3">
-          <Link
-            href="/login"
-            className="inline-flex min-h-11 items-center rounded-lg bg-primary-brand px-6 font-medium text-white hover:bg-primary-hover-brand"
-          >
+
+        <div className="flex flex-wrap gap-2.5 pt-1">
+          <Link href="/login" className="btn btn-primary">
             {t("ctaSignUp")}
+            <IconArrowRight />
           </Link>
-          <a
-            href="#demo"
-            className="inline-flex min-h-11 items-center rounded-lg border border-border-brand bg-surface-brand px-6 font-medium text-text-brand hover:border-soil-brand/40"
-          >
+          <a href="#journey" className="btn btn-secondary">
             {t("ctaWatchDemo")}
           </a>
         </div>
-        <ul className="flex flex-wrap gap-2 pt-1">
-          {chips.map((chip) => (
-            <li
-              key={chip}
-              className="rounded-full border border-growth-brand/25 bg-growth-brand/10 px-3 py-1 text-xs font-medium text-growth-brand"
-            >
-              {chip}
-            </li>
-          ))}
+
+        <ul className="flex flex-wrap gap-2">
+          {chips.map((chip, i) => {
+            const Icon = CHIP_ICONS[i] ?? IconSprout;
+            return (
+              <li
+                key={chip}
+                className="inline-flex items-center gap-1.5 rounded-full border border-growth-brand/25 bg-growth-brand/10 px-3 py-1 text-xs font-semibold text-growth-strong-brand"
+              >
+                <Icon aria-hidden="true" />
+                {chip}
+              </li>
+            );
+          })}
         </ul>
       </div>
 
-      <div
-        className="relative overflow-hidden rounded-2xl border border-border-brand bg-surface-brand p-6 shadow-sm"
-        aria-hidden
-      >
-        <div className="mb-4 flex items-center gap-2">
-          <span className="h-2.5 w-2.5 rounded-full bg-error-brand/70" />
-          <span className="h-2.5 w-2.5 rounded-full bg-warning-brand/70" />
-          <span className="h-2.5 w-2.5 rounded-full bg-success-brand/70" />
+      <HeroPreview />
+    </section>
+  );
+}
+
+/** Decorative product preview — a learner finishing a lesson and earning XP. */
+function HeroPreview() {
+  return (
+    <div
+      className="relative overflow-hidden rounded-[var(--radius-surface)] border border-border-brand bg-surface-brand p-4 shadow-[var(--shadow-sm)] sm:p-5"
+      aria-hidden
+    >
+      <div className="rounded-[var(--radius-control)] border border-border-brand bg-bg-brand/60 p-3.5">
+        <p className="text-[0.6875rem] font-semibold uppercase tracking-wider text-growth-strong-brand">
+          Lesson 3 of 4
+        </p>
+        <div className="mt-2 space-y-1.5">
+          <div className="h-2.5 w-3/4 rounded bg-soil-brand/15" />
+          <div className="h-2.5 w-full rounded bg-border-brand" />
+          <div className="h-2.5 w-5/6 rounded bg-border-brand" />
         </div>
-        <div className="space-y-3">
-          <div className="h-3 w-3/4 rounded bg-soil-brand/15" />
-          <div className="h-3 w-full rounded bg-border-brand" />
-          <div className="h-3 w-5/6 rounded bg-border-brand" />
-          <div className="mt-4 grid grid-cols-3 gap-2">
-            <div className="rounded-lg border border-growth-brand/30 bg-growth-brand/10 p-3 text-center text-xs font-semibold text-growth-brand">
-              XP
-            </div>
-            <div className="rounded-lg border border-primary-brand/30 bg-primary-brand/10 p-3 text-center text-xs font-semibold text-primary-brand">
-              VC
-            </div>
-            <div className="rounded-lg border border-soil-brand/30 bg-soil-brand/10 p-3 text-center text-xs font-semibold text-soil-brand">
-              AI
-            </div>
-          </div>
-          <div className="h-24 rounded-lg border border-dashed border-border-brand bg-bg-brand" />
+        <div className="progress-track mt-3">
+          <div className="progress-fill" style={{ width: "75%" }} />
         </div>
       </div>
-    </section>
+
+      <div className="mt-2.5 grid grid-cols-3 gap-1.5">
+        <div className="rounded-md border border-growth-brand/30 bg-growth-brand/10 px-2 py-2 text-center">
+          <div className="text-sm font-bold text-growth-strong-brand">+48</div>
+          <div className="text-[0.5625rem] font-semibold uppercase tracking-wide text-text-muted-brand">
+            XP
+          </div>
+        </div>
+        <div className="rounded-md border border-warning-brand/30 bg-warning-brand/10 px-2 py-2 text-center">
+          <div className="text-sm font-bold text-warning-brand">5</div>
+          <div className="text-[0.5625rem] font-semibold uppercase tracking-wide text-text-muted-brand">
+            Streak
+          </div>
+        </div>
+        <div className="rounded-md border border-primary-brand/30 bg-primary-brand/10 px-2 py-2 text-center">
+          <div className="text-sm font-bold text-primary-brand">VC</div>
+          <div className="text-[0.5625rem] font-semibold uppercase tracking-wide text-text-muted-brand">
+            Verified
+          </div>
+        </div>
+      </div>
+    </div>
   );
 }

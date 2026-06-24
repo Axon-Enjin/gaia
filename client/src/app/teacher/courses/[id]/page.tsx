@@ -32,11 +32,11 @@ export default async function TeacherCoursePreviewPage({
   return (
     <>
       {status === "draft" && (
-        <div className="mb-6 flex flex-wrap items-center justify-between gap-3 rounded-xl border border-warning-brand/35 bg-warning-brand/10 px-4 py-3">
+        <div className="mb-6 flex flex-wrap items-center justify-between gap-3 rounded-[var(--radius-surface)] border border-warning-brand/35 bg-warning-brand/10 px-4 py-3">
           <p className="text-sm text-warning-brand">{t("editorDraftCta")}</p>
           <Link
             href={`/teacher/courses/${id}/edit`}
-            className="site-btn site-btn-primary min-h-9 text-sm"
+            className="btn btn-primary btn-sm"
           >
             {t("editCourse")}
           </Link>

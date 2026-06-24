@@ -2,6 +2,7 @@ import { getTranslations } from "next-intl/server";
 import { LocaleSwitcher } from "@/components/locale-switcher";
 import { signOutAction } from "@/app/actions/auth";
 import { getSessionUser } from "@/lib/auth";
+import { IconGlobe, IconUser } from "@/components/icons";
 
 export default async function TeacherProfilePage() {
   const t = await getTranslations("Teacher");
@@ -23,21 +24,22 @@ export default async function TeacherProfilePage() {
       <section className="course-hero mb-6">
         <p className="text-sm text-text-muted-brand">{t("profileEmail")}</p>
         <p className="mt-1 font-medium text-text-brand">{user.email}</p>
-        <p className="mt-3 text-sm text-growth-brand">{t("accountRole")}</p>
+        <p className="mt-3 inline-flex items-center gap-1.5 rounded-full bg-growth-brand/12 px-3 py-1 text-xs font-semibold text-growth-strong-brand">
+          <IconUser aria-hidden="true" />
+          {t("accountRole")}
+        </p>
       </section>
 
-      <section className="mb-6 rounded-xl border border-border-brand bg-surface-brand p-4">
-        <p className="mb-3 text-sm font-medium text-text-brand">
+      <section className="mb-6 rounded-[var(--radius-surface)] border border-border-brand bg-surface-brand p-4">
+        <p className="mb-3 inline-flex items-center gap-2 text-sm font-semibold text-text-brand">
+          <IconGlobe className="text-text-muted-brand" aria-hidden="true" />
           {tc("filipino")} / {tc("english")}
         </p>
         <LocaleSwitcher />
       </section>
 
       <form action={signOutAction}>
-        <button
-          type="submit"
-          className="min-h-11 rounded-lg border border-border-brand bg-surface-brand px-6 text-sm font-medium text-text-brand hover:bg-bg-brand"
-        >
+        <button type="submit" className="btn btn-ghost border border-border-brand">
           {tc("signOut")}
         </button>
       </form>

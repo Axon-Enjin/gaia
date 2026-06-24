@@ -1,9 +1,10 @@
+import type { ReactNode } from "react";
 import Link from "next/link";
 
 export interface NavItemProps {
   href: string;
   label: string;
-  icon: string;
+  icon: ReactNode;
   active: boolean;
   variant?: "sidebar" | "bottom";
 }

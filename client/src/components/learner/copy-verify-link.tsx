@@ -29,7 +29,7 @@ export function CopyVerifyLink({
     <button
       type="button"
       onClick={handleCopy}
-      className="mt-3 min-h-11 rounded-lg border border-border-brand bg-surface-brand px-4 text-sm font-medium text-text-brand hover:bg-bg-brand"
+      className="btn btn-secondary btn-sm mt-3"
     >
       {copied ? copiedLabel : copyLabel}
     </button>

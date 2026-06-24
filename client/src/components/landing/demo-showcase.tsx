@@ -1,15 +1,43 @@
 import { getTranslations } from "next-intl/server";
 import { SectionHeading } from "@/components/landing/section-heading";
+import { Reveal } from "@/components/landing/reveal";
+import { IconUpload, IconBook, IconShieldCheck } from "@/components/icons";
 
 export async function DemoShowcaseSection() {
   const t = await getTranslations("Landing");
 
-  const steps = [
-    { label: t("demoStep1"), color: "bg-soil-brand/15 text-soil-brand" },
-    { label: t("demoStep2"), color: "bg-primary-brand/15 text-primary-brand" },
-    { label: t("demoStep3"), color: "bg-growth-brand/15 text-growth-brand" },
-    { label: t("demoStep4"), color: "bg-warning-brand/15 text-warning-brand" },
+  const stages = [
+    {
+      Icon: IconUpload,
+      step: t("demoStep1"),
+      title: t("demoTourUploadTitle"),
+      desc: t("demoTourUploadDesc"),
+      tone: "soil" as const,
+      Visual: UploadVisual,
+    },
+    {
+      Icon: IconBook,
+      step: t("demoStep3"),
+      title: t("demoTourLearnTitle"),
+      desc: t("demoTourLearnDesc"),
+      tone: "growth" as const,
+      Visual: LearnVisual,
+    },
+    {
+      Icon: IconShieldCheck,
+      step: t("demoStep4"),
+      title: t("demoTourVerifyTitle"),
+      desc: t("demoTourVerifyDesc"),
+      tone: "primary" as const,
+      Visual: VerifyVisual,
+    },
   ];
+
+  const toneText = {
+    soil: "text-soil-brand",
+    growth: "text-growth-strong-brand",
+    primary: "text-primary-brand",
+  };
 
   return (
     <section id="demo" className="section-pad">
@@ -19,44 +47,77 @@ export async function DemoShowcaseSection() {
         subtitle={t("demoSubtitle")}
       />
 
-      <div className="overflow-hidden rounded-2xl border border-border-brand bg-surface-brand shadow-sm">
-        <div className="aspect-video max-h-[420px] w-full bg-gradient-to-br from-bg-brand via-surface-brand to-growth-brand/10 p-6 sm:p-10">
-          <div className="flex h-full flex-col justify-between">
-            <div className="flex flex-wrap gap-2">
-              {steps.map((s) => (
-                <span
-                  key={s.label}
-                  className={`rounded-full px-3 py-1 text-xs font-semibold ${s.color}`}
-                >
-                  {s.label}
-                </span>
-              ))}
+      <div className="grid gap-4 lg:grid-cols-3">
+        {stages.map((s, i) => (
+          <Reveal
+            as="article"
+            key={s.title}
+            delay={i * 90}
+            className="flex flex-col overflow-hidden rounded-[var(--radius-lg)] border border-border-brand bg-surface-brand shadow-[var(--shadow-sm)]"
+          >
+            <div className="border-b border-border-brand bg-bg-brand/50 p-5">
+              <s.Visual />
             </div>
-            <div className="mx-auto w-full max-w-lg rounded-xl border border-border-brand bg-surface-brand/95 p-5 shadow-sm backdrop-blur-sm">
-              <p className="text-center text-sm font-medium text-soil-brand">
-                {t("demoPlaceholder")}
-              </p>
-              <p className="mt-2 text-center text-xs text-text-muted-brand">
-                {t("demoPlaceholderHint")}
-              </p>
-            </div>
-            <div className="flex justify-center gap-3">
-              <a
-                href="#how-it-works"
-                className="rounded-lg bg-primary-brand px-5 py-2.5 text-sm font-medium text-white hover:bg-primary-hover-brand"
+            <div className="flex flex-1 flex-col gap-2 p-5">
+              <span
+                className={`inline-flex items-center gap-2 text-xs font-bold uppercase tracking-widest ${toneText[s.tone]}`}
               >
-                {t("ctaWatchDemo")}
-              </a>
-              <a
-                href="/courses"
-                className="rounded-lg border border-border-brand px-5 py-2.5 text-sm font-medium text-text-brand hover:bg-bg-brand"
-              >
-                {t("ctaBrowse")}
-              </a>
+                <s.Icon aria-hidden="true" />
+                {String(i + 1).padStart(2, "0")} · {s.step}
+              </span>
+              <h3 className="display-font text-lg font-bold text-soil-brand">
+                {s.title}
+              </h3>
+              <p className="text-sm leading-relaxed text-text-muted-brand">
+                {s.desc}
+              </p>
             </div>
-          </div>
-        </div>
+          </Reveal>
+        ))}
       </div>
     </section>
+  );
+}
+
+function UploadVisual() {
+  return (
+    <div className="flex h-28 items-center justify-center" aria-hidden>
+      <div className="w-full max-w-[12rem] rounded-lg border-2 border-dashed border-soil-brand/30 bg-surface-brand p-4 text-center">
+        <div className="mx-auto mb-2 h-8 w-8 rounded-md bg-soil-brand/15" />
+        <div className="mx-auto h-2 w-2/3 rounded bg-border-brand" />
+        <div className="mx-auto mt-1.5 h-2 w-1/2 rounded bg-border-brand" />
+      </div>
+    </div>
+  );
+}
+
+function LearnVisual() {
+  return (
+    <div className="flex h-28 flex-col justify-center gap-2" aria-hidden>
+      <div className="h-2.5 w-3/4 rounded bg-soil-brand/15" />
+      <div className="h-2.5 w-full rounded bg-border-brand" />
+      <div className="h-2.5 w-5/6 rounded bg-border-brand" />
+      <div className="progress-track mt-1">
+        <div className="progress-fill" style={{ width: "66%" }} />
+      </div>
+    </div>
+  );
+}
+
+function VerifyVisual() {
+  return (
+    <div className="flex h-28 items-center justify-center gap-3" aria-hidden>
+      <div className="grid h-16 w-16 grid-cols-4 grid-rows-4 gap-0.5 rounded-md border border-border-brand bg-surface-brand p-1.5">
+        {Array.from({ length: 16 }).map((_, i) => (
+          <span
+            key={i}
+            className={`rounded-[1px] ${i % 3 === 0 ? "bg-soil-brand/80" : "bg-soil-brand/15"}`}
+          />
+        ))}
+      </div>
+      <span className="inline-flex items-center gap-1.5 rounded-full border border-growth-brand/40 bg-growth-brand/10 px-3 py-1.5 text-xs font-semibold text-growth-strong-brand">
+        Verified
+      </span>
+    </div>
   );
 }

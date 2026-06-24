@@ -38,14 +38,16 @@ function CredentialReadyPanel({
   labels: ClaimCredentialButtonProps["labels"];
 }) {
   return (
-    <div className="credential-claim-panel">
-      <p className="text-sm font-semibold text-growth-brand">{labels.viewCredential}</p>
+    <div className="credential-claim-panel rounded-[var(--radius-surface)] border border-growth-brand/30 bg-growth-brand/5 p-4">
+      <p className="text-sm font-semibold text-growth-strong-brand">
+        {labels.viewCredential}
+      </p>
       {network === "mock" && (
         <p className="mt-1 text-xs text-text-muted-brand">{labels.mockBadge}</p>
       )}
       <Link
         href={url}
-        className="mt-2 block break-all font-semibold text-primary-brand underline hover:no-underline"
+        className="mt-2 block break-all text-sm font-semibold text-primary-brand underline hover:no-underline"
       >
         {url}
       </Link>
@@ -54,7 +56,7 @@ function CredentialReadyPanel({
         <img
           src={qr}
           alt=""
-          className="mt-4 h-40 w-40 rounded-lg border border-border-brand bg-white p-2"
+          className="mt-4 h-40 w-40 rounded-[var(--radius-control)] border border-border-brand bg-white p-2"
         />
       )}
     </div>
@@ -79,7 +81,7 @@ export function ClaimCredentialButton({
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
 
   if (existingCredentialId && (initialVerifyUrl || verifyUrl)) {
-    const url = verifyUrl || initialVerifyUrl!;
+    const url = verifyUrl || initialVerifyUrl || "";
     return (
       <CredentialReadyPanel
         url={url}
@@ -158,12 +160,12 @@ export function ClaimCredentialButton({
         type="button"
         onClick={handleClaim}
         disabled={state === "loading"}
-        className="site-btn-primary w-full sm:w-auto"
+        className="btn btn-growth w-full sm:w-auto"
       >
         {state === "loading" ? labels.claiming : labels.claim}
       </button>
       {state === "error" && errorMsg && (
-        <p className="mt-2 text-sm text-error-brand" role="alert">
+        <p className="inline-alert inline-alert--error mt-2" role="alert">
           {errorMsg}
         </p>
       )}

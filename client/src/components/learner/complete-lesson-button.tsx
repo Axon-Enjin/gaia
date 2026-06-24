@@ -21,7 +21,9 @@ export function CompleteLessonButton({
 
   if (state === "done" || alreadyComplete) {
     return (
-      <p className="text-sm text-growth-brand">{t("lessonDone")}</p>
+      <p className="inline-alert inline-alert--success" role="status">
+        {t("lessonDone")}
+      </p>
     );
   }
 
@@ -53,12 +55,14 @@ export function CompleteLessonButton({
         type="button"
         onClick={complete}
         disabled={state === "loading"}
-        className="min-h-11 rounded-lg bg-primary-brand px-6 font-medium text-white hover:bg-primary-hover-brand disabled:opacity-60"
+        className="btn btn-primary"
       >
         {state === "loading" ? t("submitting") : t("markComplete")}
       </button>
       {state === "error" && (
-        <p className="mt-2 text-sm text-error-brand">{t("submitFailed")}</p>
+        <p className="inline-alert inline-alert--error mt-2" role="alert">
+          {t("submitFailed")}
+        </p>
       )}
     </div>
   );

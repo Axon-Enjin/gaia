@@ -22,6 +22,7 @@ import { CompleteLessonButton } from "@/components/learner/complete-lesson-butto
 
 import { PublishButton } from "@/components/publish-button";
 import { ClaimCredentialButton } from "@/components/learner/claim-credential-button";
+import { IconArrowRight, IconCheck } from "@/components/icons";
 
 
 
@@ -148,7 +149,7 @@ export async function CourseDetailView({
 
       >
 
-        <span aria-hidden>←</span> {backLabel}
+        <IconArrowRight className="rotate-180" aria-hidden="true" /> {backLabel}
 
       </Link>
 
@@ -190,7 +191,7 @@ export async function CourseDetailView({
 
       {isTeacherMode && teacherStatus === "published" && (
 
-        <div className="rounded-xl border border-growth-brand/35 bg-growth-brand/10 px-4 py-3 text-sm text-growth-brand">
+        <div className="rounded-xl border border-growth-brand/35 bg-growth-brand/10 px-4 py-3 text-sm text-growth-strong-brand">
 
           <div className="flex flex-wrap items-center justify-between gap-3">
 
@@ -362,7 +363,7 @@ export async function CourseDetailView({
 
         <div className="rounded-xl border border-growth-brand/35 bg-growth-brand/10 px-4 py-4">
 
-          <p className="text-sm font-medium text-growth-brand">
+          <p className="text-sm font-semibold text-growth-strong-brand">
 
             {tl("courseFinishedBanner")}
 
@@ -459,7 +460,7 @@ export async function CourseDetailView({
 
                   >
 
-                    {complete ? "✓" : index + 1}
+                    {complete ? <IconCheck aria-hidden="true" /> : index + 1}
 
                   </div>
 

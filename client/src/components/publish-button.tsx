@@ -18,24 +18,24 @@ export function PublishButton({ courseId }: { courseId: string }) {
 
   if (state.ok) {
     return (
-      <span className="shrink-0 text-sm font-medium text-growth-brand">
+      <span className="shrink-0 text-sm font-semibold text-growth-strong-brand">
         {t("published")}
       </span>
     );
   }
 
   return (
-    <form action={formAction} className="flex items-center gap-2">
+    <form action={formAction} className="flex flex-wrap items-center gap-2">
       <input type="hidden" name="courseId" value={courseId} />
       <button
         type="submit"
         disabled={pending}
-        className="min-h-9 rounded-lg bg-growth-brand px-3 py-1.5 text-sm font-medium text-white hover:opacity-90 disabled:opacity-60"
+        className="btn btn-growth btn-sm"
       >
         {pending ? t("publishing") : t("publish")}
       </button>
       {state.error ? (
-        <span role="alert" className="text-sm text-error-brand">
+        <span role="alert" className="text-sm font-medium text-error-brand">
           {t(`publishError.${state.error}`)}
         </span>
       ) : null}

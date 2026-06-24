@@ -86,7 +86,10 @@ export default async function CourseDetailPage({
     <div className="product-page flex min-h-full flex-col">
       <ProductHeader cta={cta} />
 
-      <main className="mx-auto flex w-full max-w-3xl flex-1 flex-col px-6 py-8 sm:py-10">
+      <main
+        id="main-content"
+        className="mx-auto flex w-full max-w-3xl flex-1 flex-col px-6 py-8 sm:py-10"
+      >
         <CourseDetailView
           course={course}
           backHref="/courses"

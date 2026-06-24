@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { getTranslations } from "next-intl/server";
 import { LocaleSwitcher } from "@/components/locale-switcher";
+import { BrandMark } from "@/components/brand/brand-mark";
 
 interface ProductHeaderProps {
   /** Smart nav CTA — Get started or Go to dashboard. */
@@ -15,8 +16,9 @@ export async function ProductHeader({ cta }: ProductHeaderProps) {
   return (
     <header className="site-header product-nav">
       <div className="site-header-inner site-header-inner--product">
-        <Link href="/" className="site-brand">
-          {tc("appName")}
+        <Link href="/" className="site-brand brand-lockup">
+          <BrandMark className="brand-lockup-mark" aria-hidden="true" />
+          <span>{tc("appName")}</span>
         </Link>
 
         <nav className="site-nav-product" aria-label="Product">

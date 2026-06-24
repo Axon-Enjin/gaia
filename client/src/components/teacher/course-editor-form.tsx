@@ -11,6 +11,7 @@ import {
 } from "@/app/actions/course-editor";
 import { PublishButton } from "@/components/publish-button";
 import { DeleteCourseButton } from "@/components/teacher/delete-course-button";
+import { IconArrowRight } from "@/components/icons";
 import type { TeacherCourseEditorDetail } from "@/lib/courses/teacher";
 import type { EditorQuestion } from "@/lib/courses/detail";
 
@@ -37,9 +38,9 @@ export function CourseEditorForm({
           <PublishButton courseId={course.id} />
           <Link
             href={`/teacher/courses/${course.id}`}
-            className="text-sm font-medium text-primary-brand hover:underline"
+            className="inline-flex items-center gap-1 text-sm font-medium text-primary-brand hover:underline"
           >
-            {t("previewCourse")} →
+            {t("previewCourse")} <IconArrowRight aria-hidden="true" />
           </Link>
         </div>
         <DeleteCourseButton
@@ -76,7 +77,7 @@ function CourseSettingsSection({
               name="title"
               defaultValue={course.title}
               required
-              className="rounded-lg border border-border-brand bg-surface-brand px-3 py-2"
+              className="field-input"
             />
           </label>
           <label className="flex flex-col gap-1.5 text-sm">
@@ -85,7 +86,7 @@ function CourseSettingsSection({
               name="industry"
               defaultValue={course.industry}
               required
-              className="rounded-lg border border-border-brand bg-surface-brand px-3 py-2"
+              className="field-input"
             />
           </label>
         </div>
@@ -98,20 +99,18 @@ function CourseSettingsSection({
             max={100}
             defaultValue={course.passing_score}
             required
-            className="rounded-lg border border-border-brand bg-surface-brand px-3 py-2"
+            className="field-input"
           />
           <span className="text-xs text-text-muted-brand">{t("editorPassingScoreHint")}</span>
         </label>
         <div className="flex items-center gap-3">
-          <button
-            type="submit"
-            disabled={pending}
-            className="site-btn site-btn-primary min-h-10"
-          >
+          <button type="submit" disabled={pending} className="btn btn-primary btn-sm">
             {pending ? t("editorSaving") : t("editorSaveSettings")}
           </button>
           {state.ok && (
-            <span className="text-sm text-growth-brand">{t("editorSaved")}</span>
+            <span className="text-sm font-semibold text-growth-strong-brand">
+              {t("editorSaved")}
+            </span>
           )}
           {state.error && (
             <span role="alert" className="text-sm text-error-brand">
@@ -153,7 +152,7 @@ function LessonEditorSection({
             name="title"
             defaultValue={lesson.title}
             required
-            className="rounded-lg border border-border-brand bg-bg-brand/50 px-3 py-2"
+            className="field-input"
           />
         </label>
         <label className="flex flex-col gap-1.5 text-sm">
@@ -161,7 +160,7 @@ function LessonEditorSection({
           <select
             name="difficulty"
             defaultValue={lesson.difficulty}
-            className="rounded-lg border border-border-brand bg-bg-brand/50 px-3 py-2"
+            className="field-select"
           >
             <option value="beginner">{t("editorDifficultyBeginner")}</option>
             <option value="intermediate">{t("editorDifficultyIntermediate")}</option>
@@ -175,19 +174,17 @@ function LessonEditorSection({
             defaultValue={lesson.body_md}
             required
             rows={8}
-            className="rounded-lg border border-border-brand bg-bg-brand/50 px-3 py-2 font-mono text-sm"
+            className="field-textarea font-mono text-sm"
           />
         </label>
         <div className="flex items-center gap-3">
-          <button
-            type="submit"
-            disabled={pending}
-            className="site-btn min-h-10 rounded-lg border border-border-brand bg-surface-brand px-4 text-sm font-medium hover:bg-bg-brand/80 disabled:opacity-60"
-          >
+          <button type="submit" disabled={pending} className="btn btn-secondary btn-sm">
             {pending ? t("editorSaving") : t("editorSaveLesson")}
           </button>
           {state.ok && (
-            <span className="text-sm text-growth-brand">{t("editorSaved")}</span>
+            <span className="text-sm font-semibold text-growth-strong-brand">
+              {t("editorSaved")}
+            </span>
           )}
           {state.error && (
             <span role="alert" className="text-sm text-error-brand">
@@ -257,7 +254,7 @@ function QuizEditorForm({
             name="prompt"
             defaultValue={question.prompt}
             required
-            className="rounded-lg border border-border-brand bg-surface-brand px-3 py-2"
+            className="field-input"
           />
         </label>
         <fieldset className="flex flex-col gap-2">
@@ -276,7 +273,7 @@ function QuizEditorForm({
                 onChange={(e) => updateChoice(i, e.target.value)}
                 required={i < 2}
                 placeholder={t("editorChoicePlaceholder", { letter: String.fromCharCode(65 + i) })}
-                className="min-w-0 flex-1 rounded-lg border border-border-brand bg-surface-brand px-3 py-2 text-sm"
+                className="field-input min-w-0 flex-1 text-sm"
               />
             </div>
           ))}
@@ -290,7 +287,9 @@ function QuizEditorForm({
             {pending ? t("editorSaving") : t("editorSaveQuestion")}
           </button>
           {state.ok && (
-            <span className="text-sm text-growth-brand">{t("editorSaved")}</span>
+            <span className="text-sm font-semibold text-growth-strong-brand">
+              {t("editorSaved")}
+            </span>
           )}
           {state.error && (
             <span role="alert" className="text-sm text-error-brand">

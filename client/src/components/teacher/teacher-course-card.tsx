@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { PublishButton } from "@/components/publish-button";
 import { DeleteCourseButton } from "@/components/teacher/delete-course-button";
+import { IconArrowRight } from "@/components/icons";
 
 export interface TeacherCourseCardProps {
   id: string;
@@ -48,12 +49,16 @@ export function TeacherCourseCard({
               <div className="mb-2 flex flex-wrap items-center gap-2">
                 <span className="industry-pill">{industry}</span>
                 <span
-                  className={`rounded-full px-2 py-0.5 text-xs font-medium ${
+                  className={`inline-flex items-center gap-1 rounded-full px-2 py-0.5 text-xs font-semibold ${
                     isPublished
-                      ? "bg-growth-brand/10 text-growth-brand"
-                      : "bg-warning-brand/10 text-warning-brand"
+                      ? "bg-growth-brand/12 text-growth-strong-brand"
+                      : "bg-warning-brand/12 text-warning-brand"
                   }`}
                 >
+                  <span
+                    className={`h-1.5 w-1.5 rounded-full ${isPublished ? "bg-growth-strong-brand" : "bg-warning-brand"}`}
+                    aria-hidden
+                  />
                   {isPublished ? statusPublishedLabel : statusDraftLabel}
                 </span>
                 {lessonCount > 0 && (
@@ -65,8 +70,9 @@ export function TeacherCourseCard({
               <h2 className="font-semibold text-text-brand hover:text-soil-brand">
                 {title}
               </h2>
-              <p className="mt-2 text-sm font-medium text-growth-brand">
-                {isPublished ? previewLabel : editLabel} →
+              <p className="mt-2 inline-flex items-center gap-1 text-sm font-semibold text-growth-strong-brand">
+                {isPublished ? previewLabel : editLabel}
+                <IconArrowRight aria-hidden="true" />
               </p>
             </div>
           </div>

@@ -4,6 +4,7 @@ import { useCallback, useEffect, useState } from "react";
 import Link from "next/link";
 import { useTranslations } from "next-intl";
 import { LocaleSwitcher } from "@/components/locale-switcher";
+import { BrandMark } from "@/components/brand/brand-mark";
 import { navCtaHref } from "@/lib/auth/nav-cta";
 
 interface LandingNavProps {
@@ -12,9 +13,9 @@ interface LandingNavProps {
 }
 
 const SECTIONS = [
-  { href: "#features", key: "navFeatures" as const, id: "features" },
-  { href: "#demo", key: "navDemo" as const, id: "demo" },
-  { href: "#how-it-works", key: "navHow" as const, id: "how-it-works" },
+  { href: "#journey", key: "navStory" as const, id: "journey" },
+  { href: "#trust", key: "navTrust" as const, id: "trust" },
+  { href: "#faq", key: "navFaq" as const, id: "faq" },
   { href: "#waitlist", key: "navWaitlist" as const, id: "waitlist" },
 ];
 
@@ -70,8 +71,13 @@ export function LandingNav({ signedIn, dashboardHref }: LandingNavProps) {
   return (
     <header className="site-header landing-nav">
       <div className="site-header-inner">
-        <Link href="/" className="site-brand" onClick={closeMobile}>
-          {tc("appName")}
+        <Link
+          href="/"
+          className="site-brand brand-lockup"
+          onClick={closeMobile}
+        >
+          <BrandMark className="brand-lockup-mark" aria-hidden="true" />
+          <span>{tc("appName")}</span>
         </Link>
 
         <nav className="site-nav-desktop" aria-label="Landing sections">
@@ -88,7 +94,7 @@ export function LandingNav({ signedIn, dashboardHref }: LandingNavProps) {
 
         <div className="site-header-actions">
           <LocaleSwitcher />
-          <Link href={ctaHref} className="site-btn site-btn-primary">
+          <Link href={ctaHref} className="btn btn-primary btn-sm">
             {ctaLabel}
           </Link>
 
@@ -133,7 +139,7 @@ export function LandingNav({ signedIn, dashboardHref }: LandingNavProps) {
         <div className="site-nav-mobile-actions">
           <Link
             href={ctaHref}
-            className="site-btn site-btn-primary w-full justify-center"
+            className="btn btn-primary btn-block"
             onClick={closeMobile}
           >
             {ctaLabel}

@@ -8,6 +8,7 @@ const initial: AuthState = {};
 
 export function AuthForm({ mode }: { mode: "sign-in" | "sign-up" }) {
   const t = useTranslations("Auth");
+  const tc = useTranslations("Common");
   const action = mode === "sign-in" ? signInAction : signUpAction;
   const [state, formAction, pending] = useActionState(action, initial);
 
@@ -17,8 +18,8 @@ export function AuthForm({ mode }: { mode: "sign-in" | "sign-up" }) {
 
   return (
     <form action={formAction} className="flex flex-col gap-4">
-      <div className="flex flex-col gap-1.5">
-        <label htmlFor="email" className="text-sm font-medium">
+      <div className="field">
+        <label htmlFor="email" className="field-label">
           {t("email")}
         </label>
         <input
@@ -27,12 +28,12 @@ export function AuthForm({ mode }: { mode: "sign-in" | "sign-up" }) {
           type="email"
           required
           autoComplete="email"
-          className="rounded border border-gray-300 px-3 py-2"
+          className="field-input"
         />
       </div>
 
-      <div className="flex flex-col gap-1.5">
-        <label htmlFor="password" className="text-sm font-medium">
+      <div className="field">
+        <label htmlFor="password" className="field-label">
           {t("password")}
         </label>
         <input
@@ -42,20 +43,20 @@ export function AuthForm({ mode }: { mode: "sign-in" | "sign-up" }) {
           required
           minLength={8}
           autoComplete={mode === "sign-in" ? "current-password" : "new-password"}
-          className="rounded border border-gray-300 px-3 py-2"
+          className="field-input"
         />
       </div>
 
       {mode === "sign-up" ? (
-        <div className="flex flex-col gap-1.5">
-          <label htmlFor="role" className="text-sm font-medium">
+        <div className="field">
+          <label htmlFor="role" className="field-label">
             {t("roleLabel")}
           </label>
           <select
             id="role"
             name="role"
             defaultValue="learner"
-            className="rounded border border-gray-300 px-3 py-2"
+            className="field-select"
           >
             <option value="learner">{t("roleLearner")}</option>
             <option value="teacher">{t("roleTeacher")}</option>
@@ -66,15 +67,21 @@ export function AuthForm({ mode }: { mode: "sign-in" | "sign-up" }) {
       <button
         type="submit"
         disabled={pending}
-        className="rounded bg-gray-900 px-5 py-2.5 text-white hover:bg-gray-800 disabled:opacity-60"
+        className="btn btn-primary btn-block mt-1"
       >
-        {mode === "sign-in" ? t("signIn") : t("signUp")}
+        {pending
+          ? tc("loading")
+          : mode === "sign-in"
+            ? t("signIn")
+            : t("signUp")}
       </button>
 
       {errorKey ? (
         <p
           role={isInfo ? "status" : "alert"}
-          className={isInfo ? "text-sm text-green-700" : "text-sm text-red-700"}
+          className={
+            isInfo ? "inline-alert inline-alert--success" : "inline-alert inline-alert--error"
+          }
         >
           {t(`error.${errorKey}`)}
         </p>

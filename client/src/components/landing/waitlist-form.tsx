@@ -77,10 +77,7 @@ export function WaitlistForm() {
 
   if (state === "success") {
     return (
-      <p
-        className="rounded-lg border border-growth-brand/30 bg-growth-brand/10 px-4 py-3 text-growth-brand"
-        role="status"
-      >
+      <p className="inline-alert inline-alert--success" role="status">
         {alreadyOnList ? t("waitlistAlready") : t("waitlistSuccess")}
       </p>
     );
@@ -88,33 +85,35 @@ export function WaitlistForm() {
 
   return (
     <form onSubmit={handleSubmit} className="flex flex-col gap-3">
-      <label htmlFor="waitlist-email" className="sr-only">
-        {t("waitlistEmail")}
-      </label>
-      <div className="flex flex-col gap-2 sm:flex-row">
-        <input
-          id="waitlist-email"
-          type="email"
-          name="email"
-          required
-          autoComplete="email"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          placeholder={t("waitlistEmail")}
-          disabled={state === "submitting"}
-          className="min-h-11 flex-1 rounded-lg border border-border-brand bg-surface-brand px-4 text-text-brand placeholder:text-text-muted-brand focus:border-primary-brand focus:outline-none focus:ring-2 focus:ring-primary-brand/30 disabled:opacity-60"
-        />
-        <button
-          type="submit"
-          disabled={state === "submitting"}
-          className="min-h-11 shrink-0 rounded-lg bg-primary-brand px-6 font-medium text-white hover:bg-primary-hover-brand disabled:opacity-60"
-        >
-          {state === "submitting" ? t("waitlistSubmitting") : t("waitlistSubmit")}
-        </button>
+      <div className="field">
+        <label htmlFor="waitlist-email" className="sr-only field-label">
+          {t("waitlistEmail")}
+        </label>
+        <div className="flex flex-col gap-2 sm:flex-row">
+          <input
+            id="waitlist-email"
+            type="email"
+            name="email"
+            required
+            autoComplete="email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            placeholder={t("waitlistEmail")}
+            disabled={state === "submitting"}
+            className="field-input min-h-11 flex-1"
+          />
+          <button
+            type="submit"
+            disabled={state === "submitting"}
+            className="btn btn-primary shrink-0"
+          >
+            {state === "submitting" ? t("waitlistSubmitting") : t("waitlistSubmit")}
+          </button>
+        </div>
+        <p className="field-hint">{t("waitlistConsent")}</p>
       </div>
-      <p className="text-sm text-text-muted-brand">{t("waitlistConsent")}</p>
       {state === "error" && errorCode && (
-        <p className="text-sm text-error-brand" role="alert">
+        <p className="inline-alert inline-alert--error" role="alert">
           {t(`waitlistError.${errorCode}`)}
         </p>
       )}

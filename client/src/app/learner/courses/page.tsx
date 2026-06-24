@@ -2,6 +2,8 @@ import Link from "next/link";
 import { getTranslations } from "next-intl/server";
 import { CourseCard } from "@/components/product/course-card";
 import { getPublishedCourses } from "@/lib/courses/catalog";
+import { EmptyState } from "@/components/states/empty-state";
+import { IconBook } from "@/components/icons";
 
 export default async function LearnerCoursesPage() {
   const t = await getTranslations("Catalog");
@@ -10,7 +12,7 @@ export default async function LearnerCoursesPage() {
   return (
     <>
       <div className="mb-8 flex flex-col gap-2">
-        <p className="text-xs font-semibold uppercase tracking-widest text-growth-brand">
+        <p className="text-xs font-semibold uppercase tracking-widest text-growth-strong-brand">
           {t("eyebrow")}
         </p>
         <h1 className="text-2xl font-bold tracking-tight text-soil-brand sm:text-3xl">
@@ -22,15 +24,15 @@ export default async function LearnerCoursesPage() {
       </div>
 
       {courses.length === 0 ? (
-        <div className="callout-card text-center">
-          <p className="text-text-muted-brand">{t("empty")}</p>
-          <Link
-            href="/learner"
-            className="mt-3 inline-block text-sm font-medium text-primary-brand hover:underline"
-          >
-            ← {t("backHome")}
-          </Link>
-        </div>
+        <EmptyState
+          icon={<IconBook />}
+          text={t("empty")}
+          action={
+            <Link href="/learner" className="btn btn-secondary btn-sm">
+              {t("backHome")}
+            </Link>
+          }
+        />
       ) : (
         <ul className="flex flex-col gap-4">
           {courses.map((course) => (

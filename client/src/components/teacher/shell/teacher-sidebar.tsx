@@ -1,6 +1,8 @@
 import Link from "next/link";
 import { AccountBlock } from "@/components/shell/account-block";
 import { NavItem } from "@/components/shell/nav-item";
+import { BrandLockup } from "@/components/brand/brand-mark";
+import { IconHome, IconLayers, IconUser } from "@/components/icons";
 
 export interface TeacherSidebarProps {
   pathname: string;
@@ -32,11 +34,8 @@ export function TeacherSidebar({
   return (
     <aside className="dashboard-sidebar" aria-label="Teacher navigation">
       <div className="border-b border-border-brand px-4 py-4">
-        <Link
-          href="/teacher"
-          className="text-lg font-bold tracking-tight text-soil-brand"
-        >
-          Aniskwela
+        <Link href="/teacher" aria-label="Aniskwela">
+          <BrandLockup />
         </Link>
       </div>
 
@@ -44,19 +43,19 @@ export function TeacherSidebar({
         <NavItem
           href="/teacher"
           label={navLabels.home}
-          icon="⌂"
+          icon={<IconHome />}
           active={isHomeActive(pathname)}
         />
         <NavItem
           href="/teacher/courses"
           label={navLabels.courses}
-          icon="☰"
+          icon={<IconLayers />}
           active={isCoursesActive(pathname)}
         />
         <NavItem
           href="/teacher/profile"
           label={navLabels.profile}
-          icon="◉"
+          icon={<IconUser />}
           active={isProfileActive(pathname)}
         />
       </nav>

@@ -8,6 +8,43 @@ import {
 } from "@/lib/credentials/verify-credential";
 import { LandingNav } from "@/components/landing/landing-nav";
 import { stellarExplorerTxUrl } from "@/lib/credentials/stellar-explorer";
+import { CredentialCard } from "@/components/credential-card";
+import { IconShieldCheck, IconCheck, IconArrowRight } from "@/components/icons";
+
+function CheckRow({
+  label,
+  pass,
+  passLabel,
+  failLabel,
+  naLabel,
+}: {
+  label: string;
+  pass: boolean | null | undefined;
+  passLabel: string;
+  failLabel: string;
+  naLabel?: string;
+}) {
+  const state = pass === true ? "pass" : pass === false ? "fail" : "na";
+  const text =
+    state === "pass" ? passLabel : state === "fail" ? failLabel : naLabel ?? "—";
+  return (
+    <div className="flex items-center justify-between gap-2">
+      <dt className="text-text-muted-brand">{label}</dt>
+      <dd
+        className={`inline-flex items-center gap-1 font-semibold ${
+          state === "pass"
+            ? "text-growth-strong-brand"
+            : state === "fail"
+              ? "text-error-brand"
+              : "text-text-muted-brand"
+        }`}
+      >
+        {state === "pass" && <IconCheck aria-hidden="true" />}
+        {text}
+      </dd>
+    </div>
+  );
+}
 
 export default async function VerifyCredentialPage({
   params,
@@ -29,99 +66,103 @@ export default async function VerifyCredentialPage({
   return (
     <div className="product-page min-h-screen">
       <LandingNav signedIn={false} dashboardHref={null} />
-      <main className="site-container py-10 sm:py-14">
+      <main id="main-content" className="site-container py-10 sm:py-14">
         <div className="mx-auto max-w-lg">
-          <p className="text-xs font-semibold uppercase tracking-wider text-growth-brand">
+          <p className="text-xs font-semibold uppercase tracking-wider text-growth-strong-brand">
             {t("eyebrow")}
           </p>
           <h1 className="mt-2 text-2xl font-bold text-soil-brand sm:text-3xl">
             {t("title")}
           </h1>
 
+          {/* Verdict banner */}
           <div
-            className={`mt-8 rounded-2xl border px-6 py-8 ${
+            className={`mt-6 flex items-center gap-3 rounded-[var(--radius-surface)] border px-4 py-3 ${
               result.valid
                 ? "border-growth-brand/40 bg-growth-brand/10"
                 : "border-error-brand/40 bg-error-brand/5"
             }`}
             role="status"
           >
+            <span
+              className={`flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-full text-lg ${
+                result.valid
+                  ? "bg-growth-brand/20 text-growth-strong-brand"
+                  : "bg-error-brand/15 text-error-brand"
+              }`}
+              aria-hidden
+            >
+              {result.valid ? <IconShieldCheck /> : "!"}
+            </span>
             <p
               className={`text-lg font-bold ${
-                result.valid ? "text-growth-brand" : "text-error-brand"
+                result.valid ? "text-growth-strong-brand" : "text-error-brand"
               }`}
             >
               {result.valid ? t("valid") : t("invalid")}
             </p>
-
-            {result.mock_anchor && (
-              <p className="mt-2 text-sm text-text-muted-brand">{t("mockNote")}</p>
-            )}
-
-            <dl className="mt-6 flex flex-col gap-3 text-sm">
-              <div>
-                <dt className="text-text-muted-brand">{t("course")}</dt>
-                <dd className="font-medium text-text-brand">{result.course}</dd>
-              </div>
-              <div>
-                <dt className="text-text-muted-brand">{t("learner")}</dt>
-                <dd className="font-medium text-text-brand">{result.learner}</dd>
-              </div>
-              <div>
-                <dt className="text-text-muted-brand">{t("issued")}</dt>
-                <dd className="font-medium text-text-brand">
-                  {new Date(result.issued_at).toLocaleDateString()}
-                </dd>
-              </div>
-              {result.score !== null && (
-                <div>
-                  <dt className="text-text-muted-brand">{t("score")}</dt>
-                  <dd className="font-medium text-text-brand">{result.score}%</dd>
-                </div>
-              )}
-              <div>
-                <dt className="text-text-muted-brand">{t("signatureCheck")}</dt>
-                <dd className="font-medium text-text-brand">
-                  {result.checks.signature ? t("pass") : t("fail")}
-                </dd>
-              </div>
-              {!result.mock_anchor && (
-                <div>
-                  <dt className="text-text-muted-brand">{t("chainCheck")}</dt>
-                  <dd className="font-medium text-text-brand">
-                    {result.checks.hash_on_chain === true
-                      ? t("pass")
-                      : result.checks.hash_on_chain === false
-                        ? t("fail")
-                        : t("na")}
-                  </dd>
-                </div>
-              )}
-              {result.stellar_tx_hash && (
-                <div>
-                  <dt className="text-text-muted-brand">{t("stellarTx")}</dt>
-                  <dd className="break-all font-mono text-xs text-text-brand">
-                    {result.stellar_tx_hash}
-                  </dd>
-                  {stellarUrl && (
-                    <dd className="mt-2">
-                      <a
-                        href={stellarUrl}
-                        className="text-sm font-semibold text-primary-brand underline hover:no-underline"
-                        target="_blank"
-                        rel="noopener noreferrer"
-                      >
-                        {t("viewOnStellar")}
-                      </a>
-                    </dd>
-                  )}
-                </div>
-              )}
-            </dl>
           </div>
 
-          <p className="mt-8 text-center text-sm text-text-muted-brand">
-            <Link href="/courses" className="font-semibold text-primary-brand underline">
+          {/* The credential itself */}
+          <div className="mt-6">
+            <CredentialCard
+              eyebrow={t("eyebrow")}
+              learnerName={result.learner}
+              courseTitle={result.course}
+              metaLine={`${t("issued")}: ${new Date(
+                result.issued_at,
+              ).toLocaleDateString()}${
+                result.score !== null
+                  ? ` · ${t("score")}: ${result.score}%`
+                  : ""
+              }`}
+              mock={result.mock_anchor}
+              mockLabel={t("mockNote")}
+            />
+          </div>
+
+          {/* Verification checks */}
+          <dl className="mt-6 flex flex-col gap-2 rounded-[var(--radius-surface)] border border-border-brand bg-surface-brand p-4 text-sm">
+            <CheckRow
+              label={t("signatureCheck")}
+              pass={result.checks.signature}
+              passLabel={t("pass")}
+              failLabel={t("fail")}
+            />
+            {!result.mock_anchor && (
+              <CheckRow
+                label={t("chainCheck")}
+                pass={result.checks.hash_on_chain}
+                passLabel={t("pass")}
+                failLabel={t("fail")}
+                naLabel={t("na")}
+              />
+            )}
+            {result.stellar_tx_hash && (
+              <div className="mt-1 border-t border-border-brand pt-3">
+                <dt className="text-text-muted-brand">{t("stellarTx")}</dt>
+                <dd className="mt-1 break-all font-mono text-xs text-text-brand">
+                  {result.stellar_tx_hash}
+                </dd>
+                {stellarUrl && (
+                  <dd className="mt-2">
+                    <a
+                      href={stellarUrl}
+                      className="inline-flex items-center gap-1 text-sm font-semibold text-primary-brand hover:underline"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      {t("viewOnStellar")}
+                      <IconArrowRight aria-hidden="true" />
+                    </a>
+                  </dd>
+                )}
+              </div>
+            )}
+          </dl>
+
+          <p className="mt-8 text-center">
+            <Link href="/courses" className="btn btn-secondary btn-sm">
               {t("browseCourses")}
             </Link>
           </p>
