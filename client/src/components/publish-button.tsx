@@ -17,7 +17,11 @@ export function PublishButton({ courseId }: { courseId: string }) {
   );
 
   if (state.ok) {
-    return <span className="text-sm text-green-700">{t("published")}</span>;
+    return (
+      <span className="shrink-0 text-sm font-medium text-growth-brand">
+        {t("published")}
+      </span>
+    );
   }
 
   return (
@@ -26,12 +30,12 @@ export function PublishButton({ courseId }: { courseId: string }) {
       <button
         type="submit"
         disabled={pending}
-        className="rounded bg-gray-900 px-3 py-1 text-sm text-white hover:bg-gray-800 disabled:opacity-60"
+        className="min-h-9 rounded-lg bg-growth-brand px-3 py-1.5 text-sm font-medium text-white hover:opacity-90 disabled:opacity-60"
       >
         {pending ? t("publishing") : t("publish")}
       </button>
       {state.error ? (
-        <span role="alert" className="text-sm text-red-700">
+        <span role="alert" className="text-sm text-error-brand">
           {t(`publishError.${state.error}`)}
         </span>
       ) : null}

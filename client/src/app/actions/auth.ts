@@ -39,7 +39,7 @@ export async function signInAction(
   if (error) return { error: "sign_in_failed" };
 
   const profile = await ensureProfile();
-  redirect(profile?.role === "teacher" ? "/teacher" : "/courses");
+  redirect(profile?.role === "teacher" ? "/teacher" : "/learner");
 }
 
 /** Sign up with email/password + desired role; role is stored in metadata. */
@@ -80,7 +80,7 @@ export async function signUpAction(
     if (signInError) return { error: "sign_up_failed" };
 
     await ensureProfile();
-    redirect(parsed.data.role === "teacher" ? "/teacher" : "/courses");
+    redirect(parsed.data.role === "teacher" ? "/teacher" : "/learner");
   }
 
   const { data, error } = await supabase.auth.signUp({
@@ -107,7 +107,7 @@ export async function signUpAction(
   // mailer_autoconfirm on → session exists immediately; else confirm via email.
   if (data.session) {
     await ensureProfile();
-    redirect(parsed.data.role === "teacher" ? "/teacher" : "/courses");
+    redirect(parsed.data.role === "teacher" ? "/teacher" : "/learner");
   }
   return { error: "confirm_email" };
 }

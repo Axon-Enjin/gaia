@@ -7,7 +7,7 @@
  */
 
 export interface GenerationHints {
-  industry: string;
+  industry?: string;
   titleHint?: string;
 }
 
@@ -20,12 +20,17 @@ export function wrapUntrusted(
 ): string {
   const clipped = sourceText.slice(0, MAX_SOURCE_CHARS);
 
-  const hintLines = [
-    `industry: ${hints.industry}`,
-    hints.titleHint ? `title_hint: ${hints.titleHint}` : null,
-  ]
-    .filter(Boolean)
-    .join("\n");
+  const teacherOverrides = [
+    hints.industry ? `industry override: ${hints.industry}` : null,
+    hints.titleHint ? `title override: ${hints.titleHint}` : null,
+  ].filter(Boolean);
+
+  const hintBlock =
+    teacherOverrides.length > 0
+      ? ["Teacher overrides (optional — otherwise infer from the document):", ...teacherOverrides].join(
+          "\n",
+        )
+      : "Infer the course title and industry from the source document (see system rules).";
 
   // Variable per-request hints go LAST so the static system prefix stays cached.
   return [
@@ -37,7 +42,6 @@ export function wrapUntrusted(
     clipped,
     "<<<SOURCE_DOCUMENT_END>>>",
     "",
-    "Generation hints (from the teacher):",
-    hintLines,
+    hintBlock,
   ].join("\n");
 }

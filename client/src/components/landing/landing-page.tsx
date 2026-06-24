@@ -1,4 +1,5 @@
 import Link from "next/link";
+import type { User } from "@supabase/supabase-js";
 import { getTranslations } from "next-intl/server";
 import { LandingNav } from "@/components/landing/landing-nav";
 import { HeroSection } from "@/components/landing/hero-section";
@@ -10,11 +11,11 @@ import { MockupsSection } from "@/components/landing/mockups-section";
 import { HowItWorksSection } from "@/components/landing/how-it-works-section";
 import { FaqSection } from "@/components/landing/faq-section";
 import { ClosingCtaSection } from "@/components/landing/closing-cta-section";
-import { getSessionUser, ensureProfile } from "@/lib/auth";
+import { getSessionDashboardHref } from "@/lib/auth/dashboard-href";
 import { signOutAction } from "@/app/actions/auth";
 
 interface LandingPageProps {
-  user: Awaited<ReturnType<typeof getSessionUser>>;
+  user: User | null;
   dashboardHref: string | null;
 }
 
@@ -91,16 +92,8 @@ export async function LandingPage({ user, dashboardHref }: LandingPageProps) {
 
 /** Resolve dashboard link for signed-in users. */
 export async function resolveDashboardHref(): Promise<{
-  user: Awaited<ReturnType<typeof getSessionUser>>;
+  user: User | null;
   dashboardHref: string | null;
 }> {
-  const user = await getSessionUser();
-  if (!user) return { user: null, dashboardHref: null };
-
-  const profile = await ensureProfile();
-  if (!profile) return { user, dashboardHref: "/courses" };
-
-  if (profile.role === "teacher") return { user, dashboardHref: "/teacher" };
-  if (profile.role === "funder") return { user, dashboardHref: "/courses" };
-  return { user, dashboardHref: "/courses" };
+  return getSessionDashboardHref();
 }

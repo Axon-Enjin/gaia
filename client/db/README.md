@@ -11,10 +11,11 @@ Migrations are **forward-only** and must stay **backward-compatible for one rele
 | `0001_init.sql` | 9 tables (`profiles`, `courses`, `lessons`, `quiz_questions`, `enrollments`, `merit_ledger`, `badges`, `credentials`, `grant_programs`), indexes, RLS |
 | `0002_course_sources_storage.sql` | Private Storage bucket `course-sources` + teacher-scoped object policies |
 | `0003_waitlist.sql` | PRD-F8 waitlist table (service-role insert via `POST /api/waitlist` only) |
+| `0004_dev_demo_course.sql` | Demo lessons + quiz for dev published test course (optional; idempotent) |
 
 ## Apply to a Supabase project
 
-**Dev project:** migrations `0001`–`0003` applied as of 2026-06-23 (issue #5 + PRD-F8).
+**Dev project:** migrations `0001`–`0004` applied as of 2026-06-23 (issue #5 + PRD-F8 + demo seed).
 
 For a fresh project:
 

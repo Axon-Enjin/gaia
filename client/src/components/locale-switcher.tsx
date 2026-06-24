@@ -6,7 +6,13 @@ import { useRouter } from "next/navigation";
 import { setLocale } from "@/app/actions/locale";
 import type { Locale } from "@/i18n/request";
 
-/** Minimal EN / Filipino toggle. No client-side i18n bundle beyond next-intl. */
+const OPTIONS: { code: Locale; short: string; labelKey: "english" | "filipino" }[] =
+  [
+    { code: "en", short: "EN", labelKey: "english" },
+    { code: "fil", short: "FIL", labelKey: "filipino" },
+  ];
+
+/** Compact EN / FIL sliding-pill locale switcher. */
 export function LocaleSwitcher() {
   const t = useTranslations("Common");
   const active = useLocale();
@@ -21,32 +27,28 @@ export function LocaleSwitcher() {
     });
   }
 
-  const options: { code: Locale; label: string }[] = [
-    { code: "en", label: t("english") },
-    { code: "fil", label: t("filipino") },
-  ];
-
   return (
     <div
-      className="inline-flex rounded border border-gray-300 text-sm"
+      className={`locale-switch ${pending ? "is-pending" : ""}`}
       role="group"
-      aria-label="Language"
+      aria-label={t("localeGroup")}
     >
-      {options.map((opt) => (
+      <span
+        className="locale-switch-thumb"
+        data-locale={active}
+        aria-hidden
+      />
+      {OPTIONS.map((opt) => (
         <button
           key={opt.code}
           type="button"
           onClick={() => choose(opt.code)}
           disabled={pending}
+          className="locale-switch-option"
           aria-pressed={active === opt.code}
-          className={
-            "px-3 py-1 first:rounded-l last:rounded-r disabled:opacity-50 " +
-            (active === opt.code
-              ? "bg-gray-900 text-white"
-              : "bg-white text-gray-900 hover:bg-gray-100")
-          }
+          aria-label={t(opt.labelKey)}
         >
-          {opt.label}
+          {opt.short}
         </button>
       ))}
     </div>

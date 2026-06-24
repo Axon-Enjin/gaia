@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { redirect } from "next/navigation";
 import { getTranslations } from "next-intl/server";
-import { getSessionUser } from "@/lib/auth";
+import { ensureProfile, getSessionUser } from "@/lib/auth";
 import { AuthForm } from "@/components/auth-form";
 import { LocaleSwitcher } from "@/components/locale-switcher";
 
@@ -12,8 +12,11 @@ export default async function LoginPage({
 }: {
   searchParams: Promise<Search>;
 }) {
-  // Already signed in? Send to the catalog.
-  if (await getSessionUser()) {
+  const user = await getSessionUser();
+  if (user) {
+    const profile = await ensureProfile();
+    if (profile?.role === "teacher") redirect("/teacher");
+    if (profile?.role === "learner") redirect("/learner");
     redirect("/courses");
   }
 

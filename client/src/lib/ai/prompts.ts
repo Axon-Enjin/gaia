@@ -34,6 +34,7 @@ OUTPUT CONTRACT — respond with a SINGLE JSON object, no prose, no markdown fen
 }
 
 RULES:
+- Infer "title" and "industry" from the source document. Title: concise, learner-facing (max ~80 chars). Industry: pick the best-fit label from agriculture, health, finance, technology, education, trades — or a short custom label (1-3 words) when none fit.
 - Produce 1-5 modules; each module 1-6 lessons; each lesson 1-4 quiz questions.
 - The whole course must contain AT LEAST 3 quiz questions total.
 - Each quiz question has 2-4 plausible choices; answer_index is the 0-based index of the correct choice and MUST be within range.

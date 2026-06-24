@@ -12,14 +12,15 @@ import { quizCount as countQuiz, lessonCount as countLessons } from "@/lib/ai/co
 export const maxDuration = 120;
 
 const FieldsSchema = z.object({
-  industry: z.string().min(1).max(120),
+  industry: z.string().min(1).max(120).optional(),
   title_hint: z.string().max(300).optional(),
 });
 
 /**
  * POST /api/courses/generate  (PRD-F1, rfc-aniskwela-002 §3)
  *
- * multipart/form-data: file (PDF/text), industry, title_hint?
+ * multipart/form-data: file (PDF/text); optional industry, title_hint overrides.
+ * Title and industry are inferred from the document when overrides are omitted.
  * Persists a DRAFT course owned by the authenticated teacher. Never publishes.
  */
 export async function POST(req: Request) {
@@ -57,9 +58,17 @@ export async function POST(req: Request) {
     return Response.json({ error: "invalid_form" }, { status: 400 });
   }
 
+  const industryRaw = form.get("industry");
+  const titleRaw = form.get("title_hint");
   const parsedFields = FieldsSchema.safeParse({
-    industry: form.get("industry"),
-    title_hint: form.get("title_hint") || undefined,
+    industry:
+      typeof industryRaw === "string" && industryRaw.trim()
+        ? industryRaw.trim()
+        : undefined,
+    title_hint:
+      typeof titleRaw === "string" && titleRaw.trim()
+        ? titleRaw.trim()
+        : undefined,
   });
   if (!parsedFields.success) {
     return Response.json(
@@ -95,8 +104,12 @@ export async function POST(req: Request) {
   let course;
   try {
     course = await generateCourse(sourceText, {
-      industry: parsedFields.data.industry,
-      titleHint: parsedFields.data.title_hint,
+      ...(parsedFields.data.industry
+        ? { industry: parsedFields.data.industry }
+        : {}),
+      ...(parsedFields.data.title_hint
+        ? { titleHint: parsedFields.data.title_hint }
+        : {}),
     });
   } catch (err) {
     if (err instanceof CourseGenerationError) {
@@ -108,14 +121,13 @@ export async function POST(req: Request) {
   }
 
   // --- Persist as draft (RLS enforces teacher ownership) ---
-  const draft = await persistDraftCourse(supabase, user.id, course, {
-    industry: parsedFields.data.industry,
-  });
+  const draft = await persistDraftCourse(supabase, user.id, course);
 
   return Response.json({
     course_id: draft.courseId,
     status: "draft",
     title: course.title,
+    industry: course.industry,
     lesson_count: countLessons(course),
     quiz_count: countQuiz(course),
   });

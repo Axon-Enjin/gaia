@@ -22,14 +22,14 @@ export async function persistDraftCourse(
   supabase: SupabaseClient,
   teacherId: string,
   course: Course,
-  meta: { industry: string; sourceObjectPath?: string },
+  meta: { sourceObjectPath?: string } = {},
 ): Promise<PersistedDraft> {
   const { data: courseRow, error: courseError } = await supabase
     .from("courses")
     .insert({
       teacher_id: teacherId,
       title: course.title,
-      industry: meta.industry,
+      industry: course.industry,
       mode: "ai_assist",
       status: "draft",
       source_object_path: meta.sourceObjectPath ?? null,

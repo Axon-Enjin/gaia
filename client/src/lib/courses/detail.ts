@@ -21,6 +21,7 @@ export interface CourseDetail {
   id: string;
   title: string;
   industry: string;
+  passing_score: number;
   lessons: DetailLesson[];
 }
 
@@ -45,7 +46,7 @@ export async function getPublishedCourseDetail(
 
   const { data: course } = await supabase
     .from("courses")
-    .select("id, title, industry")
+    .select("id, title, industry, passing_score")
     .eq("id", courseId)
     .eq("status", "published")
     .maybeSingle();
@@ -78,6 +79,7 @@ export async function getPublishedCourseDetail(
     id: course.id,
     title: course.title,
     industry: course.industry,
+    passing_score: course.passing_score as number,
     lessons: lessonRows.map((l) => ({
       id: l.id,
       order_index: l.order_index,

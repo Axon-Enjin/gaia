@@ -1,4 +1,9 @@
-import { getGenerationClient, getMiniClient } from "@/lib/ai/client";
+import {
+  getGenerationClient,
+  getGenerationModel,
+  getMiniClient,
+  getMiniModel,
+} from "@/lib/ai/client";
 import {
   COURSE_SYSTEM_PROMPT,
   REPAIR_SYSTEM_PROMPT,
@@ -56,7 +61,7 @@ export async function generateCourse(
   try {
     const client = getGenerationClient();
     const res = await client.chat.completions.create({
-      model: "", // deployment is set on the client; ignored on Azure
+      model: getGenerationModel(),
       max_completion_tokens: MAX_OUTPUT_TOKENS,
       response_format: { type: "json_object" },
       messages: [
@@ -94,7 +99,7 @@ async function repairCourseJson(
   try {
     const client = getMiniClient();
     const res = await client.chat.completions.create({
-      model: "",
+      model: getMiniModel(),
       max_completion_tokens: MAX_OUTPUT_TOKENS,
       response_format: { type: "json_object" },
       messages: [

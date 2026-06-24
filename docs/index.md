@@ -82,29 +82,28 @@ Quick triage an agent runs at the start of a session. Anything that fails gets s
 
 ## 6. Build Progress (M3 — living tracker)
 
-The application lives in **`client/`** (Next.js 16.2.9, Supabase, Azure AI Foundry). Migrations: `client/db/migrations/` (`0001_init`, `0002_course_sources_storage`, `0003_waitlist`).
+The application lives in **`client/`** (Next.js 16.2.9, Supabase, Azure AI Foundry). Migrations: `client/db/migrations/` (`0001_init`, `0002_course_sources_storage`, `0003_waitlist`, `0004_dev_demo_course`).
 
 | PRD-F# | Feature | Status | Notes |
 |--------|---------|--------|-------|
 | F1 | AI course generation | **Done** | `POST /api/courses/generate`, RFC-002 |
-| F2 | Course viewer & quiz | **Partial** | Read-only catalog + lesson display; no enrollment, interactive quiz, or completion API |
-| F3 | Gamification & merit ledger | **Not started** | Schema ready; no XP/streak/badge UI or APIs |
+| F2 | Course viewer & quiz | **Done** | Enroll, lesson reader, server-graded quiz, progress JSON |
+| F3 | Gamification & merit ledger | **Done** | `merit_ledger` + badges + learner dashboard (`/learner`) |
 | F4 | VC issuance | **Not started** | RFC-001; `lib/credentials/` not yet built |
 | F5 | Public verifier | **Not started** | `GET /api/verify/[id]` not yet built |
 | F6 | Teacher dashboard | **Partial** | Upload/generate + publish; no course editor, analytics, passing-score UI |
-| F7 | Learner dashboard & wallet | **Not started** | No learner home, credential wallet, or grant status |
-| F8 | Landing + waitlist | **Done** | Brand Mode `/`, `POST /api/waitlist`, PR [#14](https://github.com/Axon-Enjin/gaia/pull/14) |
-| F9 | Localization EN/Fil | **Partial** | `next-intl` + locale switcher on landing, auth, catalog; not all app surfaces |
+| F7 | Learner dashboard & wallet | **Partial** | `/learner` dashboard; no credential wallet yet |
+| F8 | Landing + waitlist | **Done** | Brand Mode `/`, `POST /api/waitlist`, PR [#14](https://github.com/Axon-Enjin/feat/prd-f8-landing-waitlist) |
+| F9 | Localization EN/Fil | **Partial** | `next-intl` + locale switcher on landing, auth, catalog, learner |
 | F10 | Funder grant (mock) | **Not started** | Schema ready; no funder UI or `/api/grants/evaluate` |
 | F11 | Freighter wallet | **Not started** | Should-Have demo |
 | F12–F15 | Phase 1 / out of MVP | **Deferred** | Per PRD §6 |
 
 ### Suggested next PRDs (no blockers beyond env/infra)
 
-1. **PRD-F2 + F3** — Enrollment, interactive quiz, lesson completion → `merit_ledger` (unblocks learner demo path).
-2. **PRD-F4 + F5 + F7** — Credentials + public verifier + wallet (RFC-001; needs Stellar testnet key + issuer key).
-3. **PRD-F6 polish** — Course review/edit UI, passing score, teacher analytics.
-4. **PRD-F10** — Mock funder program (Postgres-only; no chain).
-5. **Infra** — Vercel (issue #4), Azure model deploy (rhandie-tasks §1).
+1. **PRD-F4 + F5 + F7** — Credentials + public verifier + wallet (RFC-001; needs Stellar testnet key + issuer key).
+2. **PRD-F6 polish** — Course review/edit UI, passing score, teacher analytics.
+3. **PRD-F10** — Mock funder program (Postgres-only; no chain).
+4. **Infra** — Vercel (issue #4), Azure model deploy (rhandie-tasks §1).
 
 Task board detail: [rhandie-tasks.md](../rhandie-tasks.md).

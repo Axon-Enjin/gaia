@@ -8,6 +8,7 @@ export interface CatalogCourse {
   id: string;
   title: string;
   industry: string;
+  lessonCount: number;
 }
 
 /**
@@ -29,7 +30,7 @@ export async function getPublishedCourses(): Promise<CatalogCourse[]> {
   const supabase = createPublicClient();
   const { data, error } = await supabase
     .from("courses")
-    .select("id, title, industry")
+    .select("id, title, industry, lessons(count)")
     .eq("status", "published")
     .order("created_at", { ascending: false })
     .limit(100);
@@ -38,5 +39,13 @@ export async function getPublishedCourses(): Promise<CatalogCourse[]> {
     // Fail closed for a public read: an empty catalog, never a crash.
     return [];
   }
-  return data ?? [];
+  return (data ?? []).map((row) => {
+    const lessons = row.lessons as { count: number }[] | null;
+    return {
+      id: row.id as string,
+      title: row.title as string,
+      industry: row.industry as string,
+      lessonCount: lessons?.[0]?.count ?? 0,
+    };
+  });
 }
