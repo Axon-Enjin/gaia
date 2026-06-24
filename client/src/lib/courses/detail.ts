@@ -8,6 +8,10 @@ export interface DetailQuestion {
   choices: string[];
 }
 
+export interface EditorQuestion extends DetailQuestion {
+  answer_index: number;
+}
+
 export interface DetailLesson {
   id: string;
   order_index: number;

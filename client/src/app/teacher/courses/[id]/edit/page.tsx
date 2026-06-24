@@ -1,15 +1,14 @@
-import { notFound } from "next/navigation";
 import Link from "next/link";
+import { notFound, redirect } from "next/navigation";
 import { getTranslations } from "next-intl/server";
 import { getSessionUser } from "@/lib/auth";
 import { createClient } from "@/lib/supabase/server";
 import { getTeacherCourseDetail } from "@/lib/courses/teacher";
 import { getTeacherCourseAnalytics } from "@/lib/courses/teacher-analytics";
-import { CourseDetailView } from "@/components/learner/course-detail-view";
+import { CourseEditorForm } from "@/components/teacher/course-editor-form";
 import { TeacherCourseAnalyticsPanel } from "@/components/teacher/teacher-course-analytics";
-import { DeleteCourseButton } from "@/components/teacher/delete-course-button";
 
-export default async function TeacherCoursePreviewPage({
+export default async function TeacherCourseEditPage({
   params,
 }: {
   params: Promise<{ id: string }>;
@@ -26,22 +25,28 @@ export default async function TeacherCoursePreviewPage({
     notFound();
   }
 
+  if (course.status !== "draft") {
+    redirect(`/teacher/courses/${id}`);
+  }
+
   const analytics = await getTeacherCourseAnalytics(supabase, id, user.id);
-  const { status, ...detail } = course;
 
   return (
-    <>
-      {status === "draft" && (
-        <div className="mb-6 flex flex-wrap items-center justify-between gap-3 rounded-xl border border-warning-brand/35 bg-warning-brand/10 px-4 py-3">
-          <p className="text-sm text-warning-brand">{t("editorDraftCta")}</p>
-          <Link
-            href={`/teacher/courses/${id}/edit`}
-            className="site-btn site-btn-primary min-h-9 text-sm"
-          >
-            {t("editCourse")}
-          </Link>
-        </div>
-      )}
+    <div>
+      <Link
+        href={`/teacher/courses/${id}`}
+        className="text-sm font-medium text-primary-brand hover:underline"
+      >
+        ← {t("backToPreview")}
+      </Link>
+
+      <div className="mt-4 mb-8">
+        <p className="text-xs font-semibold uppercase tracking-wider text-warning-brand">
+          {t("editorEyebrow")}
+        </p>
+        <h1 className="mt-1 text-2xl font-bold text-soil-brand">{t("editorPageTitle")}</h1>
+        <p className="mt-2 text-sm text-text-muted-brand">{t("editorPageSubtitle")}</p>
+      </div>
 
       {analytics && (
         <div className="mb-8">
@@ -59,23 +64,7 @@ export default async function TeacherCoursePreviewPage({
         </div>
       )}
 
-      <CourseDetailView
-        course={detail}
-        backHref="/teacher/courses"
-        mode="teacher"
-        enrollment={null}
-        signedIn
-        teacherStatus={status}
-      />
-
-      <div className="mt-10 flex flex-col gap-2 border-t border-border-brand pt-6">
-        <p className="text-sm text-text-muted-brand">{t("deleteSectionHint")}</p>
-        <DeleteCourseButton
-          courseId={course.id}
-          courseTitle={course.title}
-          variant="destructive"
-        />
-      </div>
-    </>
+      <CourseEditorForm course={course} />
+    </div>
   );
 }

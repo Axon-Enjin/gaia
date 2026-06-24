@@ -162,7 +162,23 @@ export async function CourseDetailView({
 
             <span>{tt("draftPreviewBanner")}</span>
 
-            <PublishButton courseId={course.id} />
+            <div className="flex flex-wrap items-center gap-3">
+
+              <Link
+
+                href={`/teacher/courses/${course.id}/edit`}
+
+                className="font-medium text-primary-brand hover:underline"
+
+              >
+
+                {tt("editCourse")}
+
+              </Link>
+
+              <PublishButton courseId={course.id} />
+
+            </div>
 
           </div>
 
