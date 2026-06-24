@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { getTranslations } from "next-intl/server";
 import { LocaleSwitcher } from "@/components/locale-switcher";
 import { signOutAction } from "@/app/actions/auth";
@@ -8,6 +9,7 @@ import { levelFromXp, nextLevelMinXp } from "@/lib/merit/constants";
 export default async function LearnerProfilePage() {
   const t = await getTranslations("Learner");
   const tc = await getTranslations("Common");
+  const tcr = await getTranslations("Credentials");
   const user = await getSessionUser();
   if (!user) return null;
 
@@ -84,8 +86,12 @@ export default async function LearnerProfilePage() {
         <LocaleSwitcher />
       </section>
 
-      <section className="mb-6 rounded-xl border border-dashed border-border-brand bg-bg-brand/50 px-4 py-3 text-sm text-text-muted-brand">
-        {t("walletComingSoon")}
+      <section className="mb-6 rounded-xl border border-border-brand bg-surface-brand p-4">
+        <p className="text-sm font-medium text-text-brand">{tcr("walletTitle")}</p>
+        <p className="mt-1 text-sm text-text-muted-brand">{tcr("walletSubtitle")}</p>
+        <Link href="/learner/credentials" className="site-btn-primary mt-4 inline-flex">
+          {t("navCredentials")}
+        </Link>
       </section>
 
       <form action={signOutAction}>

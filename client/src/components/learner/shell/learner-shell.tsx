@@ -20,7 +20,7 @@ export interface LearnerShellProps {
 
   levelLabel: string;
 
-  navLabels: { home: string; courses: string; profile: string };
+  navLabels: { home: string; courses: string; credentials: string; profile: string };
 
 }
 

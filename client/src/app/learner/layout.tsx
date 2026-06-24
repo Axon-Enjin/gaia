@@ -35,6 +35,7 @@ export default async function LearnerLayout({
       navLabels={{
         home: t("navHome"),
         courses: t("navCourses"),
+        credentials: t("navCredentials"),
         profile: t("navProfile"),
       }}
     >

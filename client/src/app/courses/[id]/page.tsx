@@ -10,6 +10,8 @@ import {
   getSessionDashboardHref,
   navCtaHref,
 } from "@/lib/auth/dashboard-href";
+import { verifyUrlFor } from "@/lib/credentials/issuer-config";
+import { verifyQrDataUrlFor } from "@/lib/credentials/verify-qr";
 
 export default async function CourseDetailPage({
   params,
@@ -37,23 +39,46 @@ export default async function CourseDetailPage({
   };
 
   let enrollment: {
+    id?: string;
     progress: ReturnType<typeof parseProgress>;
     completed_at: string | null;
+  } | null = null;
+  let credential: {
+    id: string;
+    verify_url: string;
+    qr_data_url: string;
+    network: string;
   } | null = null;
 
   if (user && isLearner) {
     const supabase = await createClient();
     const { data } = await supabase
       .from("enrollments")
-      .select("progress, completed_at")
+      .select("id, progress, completed_at")
       .eq("learner_id", user.id)
       .eq("course_id", id)
       .maybeSingle();
     if (data) {
       enrollment = {
+        id: data.id as string,
         progress: parseProgress(data.progress),
         completed_at: data.completed_at as string | null,
       };
+      const { data: cred } = await supabase
+        .from("credentials")
+        .select("id, network")
+        .eq("learner_id", user.id)
+        .eq("course_id", id)
+        .maybeSingle();
+      if (cred) {
+        const credId = cred.id as string;
+        credential = {
+          id: credId,
+          verify_url: verifyUrlFor(credId),
+          qr_data_url: await verifyQrDataUrlFor(credId),
+          network: cred.network as string,
+        };
+      }
     }
   }
 
@@ -67,6 +92,7 @@ export default async function CourseDetailPage({
           backHref="/courses"
           mode="public"
           enrollment={enrollment}
+          credential={credential}
           signedIn={Boolean(user)}
         />
       </main>

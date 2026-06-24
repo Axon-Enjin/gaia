@@ -244,6 +244,7 @@
     "home": "Home",
     "navHome": "Home",
     "navCourses": "Mga Kurso",
+    "navCredentials": "Mga Kredensyal",
     "navProfile": "Profile",
     "dashboardTitle": "Aking pag-aaral",
     "homeSubtitle": "Magpatuloy kung saan ka tumigil at palaguin ang iyong streak.",
@@ -283,7 +284,7 @@
     "profileAccount": "Iyong account at progreso",
     "profileEmail": "Email",
     "signOut": "Mag-sign out",
-    "walletComingSoon": "Credential wallet — paparating na.",
+    "credentialsTeaser": "{count, plural, one {# naberipikang kredensyal} other {# na naberipikang kredensyal}}",
     "levels": {
       "seed": "Binhi",
       "sprout": "Usbong",
@@ -296,5 +297,46 @@
       "course_complete": "Gradweyt ng kurso",
       "consistent_learner": "Consistent na learner"
     }
+  },
+  "Credentials": {
+    "eyebrow": "Naberipikang patunay",
+    "walletTitle": "Credential wallet",
+    "walletSubtitle": "Ibahagi ang link o QR — maaaring mag-verify ang kahit sino nang walang account.",
+    "empty": "Tapusin ang isang kurso para makuha ang iyong unang kredensyal.",
+    "claim": "Kunin ang kredensyal",
+    "claiming": "Iniisyu ang kredensyal…",
+    "viewCredential": "Handa na ang iyong kredensyal — ibahagi o i-verify:",
+    "viewVerify": "Tingnan at i-verify",
+    "mockBadge": "Demo anchor (mock network — naberipika ang lagda)",
+    "issuedOn": "Inisyu noong {date}",
+    "score": "{score}% huling marka",
+    "errorGeneric": "Hindi ma-isyu ang kredensyal. Subukang muli.",
+    "errorForbidden": "Kailangan mong tapusin ang kurso na may passing score muna.",
+    "backToWallet": "Bumalik sa mga kredensyal",
+    "shareLink": "Ibahagi ang verify link na ito",
+    "copyLink": "Kopyahin ang link",
+    "copied": "Nakopya!",
+    "qrHint": "Maaaring i-scan ng kahit sino para mag-verify — walang account na kailangan.",
+    "openVerifier": "Buksan ang public verifier",
+    "viewOnStellar": "Tingnan sa Stellar"
+  },
+  "Verifier": {
+    "eyebrow": "Public verifier",
+    "title": "Beripikasyon ng kredensyal",
+    "valid": "Wastong kredensyal",
+    "invalid": "Hindi wastong kredensyal",
+    "mockNote": "Gumagamit ang kredensyal na ito ng demo mock anchor. Naberipika ang lagda; laktawan ang on-chain hash check.",
+    "course": "Kurso",
+    "learner": "Mag-aaral",
+    "issued": "Inisyu",
+    "score": "Huling marka",
+    "signatureCheck": "Lagda",
+    "chainCheck": "On-chain hash",
+    "pass": "Pass",
+    "fail": "Fail",
+    "na": "N/A",
+    "stellarTx": "Stellar transaction",
+    "viewOnStellar": "Tingnan sa Stellar",
+    "browseCourses": "Tingnan ang mga kurso"
   }
 }
