@@ -38,6 +38,10 @@ export default async function LearnerHomePage() {
   const nextXp = nextLevelMinXp(merit.totalXp);
 
   const supabase = await createClient();
+  const { count: credentialCount } = await supabase
+    .from("credentials")
+    .select("id", { count: "exact", head: true })
+    .eq("learner_id", user.id);
   const { data: enrollments } = await supabase
     .from("enrollments")
     .select(
@@ -94,6 +98,20 @@ export default async function LearnerHomePage() {
           </ul>
         )}
       </section>
+
+      {(credentialCount ?? 0) > 0 && (
+        <section className="mb-8">
+          <Link
+            href="/learner/credentials"
+            className="callout-card block transition hover:border-growth-brand/40"
+          >
+            <p className="font-semibold text-soil-brand">{t("navCredentials")}</p>
+            <p className="mt-1 text-sm text-text-muted-brand">
+              {t("credentialsTeaser", { count: credentialCount ?? 0 })}
+            </p>
+          </Link>
+        </section>
+      )}
 
       <section>
         <div className="mb-4 flex items-center justify-between gap-3">

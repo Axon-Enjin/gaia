@@ -21,6 +21,7 @@ import { LessonQuiz } from "@/components/learner/lesson-quiz";
 import { CompleteLessonButton } from "@/components/learner/complete-lesson-button";
 
 import { PublishButton } from "@/components/publish-button";
+import { ClaimCredentialButton } from "@/components/learner/claim-credential-button";
 
 
 
@@ -50,10 +51,19 @@ export interface CourseDetailViewProps {
 
   enrollment: {
 
+    id?: string;
+
     progress: EnrollmentProgress;
 
     completed_at: string | null;
 
+  } | null;
+
+  credential?: {
+    id: string;
+    verify_url: string;
+    qr_data_url: string;
+    network?: string;
   } | null;
 
   signedIn: boolean;
@@ -78,6 +88,8 @@ export async function CourseDetailView({
 
   enrollment,
 
+  credential,
+
   signedIn,
 
   teacherStatus,
@@ -87,6 +99,8 @@ export async function CourseDetailView({
   const t = await getTranslations("CourseDetail");
 
   const tl = await getTranslations("Learner");
+
+  const tc = await getTranslations("Credentials");
 
   const tt = await getTranslations("Teacher");
 
@@ -108,12 +122,12 @@ export async function CourseDetailView({
 
     : 0;
 
+  const canClaimCredential =
+    Boolean(enrollment?.completed_at && enrollment.id) && !isTeacherMode;
+
   const progressPct =
-
     totalLessons > 0
-
       ? Math.round((completedLessons / totalLessons) * 100)
-
       : 0;
 
 
@@ -330,9 +344,46 @@ export async function CourseDetailView({
 
       {enrollment?.completed_at && (
 
-        <div className="rounded-xl border border-growth-brand/35 bg-growth-brand/10 px-4 py-3 text-sm font-medium text-growth-brand">
+        <div className="rounded-xl border border-growth-brand/35 bg-growth-brand/10 px-4 py-4">
 
-          {tl("courseFinishedBanner")}
+          <p className="text-sm font-medium text-growth-brand">
+
+            {tl("courseFinishedBanner")}
+
+          </p>
+
+          {canClaimCredential && (
+
+            <div className="mt-4">
+
+              <ClaimCredentialButton
+                enrollmentId={enrollment.id!}
+                existingCredentialId={credential?.id}
+                verifyUrl={credential?.verify_url}
+                qrDataUrl={credential?.qr_data_url}
+                network={credential?.network}
+
+                labels={{
+
+                  claim: tc("claim"),
+
+                  claiming: tc("claiming"),
+
+                  viewCredential: tc("viewCredential"),
+
+                  mockBadge: tc("mockBadge"),
+
+                  errorGeneric: tc("errorGeneric"),
+
+                  errorForbidden: tc("errorForbidden"),
+
+                }}
+
+              />
+
+            </div>
+
+          )}
 
         </div>
 

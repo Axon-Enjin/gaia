@@ -16,7 +16,7 @@ export interface LearnerSidebarProps {
 
   levelLabel: string;
 
-  navLabels: { home: string; courses: string; profile: string };
+  navLabels: { home: string; courses: string; credentials: string; profile: string };
 
 }
 
@@ -37,6 +37,10 @@ function isCoursesActive(pathname: string): boolean {
 }
 
 
+
+function isCredentialsActive(pathname: string): boolean {
+  return pathname.startsWith("/learner/credentials");
+}
 
 function isProfileActive(pathname: string): boolean {
 
@@ -105,6 +109,18 @@ export function LearnerSidebar({
           icon="☰"
 
           active={isCoursesActive(pathname)}
+
+        />
+
+        <NavItem
+
+          href="/learner/credentials"
+
+          label={navLabels.credentials}
+
+          icon="◆"
+
+          active={isCredentialsActive(pathname)}
 
         />
 

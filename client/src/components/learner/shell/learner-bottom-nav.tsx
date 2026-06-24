@@ -6,7 +6,7 @@ export interface LearnerBottomNavProps {
 
   pathname: string;
 
-  navLabels: { home: string; courses: string; profile: string };
+  navLabels: { home: string; courses: string; credentials: string; profile: string };
 
 }
 
@@ -27,6 +27,10 @@ function isCoursesActive(pathname: string): boolean {
 }
 
 
+
+function isCredentialsActive(pathname: string): boolean {
+  return pathname.startsWith("/learner/credentials");
+}
 
 function isProfileActive(pathname: string): boolean {
 
@@ -71,6 +75,20 @@ export function LearnerBottomNav({
         icon="☰"
 
         active={isCoursesActive(pathname)}
+
+        variant="bottom"
+
+      />
+
+      <NavItem
+
+        href="/learner/credentials"
+
+        label={navLabels.credentials}
+
+        icon="◆"
+
+        active={isCredentialsActive(pathname)}
 
         variant="bottom"
 

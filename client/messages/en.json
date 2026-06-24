@@ -244,6 +244,7 @@
     "home": "Home",
     "navHome": "Home",
     "navCourses": "Courses",
+    "navCredentials": "Credentials",
     "navProfile": "Profile",
     "dashboardTitle": "My learning",
     "homeSubtitle": "Pick up where you left off and keep your streak growing.",
@@ -283,7 +284,7 @@
     "profileAccount": "Your account and progress",
     "profileEmail": "Email",
     "signOut": "Sign out",
-    "walletComingSoon": "Credential wallet — coming soon.",
+    "credentialsTeaser": "{count, plural, one {# verifiable credential earned} other {# verifiable credentials earned}}",
     "levels": {
       "seed": "Seed",
       "sprout": "Sprout",
@@ -296,5 +297,46 @@
       "course_complete": "Course graduate",
       "consistent_learner": "Consistent learner"
     }
+  },
+  "Credentials": {
+    "eyebrow": "Verifiable proof",
+    "walletTitle": "Credential wallet",
+    "walletSubtitle": "Share links and QR codes — anyone can verify without an account.",
+    "empty": "Complete a course to earn your first credential.",
+    "claim": "Claim credential",
+    "claiming": "Issuing credential…",
+    "viewCredential": "Your credential is ready — share or verify:",
+    "viewVerify": "View & verify",
+    "mockBadge": "Demo anchor (mock network — signature verified)",
+    "issuedOn": "Issued {date}",
+    "score": "{score}% final score",
+    "errorGeneric": "Could not issue credential. Try again.",
+    "errorForbidden": "You must complete the course with a passing score first.",
+    "backToWallet": "Back to credentials",
+    "shareLink": "Share this verify link",
+    "copyLink": "Copy link",
+    "copied": "Copied!",
+    "qrHint": "Anyone can scan to verify — no account needed.",
+    "openVerifier": "Open public verifier",
+    "viewOnStellar": "View on Stellar"
+  },
+  "Verifier": {
+    "eyebrow": "Public verifier",
+    "title": "Credential verification",
+    "valid": "Valid credential",
+    "invalid": "Invalid credential",
+    "mockNote": "This credential uses a demo mock anchor. Signature is verified; on-chain hash check is skipped.",
+    "course": "Course",
+    "learner": "Learner",
+    "issued": "Issued",
+    "score": "Final score",
+    "signatureCheck": "Signature",
+    "chainCheck": "On-chain hash",
+    "pass": "Pass",
+    "fail": "Fail",
+    "na": "N/A",
+    "stellarTx": "Stellar transaction",
+    "viewOnStellar": "View on Stellar",
+    "browseCourses": "Browse courses"
   }
 }

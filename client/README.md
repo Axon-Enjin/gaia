@@ -7,6 +7,7 @@ Application code for Gaia lives here. Specs and guardrails: [docs/index.md](../d
 - Node.js 20+
 - A Supabase **dev** project (Postgres + Auth + Storage) — see [db/README.md](db/README.md)
 - Optional: Azure AI Foundry credentials for course generation (`ENABLE_AI_GENERATION=true`)
+- Optional: VC issuer key + Stellar Testnet anchor for credentials (`VC_ISSUER_*`, `STELLAR_*`, `ENABLE_ONCHAIN_ANCHOR`)
 
 ## Quick start
 
@@ -31,7 +32,12 @@ Contract: [.env.example](.env.example). Never commit `.env.local`.
 | `SUPABASE_SERVICE_ROLE_KEY` | **server only** | Admin API, future XP/credential routes; enables dev signup without auth emails |
 | `SUPABASE_DEV_ADMIN_SIGNUP` | server | Set `false` to disable Admin API signup in dev (default: on when service role key is set) |
 | `ENABLE_AI_GENERATION` | server | `true` to enable `POST /api/courses/generate` |
-| `ENABLE_ONCHAIN_ANCHOR` | server | `true` for real Stellar testnet anchors |
+| `ENABLE_ONCHAIN_ANCHOR` | server | `true` for real Stellar testnet anchors; `false` uses labelled mock |
+| `VC_ISSUER_DID` | server | Platform issuer DID for W3C VC signing |
+| `VC_ISSUER_PRIVATE_KEY` | server | Ed25519 PEM for credential signatures |
+| `STELLAR_ANCHOR_SECRET` | server | Testnet secret when on-chain anchor enabled |
+| `STELLAR_HORIZON_URL` | server | Horizon endpoint (default Testnet) |
+| `NEXT_PUBLIC_APP_URL` | public | Base URL for verify links + QR |
 | `AZURE_OPENAI_*` | server | Azure AI Foundry — see `.env.example` |
 
 ## Supabase (dev)
