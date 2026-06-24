@@ -7,6 +7,7 @@ import { getTeacherCourseDetail } from "@/lib/courses/teacher";
 import { getTeacherCourseAnalytics } from "@/lib/courses/teacher-analytics";
 import { CourseDetailView } from "@/components/learner/course-detail-view";
 import { TeacherCourseAnalyticsPanel } from "@/components/teacher/teacher-course-analytics";
+import { DeleteCourseButton } from "@/components/teacher/delete-course-button";
 
 export default async function TeacherCoursePreviewPage({
   params,
@@ -66,6 +67,15 @@ export default async function TeacherCoursePreviewPage({
         signedIn
         teacherStatus={status}
       />
+
+      <div className="mt-10 flex flex-col gap-2 border-t border-border-brand pt-6">
+        <p className="text-sm text-text-muted-brand">{t("deleteSectionHint")}</p>
+        <DeleteCourseButton
+          courseId={course.id}
+          courseTitle={course.title}
+          variant="destructive"
+        />
+      </div>
     </>
   );
 }

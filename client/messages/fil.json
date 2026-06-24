@@ -93,6 +93,21 @@
     "analyticsAvgScore": "Avg na marka",
     "analyticsCredentials": "Na-isyung kredensyal",
     "analyticsNoScore": "—",
+    "deleteCourse": "Burahin ang kurso",
+    "deleting": "Binubura…",
+    "deleteConfirmTitle": "Burahin ang kursong ito?",
+    "deleteConfirm": "Burahin ang \"{title}\"? Mawawala ang progreso ng mga naka-enroll. Hindi maaaring burahin kung may na-isyung kredensyal.",
+    "deleteConfirmPhrase": "burahin ang aking kurso",
+    "deleteConfirmLabel": "I-type ang \"{phrase}\" para kumpirmahin",
+    "deleteConfirmCancel": "Kanselahin",
+    "deleteSectionHint": "Permanenteng alisin ang kursong ito. Hindi pinapayagan kapag may kredensyal na ang mga mag-aaral.",
+    "deleteError": {
+      "invalid_request": "Hindi wastong kahilingan.",
+      "unauthorized": "Mag-sign in muli.",
+      "forbidden": "Ang sarili mong kurso lang ang pwede mong burahin.",
+      "has_credentials": "Hindi maaaring burahin — may na-isyung kredensyal na ang mga mag-aaral.",
+      "delete_failed": "Nabigo ang pagbura. Subukang muli."
+    },
     "editorError": {
       "invalid_request": "Hindi wastong input. Suriin ang mga field.",
       "unauthorized": "Mag-sign in muli.",

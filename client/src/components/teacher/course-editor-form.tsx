@@ -10,6 +10,7 @@ import {
   saveQuizQuestionAction,
 } from "@/app/actions/course-editor";
 import { PublishButton } from "@/components/publish-button";
+import { DeleteCourseButton } from "@/components/teacher/delete-course-button";
 import type { TeacherCourseEditorDetail } from "@/lib/courses/teacher";
 import type { EditorQuestion } from "@/lib/courses/detail";
 
@@ -31,14 +32,21 @@ export function CourseEditorForm({
           lessonNumber={index + 1}
         />
       ))}
-      <div className="flex flex-wrap items-center gap-3 border-t border-border-brand pt-6">
-        <PublishButton courseId={course.id} />
-        <Link
-          href={`/teacher/courses/${course.id}`}
-          className="text-sm font-medium text-primary-brand hover:underline"
-        >
-          {t("previewCourse")} →
-        </Link>
+      <div className="flex flex-wrap items-center justify-between gap-3 border-t border-border-brand pt-6">
+        <div className="flex flex-wrap items-center gap-3">
+          <PublishButton courseId={course.id} />
+          <Link
+            href={`/teacher/courses/${course.id}`}
+            className="text-sm font-medium text-primary-brand hover:underline"
+          >
+            {t("previewCourse")} →
+          </Link>
+        </div>
+        <DeleteCourseButton
+          courseId={course.id}
+          courseTitle={course.title}
+          variant="destructive"
+        />
       </div>
     </div>
   );

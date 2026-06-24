@@ -93,6 +93,21 @@
     "analyticsAvgScore": "Avg score",
     "analyticsCredentials": "Credentials issued",
     "analyticsNoScore": "—",
+    "deleteCourse": "Delete course",
+    "deleting": "Deleting…",
+    "deleteConfirmTitle": "Delete this course?",
+    "deleteConfirm": "Delete \"{title}\"? Enrolled learners will lose progress. Courses with issued credentials cannot be deleted.",
+    "deleteConfirmPhrase": "delete my course",
+    "deleteConfirmLabel": "Type \"{phrase}\" to confirm",
+    "deleteConfirmCancel": "Cancel",
+    "deleteSectionHint": "Remove this course permanently. Not allowed once learners have credentials.",
+    "deleteError": {
+      "invalid_request": "Invalid request.",
+      "unauthorized": "Please sign in again.",
+      "forbidden": "You can only delete your own courses.",
+      "has_credentials": "Cannot delete — learners have issued credentials for this course.",
+      "delete_failed": "Delete failed. Try again."
+    },
     "editorError": {
       "invalid_request": "Invalid input. Check your entries.",
       "unauthorized": "Please sign in again.",

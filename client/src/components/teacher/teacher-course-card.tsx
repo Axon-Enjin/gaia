@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { PublishButton } from "@/components/publish-button";
+import { DeleteCourseButton } from "@/components/teacher/delete-course-button";
 
 export interface TeacherCourseCardProps {
   id: string;
@@ -82,6 +83,7 @@ export function TeacherCourseCard({
               {viewPublicLabel}
             </Link>
           )}
+          <DeleteCourseButton courseId={id} courseTitle={title} />
         </div>
       </div>
     </li>
