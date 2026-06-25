@@ -10,6 +10,7 @@ export interface FunderShellProps {
   email: string;
   roleLabel: string;
   navLabels: { programs: string; profile: string };
+  ariaLabels: { shellNav: string; mainNav: string; brandHome: string };
 }
 
 /** Hybrid funder chrome — sidebar on md+, bottom tabs on mobile. */
@@ -19,6 +20,7 @@ export function FunderShell({
   email,
   roleLabel,
   navLabels,
+  ariaLabels,
 }: FunderShellProps) {
   const pathname = usePathname();
 
@@ -30,11 +32,16 @@ export function FunderShell({
         email={email}
         roleLabel={roleLabel}
         navLabels={navLabels}
+        ariaLabels={ariaLabels}
       />
       <main id="main-content" className="dashboard-main">
         <div className="dashboard-main-inner">{children}</div>
       </main>
-      <FunderBottomNav pathname={pathname} navLabels={navLabels} />
+      <FunderBottomNav
+        pathname={pathname}
+        navLabels={navLabels}
+        ariaLabel={ariaLabels.shellNav}
+      />
     </div>
   );
 }

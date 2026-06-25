@@ -2,12 +2,14 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { useTranslations } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
 import type { DisbursementAudit } from "@/lib/grants/programs";
+import { formatLocaleNumber } from "@/lib/i18n/format";
 import { AuditExportButton } from "@/components/funder/audit-export-button";
 
 export function SimulateDisburseButton({ programId }: { programId: string }) {
   const t = useTranslations("Funder");
+  const locale = useLocale();
   const router = useRouter();
   const [pending, setPending] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -110,7 +112,7 @@ export function SimulateDisburseButton({ programId }: { programId: string }) {
               <div>
                 <dt className="text-text-muted-brand">{t("totalSimulated")}</dt>
                 <dd className="font-mono text-xl font-bold tabular-nums text-text-brand">
-                  {audit.total_simulated_amount.toLocaleString()}
+                  {formatLocaleNumber(locale, audit.total_simulated_amount)}
                 </dd>
               </div>
             )}

@@ -7,31 +7,34 @@ import { HtmlLangSync } from "@/components/html-lang-sync";
 import type { Locale } from "@/i18n/request";
 import "./globals.css";
 
-export const metadata: Metadata = {
-  metadataBase: new URL("https://aniskwela.app"),
-  title: {
-    default: "Aniskwela — Learning that grows with you",
-    template: "%s · Aniskwela",
-  },
-  description:
-    "Magsaka. Mag-aral. Mag-ani ng patunay. AI-built farming courses that run on the slowest phone, with credentials the world can verify — yours to keep.",
-  applicationName: "Aniskwela",
-  openGraph: {
-    type: "website",
-    siteName: "Aniskwela",
-    title: "Aniskwela — Learning that grows with you",
-    description:
-      "Farm. Learn. Harvest the proof. AI-built courses for Filipino farmers, with blockchain-anchored, verifiable credentials — built for low-bandwidth phones.",
-    images: [{ url: "/brand/og.svg", width: 1200, height: 630 }],
-  },
-  twitter: {
-    card: "summary_large_image",
-    title: "Aniskwela — Learning that grows with you",
-    description:
-      "Farm. Learn. Harvest the proof. Verifiable credentials, built for low-bandwidth learners.",
-    images: ["/brand/og.svg"],
-  },
-};
+export async function generateMetadata(): Promise<Metadata> {
+  const tCommon = await getTranslations("Common");
+  const tLanding = await getTranslations("Landing");
+  const appName = tCommon("appName");
+
+  return {
+    metadataBase: new URL("https://aniskwela.app"),
+    title: {
+      default: tCommon("metaTitle"),
+      template: `%s · ${appName}`,
+    },
+    description: tCommon("metaDescription"),
+    applicationName: appName,
+    openGraph: {
+      type: "website",
+      siteName: appName,
+      title: tCommon("metaTitle"),
+      description: tLanding("techSubtitle"),
+      images: [{ url: "/brand/og.svg", width: 1200, height: 630 }],
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: tCommon("metaTitle"),
+      description: tCommon("metaTwitterDescription"),
+      images: ["/brand/og.svg"],
+    },
+  };
+}
 
 export const viewport: Viewport = {
   // Light theme only — hard low-resource constraint (AGENTS.md).

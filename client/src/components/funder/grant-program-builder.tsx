@@ -203,7 +203,11 @@ export function GrantProgramBuilder({ mode, program }: GrantProgramBuilderProps)
                   ? t("createProgram")
                   : t("saveProgram")}
             </button>
-            <Link href="/funder" className="btn btn-ghost border border-border-brand">
+            <Link
+              href="/funder"
+              prefetch={false}
+              className="btn btn-ghost border border-border-brand"
+            >
               {t("cancel")}
             </Link>
           </div>

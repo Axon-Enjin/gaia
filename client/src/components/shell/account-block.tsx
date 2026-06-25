@@ -28,7 +28,7 @@ export function AccountBlock({
   const name = displayName?.trim() || email.split("@")[0];
 
   return (
-    <Link href={href} className="dashboard-account-block">
+    <Link href={href} prefetch={false} className="dashboard-account-block">
       <div className="dashboard-account-avatar" aria-hidden>
         {initials(displayName, email)}
       </div>

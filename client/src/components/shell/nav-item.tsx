@@ -20,6 +20,7 @@ export function NavItem({
   return (
     <Link
       href={href}
+      prefetch={false}
       className={`dashboard-nav-item ${active ? "is-active" : ""}`}
       aria-current={active ? "page" : undefined}
       data-variant={variant}

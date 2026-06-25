@@ -2,7 +2,7 @@
 
 **Project slug:** `aniskwela`
 **Maintained by:** Carlos Jerico Dela Torre
-**Last updated:** 2026-06-23 (build progress §6 refreshed)
+**Last updated:** 2026-06-25 (build progress §6 refreshed)
 
 > **Aniskwela** (formerly "LearnChain", then "Gaia") — an AI educational tool built for Filipino farmers, with blockchain-anchored, standards-based credentials, engineered for low-bandwidth rural use (Philippines-first, EN + Filipino). The name is *ani* (harvest) + *eskwela* (school) — "harvest school": you learn, you reap, and the proof is yours to keep (echoed in the learner levels Seed → Sprout → Scholar → Expert → Mentor). The learning engine is content-agnostic, but the product is built for, and goes to market with, farmers first.
 
@@ -92,18 +92,17 @@ The application lives in **`client/`** (Next.js 16.2.9, Supabase, Azure AI Found
 | F4 | VC issuance | **Done** | `POST /api/credentials/issue`, OB 3.0 JSON-LD + Ed25519, Stellar hash anchor |
 | F5 | Public verifier | **Done** | `GET /api/verify/[id]`, `/verify/[id]` page |
 | F6 | Teacher dashboard | **Done** | Course editor, passing score, publish, learner analytics per course |
-| F7 | Learner dashboard & wallet | **Partial** | `/learner/credentials` wallet slice; grant status deferred |
+| F7 | Learner dashboard & wallet | **Done** | `/learner`, `/learner/credentials`, grant status, share links, QR |
 | F8 | Landing + waitlist | **Done** | Brand Mode `/`, `POST /api/waitlist`, PR [#14](https://github.com/Axon-Enjin/feat/prd-f8-landing-waitlist) |
-| F9 | Localization EN/Fil | **Partial** | `next-intl` + locale switcher on landing, auth, catalog, learner, funder |
+| F9 | Localization EN/Fil | **Done** | `next-intl`, cookie-persisted locale, localized metadata/nav/shells, locale-aware dates and numbers |
 | F10 | Funder grant (mock) | **Done** | `/funder`, `POST /api/grants/evaluate`, `POST /api/grants/disburse`, audit CSV |
-| F11 | Freighter wallet | **Not started** | Should-Have demo |
+| F11 | Freighter wallet | **Done** | Client-side Freighter connect panel on learner wallet and funder dashboard |
 | F12–F15 | Phase 1 / out of MVP | **Deferred** | Per PRD §6 |
 
 ### Suggested next PRDs (no blockers beyond env/infra)
 
-1. **PRD-F7 completion** — Grant status on learner dashboard.
-2. **PRD-F9 completion** — Full EN/FIL coverage on remaining surfaces.
-3. **PRD-F11** — Freighter connect (Should-Have demo).
-4. **Infra** — Vercel deploy, production Stellar/issuer secrets in secrets manager.
+1. **Infra** — Vercel deploy, production Stellar/issuer secrets in secrets manager.
+2. **PRD-F12 / F13** — Adaptive engine + offline caching for Phase 1.
+3. **Native-speaker QA** — Filipino copy review across all localized surfaces.
 
 Task board detail: [rhandie-tasks.md](../rhandie-tasks.md).

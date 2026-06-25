@@ -34,7 +34,7 @@ export default async function TeacherCoursesPage() {
           icon={<IconLayers />}
           text={t("noCoursesEmpty")}
           action={
-            <Link href="/teacher" className="btn btn-secondary btn-sm">
+            <Link href="/teacher" prefetch={false} className="btn btn-secondary btn-sm">
               {t("navHome")}
             </Link>
           }

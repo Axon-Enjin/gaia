@@ -1,5 +1,5 @@
 import { notFound } from "next/navigation";
-import { getTranslations } from "next-intl/server";
+import { getLocale, getTranslations } from "next-intl/server";
 import Link from "next/link";
 import { createClient } from "@/lib/supabase/server";
 import { getSessionUser } from "@/lib/auth";
@@ -10,6 +10,7 @@ import {
 import { GrantProgramBuilder } from "@/components/funder/grant-program-builder";
 import { SimulateDisburseButton } from "@/components/funder/simulate-disburse-button";
 import { DeleteGrantProgramButton } from "@/components/funder/delete-grant-program-button";
+import { formatLocaleDate } from "@/lib/i18n/format";
 import { IconArrowRight } from "@/components/icons";
 
 export default async function GrantProgramDetailPage({
@@ -22,6 +23,7 @@ export default async function GrantProgramDetailPage({
   if (!user) return null;
 
   const t = await getTranslations("Funder");
+  const locale = await getLocale();
   const supabase = await createClient();
   const program = await getFunderProgram(supabase, user.id, id);
 
@@ -34,6 +36,7 @@ export default async function GrantProgramDetailPage({
       <div className="mb-6">
         <Link
           href="/funder"
+          prefetch={false}
           className="inline-flex items-center gap-1 text-sm font-medium text-primary-brand hover:underline"
         >
           {t("backToPrograms")} <IconArrowRight className="rotate-180" aria-hidden="true" />
@@ -48,7 +51,7 @@ export default async function GrantProgramDetailPage({
           <p className="mt-2 text-sm text-text-muted-brand">
             {t("lastDisbursement", {
               count: latest.recipient_count,
-              date: new Date(latest.created_at).toLocaleDateString(),
+              date: formatLocaleDate(locale, latest.created_at),
             })}
           </p>
         )}

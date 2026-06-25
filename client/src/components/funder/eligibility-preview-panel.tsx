@@ -1,9 +1,10 @@
 "use client";
 
 import { useCallback, useEffect, useState } from "react";
-import { useTranslations } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
 import type { GrantCriteria } from "@/lib/grants/criteria-schema";
 import type { EligibleRecipient } from "@/lib/grants/evaluate";
+import { formatLocaleNumber } from "@/lib/i18n/format";
 
 export interface EligibilityPreviewLabels {
   title: string;
@@ -27,6 +28,7 @@ export function EligibilityPreviewPanel({
   labels,
 }: EligibilityPreviewPanelProps) {
   const t = useTranslations("Funder");
+  const locale = useLocale();
   const [recipients, setRecipients] = useState<EligibleRecipient[]>([]);
   const [matchCount, setMatchCount] = useState(0);
   const [loading, setLoading] = useState(false);
@@ -121,10 +123,10 @@ export function EligibilityPreviewPanel({
                     {row.display_name ?? labels.colName}
                   </td>
                   <td className="py-3 pr-4 font-mono tabular-nums text-growth-strong-brand">
-                    {row.total_xp.toLocaleString()}
+                    {formatLocaleNumber(locale, row.total_xp)}
                   </td>
                   <td className="py-3 text-xs text-text-muted-brand">
-                    {row.badge_types.join(", ") || "—"}
+                    {row.badge_types.join(", ") || t("previewNoBadges")}
                   </td>
                 </tr>
               ))}

@@ -61,7 +61,11 @@ export default async function LearnerProfilePage() {
         <p className="mt-1 text-sm text-text-muted-brand">
           {tcr("walletSubtitle")}
         </p>
-        <Link href="/learner/credentials" className="btn btn-primary btn-sm mt-4">
+        <Link
+          href="/learner/credentials"
+          prefetch={false}
+          className="btn btn-primary btn-sm mt-4"
+        >
           {t("navCredentials")}
         </Link>
       </section>

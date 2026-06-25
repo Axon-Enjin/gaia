@@ -62,7 +62,7 @@ export async function LandingPage({ user, dashboardHref }: LandingPageProps) {
             <Link href="/courses" className="btn btn-ghost btn-sm">
               {t("ctaBrowse")}
             </Link>
-            <Link href="/teacher" className="btn btn-ghost btn-sm">
+            <Link href="/teacher" prefetch={false} className="btn btn-ghost btn-sm">
               {t("ctaTeacher")}
             </Link>
           </nav>

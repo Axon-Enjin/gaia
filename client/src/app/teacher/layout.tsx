@@ -16,6 +16,7 @@ export default async function TeacherLayout({
   if (profile.role !== "teacher") redirect("/learner");
 
   const t = await getTranslations("Teacher");
+  const tc = await getTranslations("Common");
 
   return (
     <TeacherShell
@@ -26,6 +27,11 @@ export default async function TeacherLayout({
         home: t("navHome"),
         courses: t("navCourses"),
         profile: t("navProfile"),
+      }}
+      ariaLabels={{
+        shellNav: tc("teacherNavigation"),
+        mainNav: tc("mainNavigation"),
+        brandHome: tc("brandHome"),
       }}
     >
       {children}

@@ -4,6 +4,7 @@ import { IconCompass, IconUser } from "@/components/icons";
 export interface FunderBottomNavProps {
   pathname: string;
   navLabels: { programs: string; profile: string };
+  ariaLabel: string;
 }
 
 function isProgramsActive(pathname: string): boolean {
@@ -17,9 +18,10 @@ function isProfileActive(pathname: string): boolean {
 export function FunderBottomNav({
   pathname,
   navLabels,
+  ariaLabel,
 }: FunderBottomNavProps) {
   return (
-    <nav className="dashboard-bottom-nav" aria-label="Funder navigation">
+    <nav className="dashboard-bottom-nav" aria-label={ariaLabel}>
       <NavItem
         href="/funder"
         label={navLabels.programs}

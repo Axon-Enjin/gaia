@@ -1,6 +1,7 @@
 import Link from "next/link";
-import { getTranslations } from "next-intl/server";
+import { getLocale, getTranslations } from "next-intl/server";
 import type { GrantProgramRow } from "@/lib/grants/programs";
+import { formatLocaleNumber } from "@/lib/i18n/format";
 import { IconArrowRight } from "@/components/icons";
 
 export interface GrantProgramCardProps {
@@ -9,6 +10,7 @@ export interface GrantProgramCardProps {
 
 export async function GrantProgramCard({ program }: GrantProgramCardProps) {
   const t = await getTranslations("Funder");
+  const locale = await getLocale();
   const { criteria } = program;
 
   return (
@@ -43,7 +45,7 @@ export async function GrantProgramCard({ program }: GrantProgramCardProps) {
           {program.amount_per_learner !== null && (
             <p className="mt-2 font-mono text-sm tabular-nums text-text-brand">
               {t("amountPerLearner", {
-                amount: program.amount_per_learner.toLocaleString(),
+                amount: formatLocaleNumber(locale, program.amount_per_learner),
               })}
             </p>
           )}

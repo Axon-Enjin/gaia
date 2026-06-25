@@ -10,6 +10,7 @@ export interface FunderSidebarProps {
   email: string;
   roleLabel: string;
   navLabels: { programs: string; profile: string };
+  ariaLabels: { shellNav: string; mainNav: string; brandHome: string };
 }
 
 function isProgramsActive(pathname: string): boolean {
@@ -26,16 +27,21 @@ export function FunderSidebar({
   email,
   roleLabel,
   navLabels,
+  ariaLabels,
 }: FunderSidebarProps) {
   return (
-    <aside className="dashboard-sidebar" aria-label="Funder navigation">
+    <aside className="dashboard-sidebar" aria-label={ariaLabels.shellNav}>
       <div className="border-b border-border-brand px-4 py-4">
-        <Link href="/funder" aria-label="Aniskwela">
+        <Link
+          href="/funder"
+          prefetch={false}
+          aria-label={ariaLabels.brandHome}
+        >
           <BrandLockup />
         </Link>
       </div>
 
-      <nav className="dashboard-sidebar-nav" aria-label="Main">
+      <nav className="dashboard-sidebar-nav" aria-label={ariaLabels.mainNav}>
         <NavItem
           href="/funder"
           label={navLabels.programs}

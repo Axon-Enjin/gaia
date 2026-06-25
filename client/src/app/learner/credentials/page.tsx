@@ -1,9 +1,11 @@
 import Link from "next/link";
-import { getTranslations } from "next-intl/server";
+import { getLocale, getTranslations } from "next-intl/server";
 import { createClient } from "@/lib/supabase/server";
 import { getSessionUser } from "@/lib/auth";
 import { listLearnerCredentials } from "@/lib/credentials/list";
 import { EmptyState } from "@/components/states/empty-state";
+import { formatLocaleDate } from "@/lib/i18n/format";
+import { FreighterConnectPanel } from "@/components/wallet/freighter-connect-panel";
 import { IconAward, IconArrowRight } from "@/components/icons";
 
 export default async function LearnerCredentialsPage() {
@@ -12,6 +14,7 @@ export default async function LearnerCredentialsPage() {
 
   const t = await getTranslations("Learner");
   const tc = await getTranslations("Credentials");
+  const locale = await getLocale();
   const supabase = await createClient();
   const credentials = await listLearnerCredentials(supabase, user.id);
 
@@ -27,13 +30,19 @@ export default async function LearnerCredentialsPage() {
         {tc("walletSubtitle")}
       </p>
 
+      <FreighterConnectPanel className="mt-6" surface="learner" />
+
       {credentials.length === 0 ? (
         <div className="mt-10">
           <EmptyState
             icon={<IconAward />}
             text={tc("empty")}
             action={
-              <Link href="/learner/courses" className="btn btn-primary btn-sm">
+              <Link
+                href="/learner/courses"
+                prefetch={false}
+                className="btn btn-primary btn-sm"
+              >
                 {t("browseCourses")}
               </Link>
             }
@@ -45,6 +54,7 @@ export default async function LearnerCredentialsPage() {
             <li key={cred.id}>
               <Link
                 href={`/learner/credentials/${cred.id}`}
+                prefetch={false}
                 className="course-card group block"
               >
                 <div className="flex items-start gap-4">
@@ -65,7 +75,7 @@ export default async function LearnerCredentialsPage() {
                     </h2>
                     <p className="mt-2 text-sm text-text-muted-brand">
                       {tc("issuedOn", {
-                        date: new Date(cred.issued_at).toLocaleDateString(),
+                        date: formatLocaleDate(locale, cred.issued_at),
                       })}
                       {cred.final_score !== null &&
                         ` · ${tc("score", { score: cred.final_score })}`}

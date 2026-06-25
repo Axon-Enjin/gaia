@@ -19,6 +19,7 @@ export default async function FunderLayout({
   }
 
   const t = await getTranslations("Funder");
+  const tc = await getTranslations("Common");
 
   return (
     <FunderShell
@@ -28,6 +29,11 @@ export default async function FunderLayout({
       navLabels={{
         programs: t("navPrograms"),
         profile: t("navProfile"),
+      }}
+      ariaLabels={{
+        shellNav: tc("funderNavigation"),
+        mainNav: tc("mainNavigation"),
+        brandHome: tc("brandHome"),
       }}
     >
       {children}

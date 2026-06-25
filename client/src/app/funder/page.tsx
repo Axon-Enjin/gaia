@@ -5,6 +5,7 @@ import { getSessionUser } from "@/lib/auth";
 import { listFunderPrograms } from "@/lib/grants/programs";
 import { GrantProgramCard } from "@/components/funder/grant-program-card";
 import { EmptyState } from "@/components/states/empty-state";
+import { FreighterConnectPanel } from "@/components/wallet/freighter-connect-panel";
 import { IconCompass, IconPlus, IconArrowRight } from "@/components/icons";
 
 export default async function FunderHomePage() {
@@ -29,7 +30,11 @@ export default async function FunderHomePage() {
             {t("homeSubtitle")}
           </p>
         </div>
-        <Link href="/funder/programs/new" className="btn btn-primary btn-sm shrink-0">
+        <Link
+          href="/funder/programs/new"
+          prefetch={false}
+          className="btn btn-primary btn-sm shrink-0"
+        >
           <IconPlus aria-hidden="true" />
           {t("newProgram")}
         </Link>
@@ -42,12 +47,18 @@ export default async function FunderHomePage() {
         {t("simulationNotice")}
       </section>
 
+      <FreighterConnectPanel className="mb-8" surface="funder" />
+
       {programs.length === 0 ? (
         <EmptyState
           icon={<IconCompass />}
           text={t("emptyPrograms")}
           action={
-            <Link href="/funder/programs/new" className="btn btn-primary btn-sm">
+            <Link
+              href="/funder/programs/new"
+              prefetch={false}
+              className="btn btn-primary btn-sm"
+            >
               {t("createFirstProgram")}
             </Link>
           }
@@ -65,6 +76,7 @@ export default async function FunderHomePage() {
       <p className="mt-10 text-sm text-text-muted-brand">
         <Link
           href="/funder/programs/new"
+          prefetch={false}
           className="inline-flex items-center gap-1 font-medium text-primary-brand hover:underline"
         >
           {t("newProgram")} <IconArrowRight aria-hidden="true" />

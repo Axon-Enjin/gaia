@@ -10,6 +10,7 @@ export interface TeacherSidebarProps {
   email: string;
   roleLabel: string;
   navLabels: { home: string; courses: string; profile: string };
+  ariaLabels: { shellNav: string; mainNav: string; brandHome: string };
 }
 
 function isHomeActive(pathname: string): boolean {
@@ -30,16 +31,21 @@ export function TeacherSidebar({
   email,
   roleLabel,
   navLabels,
+  ariaLabels,
 }: TeacherSidebarProps) {
   return (
-    <aside className="dashboard-sidebar" aria-label="Teacher navigation">
+    <aside className="dashboard-sidebar" aria-label={ariaLabels.shellNav}>
       <div className="border-b border-border-brand px-4 py-4">
-        <Link href="/teacher" aria-label="Aniskwela">
+        <Link
+          href="/teacher"
+          prefetch={false}
+          aria-label={ariaLabels.brandHome}
+        >
           <BrandLockup />
         </Link>
       </div>
 
-      <nav className="dashboard-sidebar-nav" aria-label="Main">
+      <nav className="dashboard-sidebar-nav" aria-label={ariaLabels.mainNav}>
         <NavItem
           href="/teacher"
           label={navLabels.home}

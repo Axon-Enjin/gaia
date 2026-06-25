@@ -16,12 +16,16 @@ export async function ProductHeader({ cta }: ProductHeaderProps) {
   return (
     <header className="site-header product-nav">
       <div className="site-header-inner site-header-inner--product">
-        <Link href="/" className="site-brand brand-lockup">
+        <Link
+          href="/"
+          className="site-brand brand-lockup"
+          aria-label={tc("brandHome")}
+        >
           <BrandMark className="brand-lockup-mark" aria-hidden="true" />
           <span>{tc("appName")}</span>
         </Link>
 
-        <nav className="site-nav-product" aria-label="Product">
+        <nav className="site-nav-product" aria-label={tc("productNavigation")}>
           <Link href="/courses" className="site-nav-link">
             {t("browse")}
           </Link>
@@ -29,7 +33,7 @@ export async function ProductHeader({ cta }: ProductHeaderProps) {
 
         <div className="site-header-actions">
           <LocaleSwitcher />
-          <Link href={cta.href} className="site-btn site-btn-primary">
+          <Link href={cta.href} prefetch={false} className="site-btn site-btn-primary">
             {cta.label}
           </Link>
         </div>
