@@ -1,6 +1,7 @@
 "use server";
 
-import { revalidateTag } from "next/cache";
+import { updateTag } from "next/cache";
+import { redirect } from "next/navigation";
 import { z } from "zod";
 import { createClient } from "@/lib/supabase/server";
 import { COURSES_CACHE_TAG } from "@/lib/courses/catalog";
@@ -21,7 +22,7 @@ export interface PublishState {
  *     teacher_id match — never trust the client.
  *   * Draft must meet the minimum content bar (>= 1 lesson, >= 3 quiz Qs),
  *     mirroring the generation contract.
- * On success, revalidate the cached catalog so the course appears in /courses.
+ * On success, invalidate the cached catalog and redirect to the teacher preview.
  */
 export async function publishCourseAction(
   _prev: PublishState,
@@ -44,7 +45,9 @@ export async function publishCourseAction(
     .eq("id", courseId)
     .single();
   if (!course || course.teacher_id !== user.id) return { error: "forbidden" };
-  if (course.status === "published") return { ok: true }; // idempotent
+  if (course.status === "published") {
+    redirect(`/teacher/courses/${courseId}`);
+  }
 
   // Minimum content bar: >= 1 lesson and >= 3 quiz questions.
   const { data: lessons } = await supabase
@@ -67,8 +70,7 @@ export async function publishCourseAction(
     .eq("teacher_id", user.id); // belt-and-suspenders with RLS
   if (error) return { error: "publish_failed" };
 
-  // The catalog/detail reads are cached with this tag under the "hours"
-  // profile — refresh them (Next 16 requires the cacheLife profile here).
-  revalidateTag(COURSES_CACHE_TAG, "hours");
-  return { ok: true };
+  // Read-your-own-writes: expire catalog cache before redirect (Next 16).
+  updateTag(COURSES_CACHE_TAG);
+  redirect(`/teacher/courses/${courseId}`);
 }

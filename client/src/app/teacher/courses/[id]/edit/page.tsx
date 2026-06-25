@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { notFound, redirect } from "next/navigation";
+import { notFound } from "next/navigation";
 import { getTranslations } from "next-intl/server";
 import { getSessionUser } from "@/lib/auth";
 import { createClient } from "@/lib/supabase/server";
@@ -27,7 +27,18 @@ export default async function TeacherCourseEditPage({
   }
 
   if (course.status !== "draft") {
-    redirect(`/teacher/courses/${id}`);
+    return (
+      <div className="rounded-[var(--radius-surface)] border border-growth-brand/35 bg-growth-brand/10 px-4 py-6">
+        <p className="font-semibold text-growth-strong-brand">{t("published")}</p>
+        <p className="mt-2 text-sm text-text-muted-brand">{t("editorPageSubtitle")}</p>
+        <Link
+          href={`/teacher/courses/${id}`}
+          className="btn btn-primary btn-sm mt-4 inline-flex"
+        >
+          {t("previewCourse")}
+        </Link>
+      </div>
+    );
   }
 
   const analytics = await getTeacherCourseAnalytics(supabase, id, user.id);
