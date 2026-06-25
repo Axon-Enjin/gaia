@@ -6,7 +6,7 @@ export function dashboardHrefFromProfile(
 ): string | null {
   if (!profile) return null;
   if (profile.role === "teacher") return "/teacher";
-  if (profile.role === "funder") return "/courses";
+  if (profile.role === "funder") return "/funder";
   return "/learner";
 }
 

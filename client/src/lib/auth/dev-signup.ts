@@ -1,6 +1,6 @@
 import { createAdminClient } from "@/lib/supabase/admin";
 
-type DevRole = "learner" | "teacher";
+type DevRole = "learner" | "teacher" | "funder";
 
 /**
  * Create a user via the Admin API with email pre-confirmed.
