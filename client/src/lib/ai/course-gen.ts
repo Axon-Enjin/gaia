@@ -40,11 +40,11 @@ function extractJson(raw: string | null | undefined): unknown {
 }
 
 /**
- * Generate a structured course from untrusted source text.
+ * Generate a structured course from preprocessed source text (digest).
  *
  * Flow (rfc-aniskwela-002 §2):
  *   1. One gpt-5.4 call — static system prompt first (auto-cached), untrusted
- *      source + hints last.
+ *      digest + hints last.
  *   2. Validate against the Zod schema.
  *   3. On failure, ONE bounded gpt-5.4-mini repair pass.
  *   4. Still invalid -> throw (caller returns 422). Never persist garbage.
@@ -52,10 +52,10 @@ function extractJson(raw: string | null | undefined): unknown {
  * Called once per course, never on a learner read path.
  */
 export async function generateCourse(
-  sourceText: string,
+  preparedSourceText: string,
   hints: GenerationHints,
 ): Promise<Course> {
-  const userContent = wrapUntrusted(sourceText, hints);
+  const userContent = wrapUntrusted(preparedSourceText, hints);
 
   let rawJson: unknown;
   try {

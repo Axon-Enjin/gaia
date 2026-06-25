@@ -14,6 +14,7 @@ export interface LearnerBottomNavProps {
     credentials: string;
     profile: string;
   };
+  ariaLabel: string;
 }
 
 function isHomeActive(pathname: string): boolean {
@@ -35,9 +36,10 @@ function isProfileActive(pathname: string): boolean {
 export function LearnerBottomNav({
   pathname,
   navLabels,
+  ariaLabel,
 }: LearnerBottomNavProps) {
   return (
-    <nav className="dashboard-bottom-nav" aria-label="Learner navigation">
+    <nav className="dashboard-bottom-nav" aria-label={ariaLabel}>
       <NavItem
         href="/learner"
         label={navLabels.home}

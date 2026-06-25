@@ -4,6 +4,7 @@ import { IconHome, IconLayers, IconUser } from "@/components/icons";
 export interface TeacherBottomNavProps {
   pathname: string;
   navLabels: { home: string; courses: string; profile: string };
+  ariaLabel: string;
 }
 
 function isHomeActive(pathname: string): boolean {
@@ -21,9 +22,10 @@ function isProfileActive(pathname: string): boolean {
 export function TeacherBottomNav({
   pathname,
   navLabels,
+  ariaLabel,
 }: TeacherBottomNavProps) {
   return (
-    <nav className="dashboard-bottom-nav" aria-label="Teacher navigation">
+    <nav className="dashboard-bottom-nav" aria-label={ariaLabel}>
       <NavItem
         href="/teacher"
         label={navLabels.home}

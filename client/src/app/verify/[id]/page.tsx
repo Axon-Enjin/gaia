@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { getTranslations } from "next-intl/server";
+import { getLocale, getTranslations } from "next-intl/server";
 import { createClient } from "@/lib/supabase/server";
 import {
   loadCredentialForVerify,
@@ -8,6 +8,7 @@ import {
 } from "@/lib/credentials/verify-credential";
 import { LandingNav } from "@/components/landing/landing-nav";
 import { stellarExplorerTxUrl } from "@/lib/credentials/stellar-explorer";
+import { formatLocaleDate } from "@/lib/i18n/format";
 import { CredentialCard } from "@/components/credential-card";
 import { IconShieldCheck, IconCheck, IconArrowRight } from "@/components/icons";
 
@@ -53,6 +54,7 @@ export default async function VerifyCredentialPage({
 }) {
   const { id } = await params;
   const t = await getTranslations("Verifier");
+  const locale = await getLocale();
   const supabase = await createClient();
   const row = await loadCredentialForVerify(supabase, id);
 
@@ -109,9 +111,7 @@ export default async function VerifyCredentialPage({
               eyebrow={t("eyebrow")}
               learnerName={result.learner}
               courseTitle={result.course}
-              metaLine={`${t("issued")}: ${new Date(
-                result.issued_at,
-              ).toLocaleDateString()}${
+              metaLine={`${t("issued")}: ${formatLocaleDate(locale, result.issued_at)}${
                 result.score !== null
                   ? ` · ${t("score")}: ${result.score}%`
                   : ""
@@ -128,6 +128,7 @@ export default async function VerifyCredentialPage({
               pass={result.checks.signature}
               passLabel={t("pass")}
               failLabel={t("fail")}
+              naLabel={t("na")}
             />
             {!result.mock_anchor && (
               <CheckRow

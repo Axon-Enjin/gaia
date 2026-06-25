@@ -12,6 +12,13 @@ import { publicEnv } from "@/lib/env";
 export async function proxy(request: NextRequest) {
   let response = NextResponse.next({ request });
 
+  // Dev ergonomics: avoid auth refresh churn on every document request.
+  // Login/logout still work because Server Actions write cookies directly.
+  // Production keeps the refresh path enabled for expiring sessions.
+  if (process.env.NODE_ENV === "development") {
+    return response;
+  }
+
   // If Supabase isn't configured yet (local bootstrap), do nothing.
   if (!publicEnv.supabaseUrl || !publicEnv.supabaseAnonKey) {
     return response;
@@ -49,7 +56,17 @@ export const config = {
     /*
      * Run on everything except static assets and metadata files, so token
      * refresh never blocks CSS/JS/image delivery (low-resource constraint).
+     * Skip router/browser prefetch traffic so speculative requests do not keep
+     * touching auth cookies and amplifying duplicate-tab or hover-triggered
+     * request noise on dynamic dashboard routes.
      */
-    "/((?!_next/static|_next/image|favicon.ico|robots.txt|sitemap.xml|.*\\.(?:svg|png|jpg|jpeg|gif|webp)$).*)",
+    {
+      source:
+        "/((?!_next/static|_next/image|favicon.ico|robots.txt|sitemap.xml|.*\\.(?:svg|png|jpg|jpeg|gif|webp)$).*)",
+      missing: [
+        { type: "header", key: "next-router-prefetch" },
+        { type: "header", key: "purpose", value: "prefetch" },
+      ],
+    },
   ],
 };

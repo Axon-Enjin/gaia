@@ -14,10 +14,11 @@ Migrations are **forward-only** and must stay **backward-compatible for one rele
 | `0004_dev_demo_course.sql` | Demo lessons + quiz for dev published test course (optional; idempotent) |
 | `0005_credentials_rfc.sql` | PRD-F4/F5: credential idempotency index + `get_credential_for_verify` RPC |
 | `0006_teacher_analytics_rls.sql` | PRD-F6: teacher SELECT on enrollments/credentials for owned courses |
+| `0007_grant_disbursements.sql` | PRD-F10: simulated disbursement audit trail + RLS |
 
 ## Apply to a Supabase project
 
-**Dev project:** migrations `0001`–`0006` applied (issue #5 + PRD-F8 + demo seed + credentials RFC + teacher analytics RLS).
+**Dev project:** migrations `0001`–`0007` applied (issue #5 + PRD-F8 + demo seed + credentials RFC + teacher analytics RLS + grant disbursements).
 
 For a fresh project:
 
@@ -61,3 +62,13 @@ Run Supabase **security advisors** (Dashboard or MCP `get_advisors`) — no tabl
 1. Read SDD §3; add a new `000N_*.sql` migration.
 2. Run **schema-stack-guardian** review (RLS + backward compatibility).
 3. If breaking a Locked doc assumption → Change Record (`docs/cr-aniskwela-NNN.md`).
+
+## PRD-F10 — Funder demo (local)
+
+1. Apply `0007_grant_disbursements.sql` if not yet on your Supabase project.
+2. Sign up at `/login?mode=sign-up` with role **Funder / NGO** (or use dev Admin API signup with `role: funder` in metadata).
+3. As a **learner**, complete the demo Agriculture course (`0004_dev_demo_course.sql`) until you have ≥ 300 XP and the **Consistent Learner** badge (3-day streak or seeded merit).
+4. As funder, open `/funder` → **New program** → e.g. industry `Agriculture`, min XP `300`, badge **Consistent Learner**, amount `2500`.
+5. Preview eligibility → **Run simulated disbursement** → **Download audit CSV**.
+
+No real funds move; `grant_programs.simulated` and `grant_disbursements.simulated` stay `true`.

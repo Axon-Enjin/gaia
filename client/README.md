@@ -66,6 +66,7 @@ Apply migrations to a **new** project: SQL Editor, Supabase CLI, or MCP `apply_m
 | `npm run dev` | Local dev (Turbopack default) |
 | `npm run build` | Production build |
 | `npm run typecheck` | `tsc --noEmit` |
+| `npm run preprocess-doc -- path/to/file.pdf` | Test document preprocessing without calling Azure |
 | `node scripts/measure-bundle.js` | Initial JS budget check (≤ 220 KB gz) |
 
 ## Layout

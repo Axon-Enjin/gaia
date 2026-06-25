@@ -73,14 +73,16 @@ export function LandingNav({ signedIn, dashboardHref }: LandingNavProps) {
       <div className="site-header-inner">
         <Link
           href="/"
+          prefetch={false}
           className="site-brand brand-lockup"
+          aria-label={tc("brandHome")}
           onClick={closeMobile}
         >
           <BrandMark className="brand-lockup-mark" aria-hidden="true" />
           <span>{tc("appName")}</span>
         </Link>
 
-        <nav className="site-nav-desktop" aria-label="Landing sections">
+        <nav className="site-nav-desktop" aria-label={tc("landingSections")}>
           {SECTIONS.map((s) => (
             <a
               key={s.href}
@@ -94,7 +96,7 @@ export function LandingNav({ signedIn, dashboardHref }: LandingNavProps) {
 
         <div className="site-header-actions">
           <LocaleSwitcher />
-          <Link href={ctaHref} className="btn btn-primary btn-sm">
+          <Link href={ctaHref} prefetch={false} className="btn btn-primary btn-sm">
             {ctaLabel}
           </Link>
 
@@ -121,7 +123,7 @@ export function LandingNav({ signedIn, dashboardHref }: LandingNavProps) {
         className={`site-nav-mobile ${mobileOpen ? "is-open" : ""}`}
         hidden={!mobileOpen}
       >
-        <nav aria-label="Landing sections">
+        <nav aria-label={tc("landingSections")}>
           <ul className="site-nav-mobile-list">
             {SECTIONS.map((s) => (
               <li key={s.href}>
@@ -139,6 +141,7 @@ export function LandingNav({ signedIn, dashboardHref }: LandingNavProps) {
         <div className="site-nav-mobile-actions">
           <Link
             href={ctaHref}
+            prefetch={false}
             className="btn btn-primary btn-block"
             onClick={closeMobile}
           >

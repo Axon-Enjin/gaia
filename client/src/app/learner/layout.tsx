@@ -18,6 +18,7 @@ export default async function LearnerLayout({
   if (profile.role !== "learner") redirect("/teacher");
 
   const t = await getTranslations("Learner");
+  const tc = await getTranslations("Common");
 
   let levelId = levelFromXp(0);
   try {
@@ -37,6 +38,11 @@ export default async function LearnerLayout({
         courses: t("navCourses"),
         credentials: t("navCredentials"),
         profile: t("navProfile"),
+      }}
+      ariaLabels={{
+        shellNav: tc("learnerNavigation"),
+        mainNav: tc("mainNavigation"),
+        brandHome: tc("brandHome"),
       }}
     >
       {children}

@@ -7,11 +7,13 @@
     "build": "next build",
     "start": "next start",
     "typecheck": "tsc --noEmit",
-    "test": "node --import tsx --test src/lib/credentials/*.test.ts"
+    "test": "node --import tsx --test src/lib/credentials/*.test.ts src/lib/ai/preprocess*.test.ts src/lib/ai/distill*.test.ts",
+    "preprocess-doc": "node --import tsx scripts/preprocess-doc.ts"
   },
   "dependencies": {
     "@azure/identity": "^4.13.1",
     "@azure/openai": "^2.0.0",
+    "@stellar/freighter-api": "^6.0.1",
     "@stellar/stellar-sdk": "^16.0.1",
     "@supabase/ssr": "^0.12.0",
     "@supabase/supabase-js": "^2.108.2",

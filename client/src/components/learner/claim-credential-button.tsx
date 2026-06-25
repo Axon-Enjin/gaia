@@ -1,7 +1,6 @@
 "use client";
 
 import { useState } from "react";
-import Link from "next/link";
 import { useRouter } from "next/navigation";
 
 export interface ClaimCredentialButtonProps {
@@ -45,12 +44,14 @@ function CredentialReadyPanel({
       {network === "mock" && (
         <p className="mt-1 text-xs text-text-muted-brand">{labels.mockBadge}</p>
       )}
-      <Link
+      <a
         href={url}
+        target="_blank"
+        rel="noopener noreferrer"
         className="mt-2 block break-all text-sm font-semibold text-primary-brand underline hover:no-underline"
       >
         {url}
-      </Link>
+      </a>
       {qr && (
         // eslint-disable-next-line @next/next/no-img-element
         <img

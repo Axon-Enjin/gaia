@@ -1,4 +1,5 @@
-import { getTranslations } from "next-intl/server";
+import { getLocale, getTranslations } from "next-intl/server";
+import { formatLocaleNumber } from "@/lib/i18n/format";
 import {
   levelFromXp,
   nextLevelMinXp,
@@ -26,6 +27,7 @@ export async function MeritPanel({
   compact = false,
 }: MeritPanelProps) {
   const t = await getTranslations("Learner");
+  const locale = await getLocale();
 
   const level = levelFromXp(totalXp);
   const nextXp = nextLevelMinXp(totalXp);
@@ -53,7 +55,7 @@ export async function MeritPanel({
 
       <div className="mt-5 flex items-end gap-2">
         <span className="text-4xl font-bold leading-none text-growth-strong-brand tabular-nums">
-          {totalXp.toLocaleString()}
+          {formatLocaleNumber(locale, totalXp)}
         </span>
         <span className="pb-1 text-sm font-medium uppercase tracking-wide text-text-muted-brand">
           {t("totalXp")}

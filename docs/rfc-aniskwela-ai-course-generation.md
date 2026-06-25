@@ -31,7 +31,8 @@ Implements PRD-F1; governed by the SDD §8 AI architecture and §8.1 safety cont
 
 **Approach:**
 1. Teacher uploads a PDF/doc → Supabase Storage; server extracts text.
-2. Server issues a single `gpt-5.4` call via Azure AI Foundry: static system prompt (pedagogy rules + strict JSON schema) placed first for automatic prefix caching, then the extracted source → structured course JSON.
+2. Server preprocesses the extract (deterministic outline/digest) and, if still oversized, one bounded `gpt-5.4-mini` distill pass.
+3. Server issues a single `gpt-5.4` call via Azure AI Foundry: static system prompt (pedagogy rules + strict JSON schema) placed first for automatic prefix caching, then the prepared digest → structured course JSON.
 3. Server validates JSON against a Zod schema. On validation failure, one bounded repair attempt (`gpt-5.4-mini` "fix to schema") before surfacing an error.
 4. Persist as a `draft` course + lessons + quiz_questions.
 5. Teacher reviews/edits in the Course Editor; only an explicit publish action flips status to `published`.

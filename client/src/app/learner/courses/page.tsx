@@ -28,7 +28,7 @@ export default async function LearnerCoursesPage() {
           icon={<IconBook />}
           text={t("empty")}
           action={
-            <Link href="/learner" className="btn btn-secondary btn-sm">
+            <Link href="/learner" prefetch={false} className="btn btn-secondary btn-sm">
               {t("backHome")}
             </Link>
           }

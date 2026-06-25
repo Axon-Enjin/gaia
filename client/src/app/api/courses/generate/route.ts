@@ -3,6 +3,8 @@ import { createClient } from "@/lib/supabase/server";
 import { flags } from "@/lib/env";
 import { extractText, FileExtractionError } from "@/lib/ai/extract-text";
 import { generateCourse, CourseGenerationError } from "@/lib/ai/course-gen";
+import { prepareSourceForGeneration } from "@/lib/ai/prepare-source";
+import { DistillSourceError } from "@/lib/ai/distill-source";
 import { persistDraftCourse } from "@/lib/courses/persist";
 import { quizCount as countQuiz, lessonCount as countLessons } from "@/lib/ai/course-schema";
 
@@ -100,10 +102,24 @@ export async function POST(req: Request) {
     throw err;
   }
 
-  // --- Generate (single cached call + bounded repair) ---
+  // --- Preprocess (deterministic) + optional mini distill ---
+  let prepared;
+  try {
+    prepared = await prepareSourceForGeneration(sourceText);
+  } catch (err) {
+    if (err instanceof DistillSourceError) {
+      return Response.json(
+        { error: "distill_failed", message: err.message },
+        { status: 502 },
+      );
+    }
+    throw err;
+  }
+
+  // --- Generate (single cached gpt-5.4 call + bounded repair) ---
   let course;
   try {
-    course = await generateCourse(sourceText, {
+    course = await generateCourse(prepared.preparedText, {
       ...(parsedFields.data.industry
         ? { industry: parsedFields.data.industry }
         : {}),
@@ -130,5 +146,12 @@ export async function POST(req: Request) {
     industry: course.industry,
     lesson_count: countLessons(course),
     quiz_count: countQuiz(course),
+    preprocess: {
+      raw_chars: prepared.digest.rawCharCount,
+      digest_chars: prepared.digest.digestCharCount,
+      prepared_chars: prepared.preparedCharCount,
+      reduction_pct: prepared.reductionPct,
+      mini_distill_used: prepared.miniDistillUsed,
+    },
   });
 }

@@ -1,12 +1,14 @@
 import Link from "next/link";
-import { getTranslations } from "next-intl/server";
+import { getLocale, getTranslations } from "next-intl/server";
 import { createClient } from "@/lib/supabase/server";
 import { getSessionUser } from "@/lib/auth";
 import { getMeritSummary } from "@/lib/merit/ledger";
 import { parseProgress } from "@/lib/enrollments/progress";
 import { MeritPanel } from "@/components/learner/merit-panel";
 import { EmptyState } from "@/components/states/empty-state";
-import { IconAward, IconArrowRight } from "@/components/icons";
+import { getLearnerGrantStatus } from "@/lib/grants/learner-status";
+import { formatLocaleDate, formatLocaleNumber } from "@/lib/i18n/format";
+import { IconAward, IconArrowRight, IconCompass } from "@/components/icons";
 
 function courseFromJoin(raw: unknown): {
   title: string;
@@ -26,8 +28,13 @@ function courseFromJoin(raw: unknown): {
 
 export default async function LearnerHomePage() {
   const t = await getTranslations("Learner");
+  const locale = await getLocale();
   const user = await getSessionUser();
   if (!user) return null;
+  const badgeLabels: Record<string, string> = {
+    consistent_learner: t("badges.consistent_learner"),
+    course_complete: t("badges.course_complete"),
+  };
 
   let merit;
   try {
@@ -48,6 +55,7 @@ export default async function LearnerHomePage() {
     )
     .eq("learner_id", user.id)
     .order("id", { ascending: false });
+  const grantStatus = await getLearnerGrantStatus(user.id);
 
   return (
     <>
@@ -94,6 +102,100 @@ export default async function LearnerHomePage() {
         </section>
       )}
 
+      <section className="mb-8">
+        <div className="mb-4 flex items-center justify-between gap-3">
+          <h2 className="text-lg font-semibold text-soil-brand">
+            {t("grantStatusTitle")}
+          </h2>
+        </div>
+        <p className="mb-4 text-sm text-text-muted-brand">
+          {t("grantStatusSubtitle")}
+        </p>
+
+        {!grantStatus.available ? (
+          <div className="rounded-xl border border-warning-brand/30 bg-warning-brand/10 p-4 text-sm text-warning-brand">
+            {t("grantStatusUnavailable")}
+          </div>
+        ) : grantStatus.cards.length === 0 ? (
+          <EmptyState
+            icon={<IconCompass />}
+            text={t("grantStatusEmpty")}
+          />
+        ) : (
+          <ul className="flex flex-col gap-3">
+            {grantStatus.cards.map((card) => {
+              const requiredBadges = card.requiredBadges.map(
+                (badge) => badgeLabels[badge] ?? badge,
+              );
+
+              return (
+                <li
+                  key={card.programId}
+                  className="rounded-xl border border-border-brand bg-surface-brand p-4"
+                >
+                  <div className="mb-2 flex flex-wrap items-center gap-2">
+                    <span className="industry-pill">{card.industry}</span>
+                    {card.amountPerLearner !== null && (
+                      <span className="rounded-full bg-growth-brand/12 px-2 py-0.5 text-xs font-semibold text-growth-strong-brand">
+                        {t("grantStatusAmount", {
+                          amount: formatLocaleNumber(locale, card.amountPerLearner),
+                        })}
+                      </span>
+                    )}
+                  </div>
+
+                  <h3 className="text-base font-semibold text-text-brand">
+                    {card.programName}
+                  </h3>
+
+                  <p className="mt-1 text-sm text-text-muted-brand">
+                    {t("grantStatusCriteriaLine", {
+                      industry: card.industry,
+                      xp: card.minXp,
+                    })}
+                  </p>
+
+                  {requiredBadges.length > 0 && (
+                    <p className="mt-1 text-sm text-text-muted-brand">
+                      {t("grantStatusRequiredBadges", {
+                        badges: requiredBadges.join(", "),
+                      })}
+                    </p>
+                  )}
+
+                  {card.requireCredential && (
+                    <p className="mt-1 text-sm text-text-muted-brand">
+                      {t("grantStatusCredentialRequired")}
+                    </p>
+                  )}
+
+                  <div className="mt-3 flex flex-wrap items-center gap-2">
+                    {card.eligibleNow && (
+                      <span className="rounded-full bg-growth-brand/12 px-2 py-0.5 text-xs font-semibold text-growth-strong-brand">
+                        {t("grantStatusEligibleNow")}
+                      </span>
+                    )}
+                    {card.includedInLatestSimulation && (
+                      <span className="rounded-full bg-primary-brand/10 px-2 py-0.5 text-xs font-semibold text-primary-brand">
+                        {t("grantStatusInLatestSimulation")}
+                      </span>
+                    )}
+                  </div>
+
+                  {card.latestSimulationAt && (
+                    <p className="mt-2 text-xs text-text-muted-brand">
+                      {t("grantStatusLatestSimulation", {
+                        date: formatLocaleDate(locale, card.latestSimulationAt),
+                      })}
+                    </p>
+                  )}
+                </li>
+              );
+            })}
+          </ul>
+        )}
+      </section>
+
       <section>
         <div className="mb-4 flex items-center justify-between gap-3">
           <h2 className="text-lg font-semibold text-soil-brand">
@@ -101,6 +203,7 @@ export default async function LearnerHomePage() {
           </h2>
           <Link
             href="/learner/courses"
+            prefetch={false}
             className="inline-flex items-center gap-1 text-sm font-medium text-primary-brand hover:underline"
           >
             {t("browseCourses")} <IconArrowRight aria-hidden="true" />
@@ -112,7 +215,11 @@ export default async function LearnerHomePage() {
             icon={<IconAward />}
             text={t("noEnrollments")}
             action={
-              <Link href="/learner/courses" className="btn btn-primary btn-sm">
+              <Link
+                href="/learner/courses"
+                prefetch={false}
+                className="btn btn-primary btn-sm"
+              >
                 {t("browseCourses")}
               </Link>
             }
@@ -136,6 +243,7 @@ export default async function LearnerHomePage() {
                 >
                   <Link
                     href={`/learner/courses/${row.course_id as string}`}
+                    prefetch={false}
                     className="block"
                   >
                     <div className="flex items-start gap-3">

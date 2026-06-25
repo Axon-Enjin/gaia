@@ -14,6 +14,13 @@ interface DraftResult {
   industry: string;
   lesson_count: number;
   quiz_count: number;
+  preprocess?: {
+    raw_chars: number;
+    digest_chars: number;
+    prepared_chars: number;
+    reduction_pct: number;
+    mini_distill_used: boolean;
+  };
 }
 
 export function UploadGenerateForm() {
@@ -46,7 +53,11 @@ export function UploadGenerateForm() {
       }
 
       const data = (await res.json()) as DraftResult;
-      router.push(`/teacher/courses/${data.course_id}/edit`);
+      const p = data.preprocess;
+      const qs = p
+        ? `?raw_chars=${p.raw_chars}&prepared_chars=${p.prepared_chars}&reduction_pct=${p.reduction_pct}`
+        : "";
+      router.push(`/teacher/courses/${data.course_id}/edit${qs}`);
       router.refresh();
     } catch {
       setError(t("errorGeneric"));

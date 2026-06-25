@@ -10,6 +10,7 @@ export interface TeacherShellProps {
   email: string;
   roleLabel: string;
   navLabels: { home: string; courses: string; profile: string };
+  ariaLabels: { shellNav: string; mainNav: string; brandHome: string };
 }
 
 /** Hybrid teacher chrome — sidebar on md+, bottom tabs on mobile. */
@@ -19,6 +20,7 @@ export function TeacherShell({
   email,
   roleLabel,
   navLabels,
+  ariaLabels,
 }: TeacherShellProps) {
   const pathname = usePathname();
 
@@ -30,11 +32,16 @@ export function TeacherShell({
         email={email}
         roleLabel={roleLabel}
         navLabels={navLabels}
+        ariaLabels={ariaLabels}
       />
       <main id="main-content" className="dashboard-main">
         <div className="dashboard-main-inner">{children}</div>
       </main>
-      <TeacherBottomNav pathname={pathname} navLabels={navLabels} />
+      <TeacherBottomNav
+        pathname={pathname}
+        navLabels={navLabels}
+        ariaLabel={ariaLabels.shellNav}
+      />
     </div>
   );
 }

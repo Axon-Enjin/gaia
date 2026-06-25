@@ -51,13 +51,19 @@ This document tracks the core implementation tasks tailored to Rhandie's experti
 
 ## 6. PRD Implementation — What's Next
 
+### Completed in code
+
+- [x] **PRD-F7:** Learner dashboard and wallet complete, including grant-status visibility on `/learner`.
+- [x] **PRD-F9:** EN/FIL localization complete across shipped product surfaces, including locale-aware metadata and formatting.
+- [x] **PRD-F11:** Freighter demo wallet connect added on learner wallet and funder dashboard surfaces.
+
+### Remaining priorities
+
 | Priority | PRD | Why now |
 |----------|-----|---------|
-| 1 | **F2 + F3** | Learner path: enrollment, quiz submit, XP → merit ledger (schema exists; no blockers) |
-| 2 | **F4 + F5 + F7** | Credential demo for hackathon (RFC-001; needs Stellar testnet + issuer keys) |
-| 3 | **F6 polish** | Course editor, passing score, analytics |
-| 4 | **F10** | Mock funder UI (Postgres-only) |
-| 5 | **F11** | Freighter connect (Should-Have; client-only) |
+| 1 | **Infra** | Vercel project setup, production secrets, Azure model deployments |
+| 2 | **Native-speaker localization QA** | Filipino copy review and correction pass on shipped translations |
+| 3 | **Phase 1 features** | F12 adaptive engine and F13 offline caching remain deferred |
 
 **Infra still open:** Azure model deploy + Vercel env (§1), apply `0003_waitlist` on any Supabase env missing it.
 

@@ -11,10 +11,17 @@ import { IconArrowRight } from "@/components/icons";
 
 export default async function TeacherCourseEditPage({
   params,
+  searchParams,
 }: {
   params: Promise<{ id: string }>;
+  searchParams: Promise<{
+    raw_chars?: string;
+    prepared_chars?: string;
+    reduction_pct?: string;
+  }>;
 }) {
   const { id } = await params;
+  const sp = await searchParams;
   const user = await getSessionUser();
   if (!user) return null;
 
@@ -43,6 +50,15 @@ export default async function TeacherCourseEditPage({
 
   const analytics = await getTeacherCourseAnalytics(supabase, id, user.id);
 
+  const rawChars = Number(sp.raw_chars);
+  const preparedChars = Number(sp.prepared_chars);
+  const reductionPct = Number(sp.reduction_pct);
+  const showPreprocess =
+    Number.isFinite(rawChars) &&
+    Number.isFinite(preparedChars) &&
+    rawChars > 0 &&
+    preparedChars > 0;
+
   return (
     <div>
       <Link
@@ -60,6 +76,19 @@ export default async function TeacherCourseEditPage({
         <h1 className="mt-1 text-2xl font-bold text-soil-brand">{t("editorPageTitle")}</h1>
         <p className="mt-2 text-sm text-text-muted-brand">{t("editorPageSubtitle")}</p>
       </div>
+
+      {showPreprocess && (
+        <p
+          className="mb-6 rounded-[var(--radius-surface)] border border-border-brand bg-bg-brand/60 px-4 py-3 text-sm text-text-muted-brand"
+          role="status"
+        >
+          {t("preprocessStat", {
+            raw: rawChars.toLocaleString(),
+            prepared: preparedChars.toLocaleString(),
+            pct: Number.isFinite(reductionPct) ? reductionPct : 0,
+          })}
+        </p>
+      )}
 
       {analytics && (
         <div className="mb-8">

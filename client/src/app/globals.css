@@ -740,7 +740,8 @@ summary:focus-visible,
 
 /* Dashboard shell — sidebar desktop, bottom nav mobile (learner + teacher) */
 .learner-shell,
-.teacher-shell {
+.teacher-shell,
+.funder-shell {
   display: flex;
   min-height: 100%;
   flex-direction: column;
@@ -748,7 +749,8 @@ summary:focus-visible,
 
 @media (min-width: 768px) {
   .learner-shell,
-  .teacher-shell {
+  .teacher-shell,
+  .funder-shell {
     flex-direction: row;
   }
 }
@@ -1501,6 +1503,23 @@ summary:focus-visible,
 .reveal.is-visible {
   opacity: 1;
   transform: none;
+}
+
+/* Funder eligibility preview — staggered row reveal (CSS only) */
+@keyframes grant-row-in {
+  from {
+    opacity: 0;
+    transform: translateY(4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.grant-preview-row {
+  animation: grant-row-in var(--motion-base) var(--ease-out) both;
+  animation-delay: calc(var(--i, 0) * 80ms);
 }
 
 /* ============================================================

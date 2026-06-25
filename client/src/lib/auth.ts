@@ -1,3 +1,4 @@
+import { cache } from "react";
 import { createClient } from "@/lib/supabase/server";
 import type { SupabaseClient, User } from "@supabase/supabase-js";
 
@@ -10,14 +11,14 @@ export interface Profile {
   locale: "en" | "fil";
 }
 
-/** Current authenticated user, or null. Never throws. */
-export async function getSessionUser(): Promise<User | null> {
+/** Current authenticated user, or null. Never throws. Deduplicated per request via React cache. */
+export const getSessionUser = cache(async (): Promise<User | null> => {
   const supabase = await createClient();
   const {
     data: { user },
   } = await supabase.auth.getUser();
   return user;
-}
+});
 
 /** Load a profile row by id (RLS: a user can read only their own). */
 export async function getProfile(
@@ -39,12 +40,11 @@ export async function getProfile(
  *
  * Returns null only if there is no authenticated user.
  */
-export async function ensureProfile(): Promise<Profile | null> {
-  const supabase = await createClient();
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
+export const ensureProfile = cache(async (): Promise<Profile | null> => {
+  const user = await getSessionUser();
   if (!user) return null;
+
+  const supabase = await createClient();
 
   const existing = await getProfile(supabase, user.id);
   if (existing) return existing;
@@ -66,4 +66,4 @@ export async function ensureProfile(): Promise<Profile | null> {
     return getProfile(supabase, user.id);
   }
   return data as Profile;
-}
+});
