@@ -16,8 +16,14 @@ const CredentialsSchema = z.object({
 });
 
 const SignUpSchema = CredentialsSchema.extend({
-  role: z.enum(["learner", "teacher"]).default("learner"),
+  role: z.enum(["learner", "teacher", "funder"]).default("learner"),
 });
+
+function dashboardForRole(role: string): string {
+  if (role === "teacher") return "/teacher";
+  if (role === "funder") return "/funder";
+  return "/learner";
+}
 
 export interface AuthState {
   error?: string;
@@ -39,7 +45,7 @@ export async function signInAction(
   if (error) return { error: "sign_in_failed" };
 
   const profile = await ensureProfile();
-  redirect(profile?.role === "teacher" ? "/teacher" : "/learner");
+  redirect(dashboardForRole(profile?.role ?? "learner"));
 }
 
 /** Sign up with email/password + desired role; role is stored in metadata. */
@@ -80,7 +86,7 @@ export async function signUpAction(
     if (signInError) return { error: "sign_up_failed" };
 
     await ensureProfile();
-    redirect(parsed.data.role === "teacher" ? "/teacher" : "/learner");
+    redirect(dashboardForRole(parsed.data.role));
   }
 
   const { data, error } = await supabase.auth.signUp({
@@ -107,7 +113,7 @@ export async function signUpAction(
   // mailer_autoconfirm on → session exists immediately; else confirm via email.
   if (data.session) {
     await ensureProfile();
-    redirect(parsed.data.role === "teacher" ? "/teacher" : "/learner");
+    redirect(dashboardForRole(parsed.data.role));
   }
   return { error: "confirm_email" };
 }

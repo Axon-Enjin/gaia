@@ -82,7 +82,7 @@ Quick triage an agent runs at the start of a session. Anything that fails gets s
 
 ## 6. Build Progress (M3 — living tracker)
 
-The application lives in **`client/`** (Next.js 16.2.9, Supabase, Azure AI Foundry). Migrations: `client/db/migrations/` (`0001_init`, `0002_course_sources_storage`, `0003_waitlist`, `0004_dev_demo_course`, `0005_credentials_rfc`, `0006_teacher_analytics_rls`).
+The application lives in **`client/`** (Next.js 16.2.9, Supabase, Azure AI Foundry). Migrations: `client/db/migrations/` (`0001_init` … `0007_grant_disbursements`).
 
 | PRD-F# | Feature | Status | Notes |
 |--------|---------|--------|-------|
@@ -94,16 +94,16 @@ The application lives in **`client/`** (Next.js 16.2.9, Supabase, Azure AI Found
 | F6 | Teacher dashboard | **Done** | Course editor, passing score, publish, learner analytics per course |
 | F7 | Learner dashboard & wallet | **Partial** | `/learner/credentials` wallet slice; grant status deferred |
 | F8 | Landing + waitlist | **Done** | Brand Mode `/`, `POST /api/waitlist`, PR [#14](https://github.com/Axon-Enjin/feat/prd-f8-landing-waitlist) |
-| F9 | Localization EN/Fil | **Partial** | `next-intl` + locale switcher on landing, auth, catalog, learner |
-| F10 | Funder grant (mock) | **Not started** | Schema ready; no funder UI or `/api/grants/evaluate` |
+| F9 | Localization EN/Fil | **Partial** | `next-intl` + locale switcher on landing, auth, catalog, learner, funder |
+| F10 | Funder grant (mock) | **Done** | `/funder`, `POST /api/grants/evaluate`, `POST /api/grants/disburse`, audit CSV |
 | F11 | Freighter wallet | **Not started** | Should-Have demo |
 | F12–F15 | Phase 1 / out of MVP | **Deferred** | Per PRD §6 |
 
 ### Suggested next PRDs (no blockers beyond env/infra)
 
-1. **PRD-F10** — Mock funder program (Postgres-only; no chain).
-2. **PRD-F7 completion** — Grant status on learner dashboard (F10 dependency).
-3. **PRD-F9 completion** — Full EN/FIL coverage on remaining surfaces.
+1. **PRD-F7 completion** — Grant status on learner dashboard.
+2. **PRD-F9 completion** — Full EN/FIL coverage on remaining surfaces.
+3. **PRD-F11** — Freighter connect (Should-Have demo).
 4. **Infra** — Vercel deploy, production Stellar/issuer secrets in secrets manager.
 
 Task board detail: [rhandie-tasks.md](../rhandie-tasks.md).

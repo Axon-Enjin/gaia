@@ -60,6 +60,7 @@ export function AuthForm({ mode }: { mode: "sign-in" | "sign-up" }) {
           >
             <option value="learner">{t("roleLearner")}</option>
             <option value="teacher">{t("roleTeacher")}</option>
+            <option value="funder">{t("roleFunder")}</option>
           </select>
         </div>
       ) : null}
