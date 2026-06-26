@@ -5,6 +5,7 @@ export interface AccountBlockProps {
   displayName: string | null;
   email: string;
   roleLabel: string;
+  collapsed?: boolean;
 }
 
 function initials(displayName: string | null, email: string): string {
@@ -24,18 +25,21 @@ export function AccountBlock({
   displayName,
   email,
   roleLabel,
+  collapsed = false,
 }: AccountBlockProps) {
   const name = displayName?.trim() || email.split("@")[0];
 
   return (
     <Link href={href} prefetch={false} className="dashboard-account-block">
-      <div className="dashboard-account-avatar" aria-hidden>
+      <div className="dashboard-account-avatar mx-auto" aria-hidden>
         {initials(displayName, email)}
       </div>
-      <div className="min-w-0 flex-1">
-        <p className="truncate text-sm font-medium text-text-brand">{name}</p>
-        <p className="truncate text-xs text-growth-brand">{roleLabel}</p>
-      </div>
+      {!collapsed && (
+        <div className="min-w-0 flex-1">
+          <p className="truncate text-sm font-medium text-text-brand">{name}</p>
+          <p className="truncate text-xs text-growth-brand">{roleLabel}</p>
+        </div>
+      )}
     </Link>
   );
 }

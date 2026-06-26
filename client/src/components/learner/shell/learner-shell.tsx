@@ -1,5 +1,6 @@
 "use client";
 
+import { useState } from "react";
 import { usePathname } from "next/navigation";
 import { LearnerSidebar } from "@/components/learner/shell/learner-sidebar";
 import { LearnerBottomNav } from "@/components/learner/shell/learner-bottom-nav";
@@ -23,9 +24,10 @@ export function LearnerShell({
   ariaLabels,
 }: LearnerShellProps) {
   const pathname = usePathname();
+  const [isCollapsed, setIsCollapsed] = useState(false);
 
   return (
-    <div className="learner-shell product-page">
+    <div className={`learner-shell product-page ${isCollapsed ? "is-sidebar-collapsed" : ""}`}>
       <LearnerSidebar
         pathname={pathname}
         displayName={displayName}
@@ -33,6 +35,8 @@ export function LearnerShell({
         levelLabel={levelLabel}
         navLabels={navLabels}
         ariaLabels={ariaLabels}
+        isCollapsed={isCollapsed}
+        onToggleCollapse={() => setIsCollapsed(!isCollapsed)}
       />
       <main id="main-content" className="dashboard-main">
         <div className="dashboard-main-inner">{children}</div>

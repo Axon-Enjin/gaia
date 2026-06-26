@@ -30,11 +30,11 @@ export default async function TeacherProfilePage() {
         </p>
       </section>
 
-      <section className="mb-6 rounded-[var(--radius-surface)] border border-border-brand bg-surface-brand p-4">
-        <p className="mb-3 inline-flex items-center gap-2 text-sm font-semibold text-text-brand">
+      <section className="mb-6 rounded-[var(--radius-surface)] border border-border-brand bg-surface-brand p-4 flex flex-wrap items-center justify-between gap-4">
+        <div className="flex items-center gap-2 text-sm font-semibold text-text-brand">
           <IconGlobe className="text-text-muted-brand" aria-hidden="true" />
-          {tc("filipino")} / {tc("english")}
-        </p>
+          <span>{tc("filipino")} / {tc("english")}</span>
+        </div>
         <LocaleSwitcher />
       </section>
 

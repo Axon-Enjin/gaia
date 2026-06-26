@@ -7,6 +7,7 @@ export interface NavItemProps {
   icon: ReactNode;
   active: boolean;
   variant?: "sidebar" | "bottom";
+  collapsed?: boolean;
 }
 
 /** Shared nav link for dashboard shells (sidebar + bottom tabs). */
@@ -16,6 +17,7 @@ export function NavItem({
   icon,
   active,
   variant = "sidebar",
+  collapsed = false,
 }: NavItemProps) {
   return (
     <Link
@@ -28,7 +30,7 @@ export function NavItem({
       <span className="dashboard-nav-icon" aria-hidden>
         {icon}
       </span>
-      <span>{label}</span>
+      <span className={collapsed ? "sr-only" : ""}>{label}</span>
     </Link>
   );
 }

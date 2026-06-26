@@ -59,11 +59,11 @@ export default async function LearnerHomePage() {
 
   return (
     <>
-      <div className="mb-8 flex flex-col gap-1">
-        <h1 className="text-2xl font-bold tracking-tight text-soil-brand sm:text-3xl">
+      <div className="mb-8 flex flex-col gap-2">
+        <h1 className="text-3xl font-extrabold tracking-tight text-soil-brand sm:text-4xl lg:text-5xl">
           {t("dashboardTitle")}
         </h1>
-        <p className="text-sm text-text-muted-brand">{t("homeSubtitle")}</p>
+        <p className="text-base lg:text-lg text-text-muted-brand">{t("homeSubtitle")}</p>
       </div>
 
       <div className="mb-8">
@@ -102,185 +102,187 @@ export default async function LearnerHomePage() {
         </section>
       )}
 
-      <section className="mb-8">
-        <div className="mb-4 flex items-center justify-between gap-3">
-          <h2 className="text-lg font-semibold text-soil-brand">
-            {t("grantStatusTitle")}
-          </h2>
-        </div>
-        <p className="mb-4 text-sm text-text-muted-brand">
-          {t("grantStatusSubtitle")}
-        </p>
-
-        {!grantStatus.available ? (
-          <div className="rounded-xl border border-warning-brand/30 bg-warning-brand/10 p-4 text-sm text-warning-brand">
-            {t("grantStatusUnavailable")}
+      <div className="grid gap-8 lg:grid-cols-2 items-start">
+        <section className="mb-8">
+          <div className="mb-4 flex items-center justify-between gap-3">
+            <h2 className="text-xl font-bold text-soil-brand lg:text-2xl">
+              {t("grantStatusTitle")}
+            </h2>
           </div>
-        ) : grantStatus.cards.length === 0 ? (
-          <EmptyState
-            icon={<IconCompass />}
-            text={t("grantStatusEmpty")}
-          />
-        ) : (
-          <ul className="flex flex-col gap-3">
-            {grantStatus.cards.map((card) => {
-              const requiredBadges = card.requiredBadges.map(
-                (badge) => badgeLabels[badge] ?? badge,
-              );
+          <p className="mb-5 text-base text-text-muted-brand">
+            {t("grantStatusSubtitle")}
+          </p>
 
-              return (
-                <li
-                  key={card.programId}
-                  className="rounded-xl border border-border-brand bg-surface-brand p-4"
-                >
-                  <div className="mb-2 flex flex-wrap items-center gap-2">
-                    <span className="industry-pill">{card.industry}</span>
-                    {card.amountPerLearner !== null && (
-                      <span className="rounded-full bg-growth-brand/12 px-2 py-0.5 text-xs font-semibold text-growth-strong-brand">
-                        {t("grantStatusAmount", {
-                          amount: formatLocaleNumber(locale, card.amountPerLearner),
-                        })}
-                      </span>
-                    )}
-                  </div>
+          {!grantStatus.available ? (
+            <div className="rounded-xl border border-warning-brand/30 bg-warning-brand/10 p-4 text-sm text-warning-brand">
+              {t("grantStatusUnavailable")}
+            </div>
+          ) : grantStatus.cards.length === 0 ? (
+            <EmptyState
+              icon={<IconCompass />}
+              text={t("grantStatusEmpty")}
+            />
+          ) : (
+            <ul className="flex flex-col gap-3">
+              {grantStatus.cards.map((card) => {
+                const requiredBadges = card.requiredBadges.map(
+                  (badge) => badgeLabels[badge] ?? badge,
+                );
 
-                  <h3 className="text-base font-semibold text-text-brand">
-                    {card.programName}
-                  </h3>
-
-                  <p className="mt-1 text-sm text-text-muted-brand">
-                    {t("grantStatusCriteriaLine", {
-                      industry: card.industry,
-                      xp: card.minXp,
-                    })}
-                  </p>
-
-                  {requiredBadges.length > 0 && (
-                    <p className="mt-1 text-sm text-text-muted-brand">
-                      {t("grantStatusRequiredBadges", {
-                        badges: requiredBadges.join(", "),
-                      })}
-                    </p>
-                  )}
-
-                  {card.requireCredential && (
-                    <p className="mt-1 text-sm text-text-muted-brand">
-                      {t("grantStatusCredentialRequired")}
-                    </p>
-                  )}
-
-                  <div className="mt-3 flex flex-wrap items-center gap-2">
-                    {card.eligibleNow && (
-                      <span className="rounded-full bg-growth-brand/12 px-2 py-0.5 text-xs font-semibold text-growth-strong-brand">
-                        {t("grantStatusEligibleNow")}
-                      </span>
-                    )}
-                    {card.includedInLatestSimulation && (
-                      <span className="rounded-full bg-primary-brand/10 px-2 py-0.5 text-xs font-semibold text-primary-brand">
-                        {t("grantStatusInLatestSimulation")}
-                      </span>
-                    )}
-                  </div>
-
-                  {card.latestSimulationAt && (
-                    <p className="mt-2 text-xs text-text-muted-brand">
-                      {t("grantStatusLatestSimulation", {
-                        date: formatLocaleDate(locale, card.latestSimulationAt),
-                      })}
-                    </p>
-                  )}
-                </li>
-              );
-            })}
-          </ul>
-        )}
-      </section>
-
-      <section>
-        <div className="mb-4 flex items-center justify-between gap-3">
-          <h2 className="text-lg font-semibold text-soil-brand">
-            {t("continueLearning")}
-          </h2>
-          <Link
-            href="/learner/courses"
-            prefetch={false}
-            className="inline-flex items-center gap-1 text-sm font-medium text-primary-brand hover:underline"
-          >
-            {t("browseCourses")} <IconArrowRight aria-hidden="true" />
-          </Link>
-        </div>
-
-        {!enrollments?.length ? (
-          <EmptyState
-            icon={<IconAward />}
-            text={t("noEnrollments")}
-            action={
-              <Link
-                href="/learner/courses"
-                prefetch={false}
-                className="btn btn-primary btn-sm"
-              >
-                {t("browseCourses")}
-              </Link>
-            }
-          />
-        ) : (
-          <ul className="flex flex-col gap-3">
-            {enrollments.map((row) => {
-              const course = courseFromJoin(row.courses);
-              const progress = parseProgress(row.progress);
-              const doneCount = Object.values(progress).filter(
-                (p) => p.quiz_passed,
-              ).length;
-              const total = course?.lessonCount ?? 0;
-              const pct =
-                total > 0 ? Math.round((doneCount / total) * 100) : 0;
-
-              return (
-                <li
-                  key={row.id as string}
-                  className="rounded-xl border border-border-brand bg-surface-brand p-4 transition hover:border-soil-brand/30 hover:shadow-sm"
-                >
-                  <Link
-                    href={`/learner/courses/${row.course_id as string}`}
-                    prefetch={false}
-                    className="block"
+                return (
+                  <li
+                    key={card.programId}
+                    className="rounded-2xl border border-border-brand bg-surface-brand p-6 shadow-sm"
                   >
-                    <div className="flex items-start gap-3">
-                      <div className="course-thumb text-sm" aria-hidden>
-                        {(course?.industry ?? "C").trim().charAt(0)}
-                      </div>
-                      <div className="min-w-0 flex-1">
-                        <span className="font-medium text-text-brand">
-                          {course?.title ?? t("untitledCourse")}
+                    <div className="mb-3 flex flex-wrap items-center gap-2">
+                      <span className="industry-pill text-xs px-2.5 py-1">{card.industry}</span>
+                      {card.amountPerLearner !== null && (
+                        <span className="rounded-full bg-growth-brand/12 px-3 py-1 text-xs font-semibold text-growth-strong-brand">
+                          {t("grantStatusAmount", {
+                            amount: formatLocaleNumber(locale, card.amountPerLearner),
+                          })}
                         </span>
-                        <span className="ml-2 text-sm text-text-muted-brand">
-                          {course?.industry}
-                        </span>
-                        <p className="mt-1 text-sm text-text-muted-brand">
-                          {row.completed_at
-                            ? t("courseFinished", {
-                                score: row.final_score ?? 0,
-                              })
-                            : t("lessonsDone", { count: doneCount })}
-                        </p>
-                        {!row.completed_at && total > 0 && (
-                          <div className="progress-track mt-3">
-                            <div
-                              className="progress-fill"
-                              style={{ width: `${pct}%` }}
-                            />
-                          </div>
-                        )}
-                      </div>
+                      )}
                     </div>
-                  </Link>
-                </li>
-              );
-            })}
-          </ul>
-        )}
-      </section>
+
+                    <h3 className="text-lg font-bold text-text-brand md:text-xl">
+                      {card.programName}
+                    </h3>
+
+                    <p className="mt-2 text-base text-text-muted-brand">
+                      {t("grantStatusCriteriaLine", {
+                        industry: card.industry,
+                        xp: card.minXp,
+                      })}
+                    </p>
+
+                    {requiredBadges.length > 0 && (
+                      <p className="mt-2 text-base text-text-muted-brand">
+                        {t("grantStatusRequiredBadges", {
+                          badges: requiredBadges.join(", "),
+                        })}
+                      </p>
+                    )}
+
+                    {card.requireCredential && (
+                      <p className="mt-2 text-base text-text-muted-brand">
+                        {t("grantStatusCredentialRequired")}
+                      </p>
+                    )}
+
+                    <div className="mt-4 flex flex-wrap items-center gap-2">
+                      {card.eligibleNow && (
+                        <span className="rounded-full bg-growth-brand/12 px-2.5 py-1 text-xs font-semibold text-growth-strong-brand">
+                          {t("grantStatusEligibleNow")}
+                        </span>
+                      )}
+                      {card.includedInLatestSimulation && (
+                        <span className="rounded-full bg-primary-brand/10 px-2.5 py-1 text-xs font-semibold text-primary-brand">
+                          {t("grantStatusInLatestSimulation")}
+                        </span>
+                      )}
+                    </div>
+
+                    {card.latestSimulationAt && (
+                      <p className="mt-3 text-sm text-text-muted-brand">
+                        {t("grantStatusLatestSimulation", {
+                          date: formatLocaleDate(locale, card.latestSimulationAt),
+                        })}
+                      </p>
+                    )}
+                  </li>
+                );
+              })}
+            </ul>
+          )}
+        </section>
+
+        <section className="mb-8">
+          <div className="mb-4 flex items-center justify-between gap-3">
+            <h2 className="text-xl font-bold text-soil-brand lg:text-2xl">
+              {t("continueLearning")}
+            </h2>
+            <Link
+              href="/learner/courses"
+              prefetch={false}
+              className="inline-flex items-center gap-1 text-base font-semibold text-primary-brand hover:underline"
+            >
+              {t("browseCourses")} <IconArrowRight aria-hidden="true" />
+            </Link>
+          </div>
+
+          {!enrollments?.length ? (
+            <EmptyState
+              icon={<IconAward />}
+              text={t("noEnrollments")}
+              action={
+                <Link
+                  href="/learner/courses"
+                  prefetch={false}
+                  className="btn btn-primary btn-sm"
+                >
+                  {t("browseCourses")}
+                </Link>
+              }
+            />
+          ) : (
+            <ul className="flex flex-col gap-3">
+              {enrollments.map((row) => {
+                const course = courseFromJoin(row.courses);
+                const progress = parseProgress(row.progress);
+                const doneCount = Object.values(progress).filter(
+                  (p) => p.quiz_passed,
+                ).length;
+                const total = course?.lessonCount ?? 0;
+                const pct =
+                  total > 0 ? Math.round((doneCount / total) * 100) : 0;
+
+                return (
+                  <li
+                    key={row.id as string}
+                    className="rounded-2xl border border-border-brand bg-surface-brand p-6 transition hover:border-soil-brand/30 hover:shadow-md"
+                  >
+                    <Link
+                      href={`/learner/courses/${row.course_id as string}`}
+                      prefetch={false}
+                      className="block"
+                    >
+                      <div className="flex items-start gap-4">
+                        <div className="course-thumb text-base h-12 w-12 flex-shrink-0" aria-hidden>
+                          {(course?.industry ?? "C").trim().charAt(0)}
+                        </div>
+                        <div className="min-w-0 flex-1">
+                          <span className="text-base md:text-lg font-bold text-text-brand">
+                            {course?.title ?? t("untitledCourse")}
+                          </span>
+                          <span className="ml-2 text-xs industry-pill py-0.5 px-2">
+                            {course?.industry}
+                          </span>
+                          <p className="mt-1.5 text-base text-text-muted-brand">
+                            {row.completed_at
+                              ? t("courseFinished", {
+                                  score: row.final_score ?? 0,
+                                })
+                              : t("lessonsDone", { count: doneCount })}
+                          </p>
+                          {!row.completed_at && total > 0 && (
+                            <div className="progress-track mt-3">
+                              <div
+                                className="progress-fill"
+                                style={{ width: `${pct}%` }}
+                              />
+                            </div>
+                          )}
+                        </div>
+                      </div>
+                    </Link>
+                  </li>
+                );
+              })}
+            </ul>
+          )}
+        </section>
+      </div>
     </>
   );
 }

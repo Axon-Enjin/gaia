@@ -41,29 +41,29 @@ export async function MeritPanel({
       : 100;
 
   return (
-    <section className="course-hero">
+    <section className="course-hero p-6 md:p-8">
       <div className="flex flex-wrap items-center justify-between gap-3">
-        <span className="inline-flex items-center gap-2 rounded-full bg-growth-brand/12 px-3 py-1.5 text-sm font-semibold text-growth-strong-brand">
-          <IconSprout aria-hidden="true" />
+        <span className="inline-flex items-center gap-2 rounded-full bg-growth-brand/12 px-4 py-2 text-base font-bold text-growth-strong-brand">
+          <IconSprout aria-hidden="true" className="text-lg" />
           <span className="capitalize">{t(`levels.${level}`)}</span>
         </span>
-        <span className="inline-flex items-center gap-1.5 rounded-full bg-warning-brand/12 px-3 py-1.5 text-sm font-semibold text-warning-brand">
-          <IconFlame aria-hidden="true" />
+        <span className="inline-flex items-center gap-1.5 rounded-full bg-warning-brand/12 px-4 py-2 text-base font-bold text-warning-brand">
+          <IconFlame aria-hidden="true" className="text-lg" />
           {t("streakDays", { count: streakDays })}
         </span>
       </div>
 
-      <div className="mt-5 flex items-end gap-2">
-        <span className="text-4xl font-bold leading-none text-growth-strong-brand tabular-nums">
+      <div className="mt-6 flex items-end gap-3">
+        <span className="text-5xl font-extrabold leading-none text-growth-strong-brand tabular-nums md:text-6xl">
           {formatLocaleNumber(locale, totalXp)}
         </span>
-        <span className="pb-1 text-sm font-medium uppercase tracking-wide text-text-muted-brand">
+        <span className="pb-1.5 text-base font-bold uppercase tracking-wide text-text-muted-brand">
           {t("totalXp")}
         </span>
       </div>
 
       {!compact && (
-        <div className="mt-4">
+        <div className="mt-5">
           <div
             className="progress-track"
             role="progressbar"
@@ -74,7 +74,7 @@ export async function MeritPanel({
             <div className="progress-fill" style={{ width: `${pct}%` }} />
           </div>
           {nextXp !== null && (
-            <p className="mt-2 text-sm text-text-muted-brand">
+            <p className="mt-3 text-base text-text-muted-brand font-medium">
               {t("nextLevel", { xp: nextXp - totalXp })}
             </p>
           )}
@@ -82,13 +82,13 @@ export async function MeritPanel({
       )}
 
       {badgeTypes.length > 0 && (
-        <ul className="mt-4 flex flex-wrap gap-2">
+        <ul className="mt-6 flex flex-wrap gap-3">
           {badgeTypes.map((b) => (
             <li
               key={b}
-              className="inline-flex items-center gap-1.5 rounded-full bg-soil-brand/8 px-3 py-1 text-xs font-semibold text-soil-brand"
+              className="inline-flex items-center gap-2 rounded-full bg-soil-brand/8 px-4 py-1.5 text-sm font-bold text-soil-brand"
             >
-              <IconAward aria-hidden="true" />
+              <IconAward aria-hidden="true" className="text-base" />
               {t(`badges.${b}` as "badges.first_lesson")}
             </li>
           ))}
