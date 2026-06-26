@@ -2,8 +2,9 @@
 
 **Audience:** NGO, foundation, and government program officers (TESDA, DepEd, CSR teams)  
 **Duration:** ~8 to 10 minutes  
-**Deck file:** [`Aniskwela-Grant-Pitch.pptx`](../Aniskwela-Grant-Pitch.pptx)  
-**Regenerate:** `python scripts/build_pitch_deck.py`
+**Deck file:** [`Aniskwela-Grant-Pitch.pptx`](../Aniskwela-Grant-Pitch.pptx) (11 slides)  
+**Regenerate:** `python scripts/build_pitch_deck.py`  
+**Insert market slide in existing deck:** `python scripts/insert_market_slide.py`
 
 Speaker notes for each slide are also embedded in the PowerPoint file.
 
@@ -43,7 +44,25 @@ Existing tools either gamify rewards without real learning, or they offer creden
 
 ---
 
-## Slide 3 · The Solution
+## Slide 3 · The Opportunity
+
+**On slide:** TAM / reach / funding pool / pilot wedge · cited Philippine figures
+
+**Say:**
+
+Before we show the product, let me quantify the opportunity.
+
+The Registry System for Basic Sectors in Agriculture lists ten point seven million agricultural workers—nearly seven million farmers, two point seven million fisherfolk, plus farm workers and farm youth. Agriculture still employs about one in five Filipino workers according to PSA.
+
+At the same time, ninety-eight million Filipinos are online—eighty-four percent penetration—and most mobile connections run on 3G, 4G, or 5G. That is why we built for prepaid data and shared phones, not campus Wi-Fi.
+
+Public money for skills training already exists. TESDA spent roughly sixteen billion pesos on free tech-voc in twenty twenty-five, but fewer than one quarter of graduates went through scholarship vouchers. The funding pool is there; what is missing is transparent, merit-based targeting for rural farmers.
+
+Our ninety-day wedge is modest: fifty courses, five hundred learners, one simulated grant program, and ten extension teachers through a partner network. That is what we are asking you to help us pilot.
+
+---
+
+## Slide 4 · The Solution
 
 **On slide:** Four pillars · farmer-first · learning-first
 
@@ -63,7 +82,7 @@ The engine can serve other subjects later, but we are farmer-first because that 
 
 ---
 
-## Slide 4 · Learner Experience (Live)
+## Slide 5 · Learner Experience (Live)
 
 **On slide:** Mobile-first · EN/Fil · catalog and lessons · Live
 
@@ -83,7 +102,7 @@ We label that honestly so you know what you can click today versus what we are b
 
 ---
 
-## Slide 5 · Teacher and Funder Surfaces
+## Slide 6 · Teacher and Funder Surfaces
 
 **On slide:** Upload to publish (Live) · funder console (Roadmap)
 
@@ -99,7 +118,7 @@ The funder dashboard is not built yet, but the database already has grant progra
 
 ---
 
-## Slide 6 · How It Works
+## Slide 7 · How It Works
 
 **On slide:** Six steps from document to anchored credential
 
@@ -123,7 +142,7 @@ If Testnet is down during a demo, we fall back to a clearly labelled mock anchor
 
 ---
 
-## Slide 7 · Merit Ledger and Credentials
+## Slide 8 · Merit Ledger and Credentials
 
 **On slide:** W3C VC · Open Badges 3.0 · hash-only on Stellar
 
@@ -141,7 +160,7 @@ A public verifier page, no login required, will let anyone scan a QR or open a l
 
 ---
 
-## Slide 8 · Grant Model for Partners
+## Slide 9 · Grant Model for Partners
 
 **On slide:** Eligibility layer · simulated disbursement · audit trail
 
@@ -161,7 +180,7 @@ We are looking for one foundation or agency partner willing to co-design the fir
 
 ---
 
-## Slide 9 · Technology and Data Model
+## Slide 10 · Technology and Data Model
 
 **On slide:** Next.js 16 · Supabase · Azure AI Foundry · Stellar
 
@@ -179,7 +198,7 @@ Performance is a requirement, not a nice-to-have. Light theme, system fonts, no 
 
 ---
 
-## Slide 10 · Impact and Next Step
+## Slide 11 · Impact and Next Step
 
 **On slide:** What we ask · pilot partner · live demo
 
@@ -199,7 +218,7 @@ Thank you. We are Carlos, Rhandie, and Aidan from Team Axon Enjin. Aniskwela: le
 
 ## Delivery tips
 
-- Pause after Slide 2 so the funder persona (Divina) lands.
-- On Slides 4 and 5, point at the **Live** and **Roadmap** labels rather than overselling roadmap items.
-- Slide 8 is the heart of the grant conversation. Leave time for questions there.
+- Pause after Slide 2 so the funder persona (Divina) lands; use Slide 3 to anchor the opportunity with numbers before diving into product.
+- On Slides 5 and 6, point at the **Live** and **Roadmap** labels rather than overselling roadmap items.
+- Slide 9 is the heart of the grant conversation. Leave time for questions there.
 - If demoing live, sign in as a teacher first, then show the public catalog in a second browser tab.

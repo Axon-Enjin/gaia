@@ -8,12 +8,14 @@ Usage (from repo root):
 
 from __future__ import annotations
 
+from copy import deepcopy
 from pathlib import Path
 
 from pptx import Presentation
 from pptx.dml.color import RGBColor
-from pptx.enum.shapes import MSO_AUTO_SHAPE_TYPE
+from pptx.enum.shapes import MSO_AUTO_SHAPE_TYPE, PP_PLACEHOLDER
 from pptx.enum.text import MSO_ANCHOR, PP_ALIGN
+from pptx.oxml.ns import qn
 from pptx.util import Inches, Pt
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
@@ -35,6 +37,7 @@ SLIDE_W = Inches(13.333)
 SLIDE_H = Inches(7.5)
 FOOTER = "ANISKWELA  ·  Axon Enjin"
 DECK_LABEL = "Grant partner deck"
+TOTAL_SLIDES = 11
 
 
 def rgb_hex(c: RGBColor) -> str:
@@ -198,9 +201,35 @@ def add_step_pill(slide, left, top, number: str, title: str, body: str) -> None:
     add_card(slide, left, top, w, h, title, body, tag=f"{number}")
 
 
-def set_notes(slide, text: str) -> None:
-    notes = slide.notes_slide.notes_text_frame
-    notes.text = text
+def ensure_notes_layout(slide, template_slide) -> None:
+    """Copy notes placeholders when a new slide has an empty notes layout."""
+    if slide.notes_slide.notes_text_frame is not None:
+        return
+    src_c_sld = template_slide.notes_slide.element.find(qn("p:cSld"))
+    dst_c_sld = slide.notes_slide.element.find(qn("p:cSld"))
+    if src_c_sld is None or dst_c_sld is None:
+        return
+    src_sp_tree = src_c_sld.find(qn("p:spTree"))
+    if src_sp_tree is None:
+        return
+    dst_sp_tree = dst_c_sld.find(qn("p:spTree"))
+    if dst_sp_tree is not None:
+        dst_c_sld.remove(dst_sp_tree)
+    dst_c_sld.append(deepcopy(src_sp_tree))
+
+
+def set_notes(slide, text: str, *, template_slide=None) -> None:
+    if template_slide is not None:
+        ensure_notes_layout(slide, template_slide)
+    notes_slide = slide.notes_slide
+    text_frame = notes_slide.notes_text_frame
+    if text_frame is not None:
+        text_frame.text = text
+        return
+    for shape in notes_slide.shapes:
+        if shape.is_placeholder and shape.placeholder_format.type == PP_PLACEHOLDER.BODY:
+            shape.text = text
+            return
 
 
 def slide_title(prs, notes: str) -> None:
@@ -276,7 +305,7 @@ def slide_title(prs, notes: str) -> None:
         size=14,
         color=TEXT,
     )
-    add_footer(slide, 1, 10)
+    add_footer(slide, 1, TOTAL_SLIDES)
     set_notes(slide, notes)
 
 
@@ -328,7 +357,75 @@ def slide_problem(prs, notes: str) -> None:
     p.runs[0].font.name = "Segoe UI"
     p.runs[0].font.color.rgb = TEXT
 
-    add_footer(slide, 2, 10)
+    add_footer(slide, 2, TOTAL_SLIDES)
+    set_notes(slide, notes)
+
+
+def slide_market(prs, notes: str) -> None:
+    slide = prs.slides.add_slide(prs.slide_layouts[6])
+    set_slide_bg(slide)
+    add_kicker(slide, "THE OPPORTUNITY")
+    add_headline(slide, "A farmer-first market that is already on mobile.")
+    add_subhead(
+        slide,
+        "Millions of agricultural workers. Most Filipinos already online on mobile. "
+        "Public skills funding exists but rarely reaches rural farmers with proof.",
+    )
+
+    cards = [
+        (
+            Inches(0.75),
+            Inches(2.55),
+            "10.7M agri workers (RSBSA)",
+            "6.8M farmers · 2.7M fisherfolk · ~2M farm workers · 328K farm youth. "
+            "~21% of employed Filipinos work in agriculture (PSA).",
+            "TAM",
+            GROWTH,
+        ),
+        (
+            Inches(6.55),
+            Inches(2.55),
+            "98M online · 137M mobile",
+            "83.8% internet penetration. ~89% of mobile on 3G/4G/5G. "
+            "Validates EN/Fil mobile-first, sub-3G design.",
+            "Reach",
+            GROWTH,
+        ),
+        (
+            Inches(0.75),
+            Inches(4.55),
+            "~₱16B public TVET spend",
+            "TESDA free tech-voc in 2025; only ~250K of 1.37M graduates were "
+            "scholarship-funded. FY2026 workforce budget ~₱18.4B.",
+            "Funding pool",
+            PRIMARY,
+        ),
+        (
+            Inches(6.55),
+            Inches(4.55),
+            "90-day pilot beachhead",
+            "50 published courses · 500 learners · 1 simulated grant program · "
+            "10 extension teachers in partner network.",
+            "Our wedge",
+            WARNING,
+        ),
+    ]
+    for left, top, title, body, tag, tag_color in cards:
+        add_card(slide, left, top, Inches(5.55), Inches(1.75), title, body, tag=tag, tag_color=tag_color)
+
+    add_textbox(
+        slide,
+        Inches(0.75),
+        Inches(6.45),
+        Inches(11.85),
+        Inches(0.45),
+        "Sources: PSA LFS 2025 · DA/ATI RSBSA (Senate hearing, Jan 2026) · "
+        "DataReportal Digital 2026 · TESDA / FY2026 budget briefer",
+        size=9,
+        color=MUTED,
+    )
+
+    add_footer(slide, 3, TOTAL_SLIDES)
     set_notes(slide, notes)
 
 
@@ -379,7 +476,7 @@ def slide_solution(prs, notes: str) -> None:
     for left, top, title, body, tag, tag_color in pillars:
         add_card(slide, left, top, Inches(5.55), Inches(1.85), title, body, tag=tag, tag_color=tag_color)
 
-    add_footer(slide, 3, 10)
+    add_footer(slide, 4, TOTAL_SLIDES)
     set_notes(slide, notes)
 
 
@@ -477,7 +574,7 @@ def slide_learner_ui(prs, notes: str) -> None:
     ]
     add_bullet_block(slide, Inches(8.55), Inches(2.75), Inches(4.05), Inches(3.5), bullets, size=13)
 
-    add_footer(slide, 4, 10)
+    add_footer(slide, 5, TOTAL_SLIDES)
     set_notes(slide, notes)
 
 
@@ -511,7 +608,7 @@ def slide_teacher_funder(prs, notes: str) -> None:
         tag_color=WARNING,
     )
 
-    add_footer(slide, 5, 10)
+    add_footer(slide, 6, TOTAL_SLIDES)
     set_notes(slide, notes)
 
 
@@ -553,7 +650,7 @@ def slide_how_it_works(prs, notes: str) -> None:
         "If Testnet is down, a labelled mock anchor keeps the demo moving.",
     )
 
-    add_footer(slide, 6, 10)
+    add_footer(slide, 7, TOTAL_SLIDES)
     set_notes(slide, notes)
 
 
@@ -608,7 +705,7 @@ def slide_credentials(prs, notes: str) -> None:
         "Aniskwela is not a money transmitter. Credentials carry proof of learning. Grants use simulated disbursement until a VASP partner executes payout.",
     )
 
-    add_footer(slide, 7, 10)
+    add_footer(slide, 8, TOTAL_SLIDES)
     set_notes(slide, notes)
 
 
@@ -660,7 +757,7 @@ def slide_grant_model(prs, notes: str) -> None:
         color=TEXT,
     )
 
-    add_footer(slide, 8, 10)
+    add_footer(slide, 9, TOTAL_SLIDES)
     set_notes(slide, notes)
 
 
@@ -690,7 +787,7 @@ def slide_tech(prs, notes: str) -> None:
     ]
     add_bullet_block(slide, Inches(6.85), Inches(2.75), Inches(5.75), Inches(3.5), perf_lines, size=13)
 
-    add_footer(slide, 9, 10)
+    add_footer(slide, 10, TOTAL_SLIDES)
     set_notes(slide, notes)
 
 
@@ -776,7 +873,7 @@ def slide_cta(prs, notes: str) -> None:
         color=SOIL,
     )
 
-    add_footer(slide, 10, 10)
+    add_footer(slide, 11, TOTAL_SLIDES)
     set_notes(slide, notes)
 
 
@@ -797,6 +894,15 @@ Teachers face the opposite problem. Ramon is an agricultural extension worker. H
 Funders like you see the third gap. Divina runs a foundation program. She wants to reward consistent learners, but she cannot target grants transparently and she cannot audit outcomes without manual paperwork.
 
 Existing tools either gamify rewards without real learning, or they offer credentials that are easy to fake. Neither side gets trust.""",
+    """Before we show the product, let me quantify the opportunity.
+
+The Registry System for Basic Sectors in Agriculture lists ten point seven million agricultural workers—nearly seven million farmers, two point seven million fisherfolk, plus farm workers and farm youth. Agriculture still employs about one in five Filipino workers according to PSA.
+
+At the same time, ninety-eight million Filipinos are online—eighty-four percent penetration—and most mobile connections run on 3G, 4G, or 5G. That is why we built for prepaid data and shared phones, not campus Wi-Fi.
+
+Public money for skills training already exists. TESDA spent roughly sixteen billion pesos on free tech-voc in twenty twenty-five, but fewer than one quarter of graduates went through scholarship vouchers. The funding pool is there; what is missing is transparent, merit-based targeting for rural farmers.
+
+Our ninety-day wedge is modest: fifty courses, five hundred learners, one simulated grant program, and ten extension teachers through a partner network. That is what we are asking you to help us pilot.""",
     """Aniskwela addresses all three sides with one platform.
 
 First, teachers upload a PDF or document and our AI pipeline drafts a structured course. Nothing goes live until a teacher reviews it. We do not auto-publish.
@@ -889,14 +995,15 @@ def build() -> Path:
 
     slide_title(prs, NOTES[0])
     slide_problem(prs, NOTES[1])
-    slide_solution(prs, NOTES[2])
-    slide_learner_ui(prs, NOTES[3])
-    slide_teacher_funder(prs, NOTES[4])
-    slide_how_it_works(prs, NOTES[5])
-    slide_credentials(prs, NOTES[6])
-    slide_grant_model(prs, NOTES[7])
-    slide_tech(prs, NOTES[8])
-    slide_cta(prs, NOTES[9])
+    slide_market(prs, NOTES[2])
+    slide_solution(prs, NOTES[3])
+    slide_learner_ui(prs, NOTES[4])
+    slide_teacher_funder(prs, NOTES[5])
+    slide_how_it_works(prs, NOTES[6])
+    slide_credentials(prs, NOTES[7])
+    slide_grant_model(prs, NOTES[8])
+    slide_tech(prs, NOTES[9])
+    slide_cta(prs, NOTES[10])
 
     prs.save(str(OUTPUT))
     return OUTPUT
