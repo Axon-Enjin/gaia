@@ -51,8 +51,8 @@ MoSCoW. Each feature has a stable `PRD-F#` ID — permanent, never renumbered. D
 | PRD-F7 | Learner Dashboard & Credential Wallet | XP bar, level, streak, my courses, credential wallet with share links/QR, grant status. | Must-Have |
 | PRD-F8 | Landing Page + Waitlist | EN + Filipino marketing surface; the pitch artifact and conversion tool. | Must-Have |
 | PRD-F9 | Localization (EN/Filipino) | Instant in-place language toggle across the whole platform (no reload). | Must-Have |
-| PRD-F10 | Funder Grant Program (mock) | Funder UI: define eligibility criteria against the merit ledger; simulated disbursement; audit report. | Should-Have |
-| PRD-F11 | Wallet Connect (Freighter) | Basic Stellar wallet connection for the demo. | Should-Have |
+| PRD-F10 | Funder Grant Program (mock) | Funder UI: define eligibility criteria against the merit ledger; simulated disbursement; audit report; optional demo-only Stellar Testnet payout drill from the latest simulation snapshot. | Should-Have |
+| PRD-F11 | Wallet Connect (Freighter) | Basic Stellar wallet connection for the demo, including optional payout-address save for learners and funder-side Testnet signing. | Should-Have |
 | PRD-F12 | AI Assist Adaptive Engine | Spaced repetition, retrieval practice, mastery progression, difficulty calibration (IRT/Elo), ADHD chunking. **Evidence-based, not VARK.** | Could-Have (Phase 1) |
 | PRD-F13 | Offline Lesson Caching (PWA) | Service-worker caching of current + next two lessons; sync on reconnect. | Could-Have (Phase 1) |
 | PRD-F14 | Real Stablecoin Disbursement | Live grant payout via licensed VASP / e-money rail; teacher earnings/withdrawals. | Won't-Have (v1 / MVP) |
@@ -97,6 +97,7 @@ Acceptance Criteria:
 Acceptance Criteria:
 - Given a funder on the program builder, when they set criteria (e.g. "Agriculture learners with ≥ 30,000 XP and the Consistent Learner badge"), then the system returns the matching eligible-learner list.
 - Given a program is "funded" in the MVP, when disbursement is triggered, then it runs a clearly-labelled **simulation** (no real funds move) and produces an exportable audit report.
+- Given a funder has already recorded a simulated disbursement and uses Freighter on Stellar Testnet, when they start the demo-only payout drill, then the system prepares a Testnet XLM transaction from the latest simulation snapshot and records the submitted tx hash separately from the simulation audit.
 
 **US-06 — Learner switches language** *(PRD-F9)*
 > As a Filipino learner, I want to switch between Filipino and English instantly so that I can learn in my language.
@@ -205,7 +206,7 @@ flowchart TD
 
 - Video upload/processing — deferred to Phase 1 (Cloudflare Stream has no free tier; MVP demo uses text/PDF only).
 - Full AI Assist adaptive engine (PRD-F12) — Standard Mode only in MVP; Phase 1.
-- Real stablecoin/fiat disbursement and teacher withdrawals (PRD-F14) — mock UI only in MVP; Phase 1 via licensed VASP.
+- Real stablecoin/fiat disbursement and teacher withdrawals (PRD-F14) — mock UI only in MVP; Phase 1 via licensed VASP. Demo-only Stellar Testnet payout drills do not change this boundary.
 - Offline lesson caching (PRD-F13) — Phase 1.
 - Org/multi-seat workspaces (PRD-F15) — Phase 2.
 - Native Android/iOS apps — Phase 2 (PWA first).
@@ -251,7 +252,7 @@ Course generation is called **once per course** with prompt caching (system prom
 **Assumptions:**
 - Demo-scale traffic fits free tiers (~1,000 users); production at ~1,000 users is ~$50–150/month (honest, not zero-cost).
 - Learners access primarily from low-end Android on sub-3G; **learners are not required to hold a Stellar account** (wallet/custody only matters at grant-receipt time).
-- Real disbursement is always partner-executed; Aniskwela is the eligibility-decision layer and not a money transmitter.
+- Real disbursement is always partner-executed; Aniskwela is the eligibility-decision layer and not a money transmitter. The only exception in MVP is a **demo-only Testnet payout drill** signed by the funder’s own Freighter wallet from a previously simulated recipient snapshot.
 
 ---
 

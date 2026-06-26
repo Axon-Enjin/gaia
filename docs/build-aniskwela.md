@@ -35,7 +35,7 @@ The app is in **`client/`** (Next.js 16.2.9). Living PRD status matrix: **[docs/
 
 - **Farmer-first.** Built for Filipino farmers and rural learners; agriculture-first go-to-market. The engine is content-agnostic, but default content, examples, and copy target farming/livelihood.
 - **Learning-first, not learn-to-earn.** XP/badges are cumulative merit signals, never spent/burned. No reward tournaments. (`merit_ledger.xp_delta` is always ≥ 0.)
-- **Aniskwela decides eligibility; a licensed VASP moves money.** Never implement Aniskwela as a money transmitter. MVP disbursement is a labelled simulation (`grant_programs.simulated = true`).
+- **Aniskwela decides eligibility; a licensed VASP moves money.** Never implement Aniskwela as a money transmitter. MVP disbursement is a labelled simulation (`grant_programs.simulated = true`). The only allowed exception is a **demo-only** Stellar Testnet payout drill signed by the funder’s own Freighter wallet from a previously simulated recipient snapshot.
 - **Credentials = W3C VC + Open Badges 3.0; hash-only on-chain.** No PII on Stellar; no custom memo blob; no NFT badge.
 - **Learners never required to hold a wallet** to learn or earn credentials.
 - **AI is cost-gated** — `gpt-5.4` once per course (auto-cached), `gpt-5.4-mini` for cheap tasks; never on the learner read path; mandatory teacher review before publish (no auto-publish).

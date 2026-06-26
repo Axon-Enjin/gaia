@@ -1,68 +1,40 @@
-# Change Record (CR)
+# Change Record — CR-002
 
-**CR ID:** `CR-002`
-**Project:** Aniskwela
-**Date:** 2026-06-25
-**Author:** UI/UX revamp pass
-**Status:** Proposed
-**Trigger document:** BUILD/AGENTS.md non-negotiable invariant ("system fonts only") + DSD §2; PRD §5.4
+**Date:** 2026-06-26  
+**Status:** Closed  
+**Owner:** Carlos Jerico Dela Torre  
+**Trigger docs:** [prd-aniskwela.md](prd-aniskwela.md), [sdd-aniskwela.md](sdd-aniskwela.md), [build-aniskwela.md](build-aniskwela.md), [index.md](index.md)
 
----
+## Summary
 
-## 1. What Changed
+Allow a **demo-only Stellar Testnet payout drill** to run from the latest simulated grant disbursement snapshot, signed by the funder’s own Freighter wallet, without changing the official MVP posture that Aniskwela is the eligibility-decision layer and not a money transmitter.
 
-Introduces a **Brand Mode font/motion exception scoped to public marketing surfaces only** (the landing page `/`, plus the shared verifier/login chrome). Brand Mode is permitted to load **one** self-hosted display web font for headings, and to use richer scroll-reveal motion. All Product Mode surfaces (`/learner/*`, `/teacher/*`, `/courses/*`) are **unchanged** and remain strictly system-font, minimal-motion.
+## Why this change was needed
 
-**Before:** A single global rule — *system fonts only, zero font bytes on first paint* — applied uniformly to every surface (PRD §5.4, DSD §2, BUILD invariant).
+The product already demonstrates Stellar-based verifiable credentials and a simulated NGO grant flow. For live demos, the team also needs a controlled way to prove that a simulated recipient snapshot can be replayed into an actual **Testnet** transfer flow without introducing platform custody, fiat, stablecoin rails, or partner payout semantics.
 
-**After:** The rule still holds for Product Mode (the learner read path and all dashboards). Brand Mode may additionally:
-- self-host **one** display typeface for headings only (`font-display: optional`, subset to Latin, preloaded), with the system stack as the immediate fallback (no layout shift, no blocking paint);
-- use CSS-driven scroll-reveal transitions (still wrapped in `prefers-reduced-motion`).
+The previous Locked wording allowed only simulated grant disbursement and would have made this implementation diverge from the documented product. This CR narrows the exception to a **demo-only Testnet drill**:
 
-Body copy everywhere — including Brand Mode — stays on the system stack.
+- it is always downstream of an existing simulated disbursement snapshot
+- it is signed client-side by the funder wallet in Freighter
+- it uses native XLM on Stellar Testnet only
+- it does not replace the simulated audit flow
+- it does not change the Phase 1 partner-executed production payout model
 
----
+## Before
 
-## 2. Why
+- MVP grant disbursement was documented as simulation-only.
+- Freighter was documented as connect-only demo wallet support.
 
-The product owner explicitly chose to allow richer fonts/motion on the **public landing page only**, to strengthen first-impression branding/positioning, while keeping the low-resource guarantees on the surfaces that farmers actually learn on. Diverging from a Locked-doc invariant requires a Change Record per AGENTS.md §1 ("If reality diverges from a Locked doc … trigger a Change Record").
+## After
 
-The risk is contained because:
-- The learner read path (the byte-budget-critical surface for Maricel's sub-3G 1GB-RAM device) is untouched.
-- `font-display: optional` means the web font is used only if it arrives within ~100ms; otherwise the system fallback paints and the font is ignored for that view — so first paint is never blocked and there is no FOIT/CLS.
-- Motion remains CSS-only (no JS animation library such as GSAP) and honors reduced-motion.
+- MVP grant disbursement remains simulation-first.
+- A separate, explicitly labeled **demo-only Testnet payout drill** is allowed from the latest simulated snapshot.
+- Freighter remains optional for learners, but can also be used to save a demo payout address and to sign the funder-side Testnet payout drill.
 
----
+## Docs touched
 
-## 3. Decision
-
-Adopt the scoped exception. The recommended default remains **CSS + IntersectionObserver** for motion (no animation library) and **at most one** subset display font for Brand Mode headings. If the perf gate (initial JS ≤ 220KB, image ≤ 80KB, < 5s on 3G, LCP < 2.5s) regresses on the landing route, the font is to be dropped before any Product Mode concession.
-
-Rejected: relaxing the budget on Product Mode surfaces; adding a JS animation library; loading multiple weights/families.
-
----
-
-## 4. Propagation Checklist
-
-| Doc | Affected? | Action needed | Done |
-|-----|-----------|---------------|------|
-| DSD | Yes | §2 typography: note the Brand Mode single-display-font exception; §5 motion: Brand Mode scroll-reveal | [ ] |
-| PRD | Yes (note) | §5.4: clarify "system fonts only" applies to Product Mode; Brand Mode exception via CR-002 | [ ] |
-| BUILD/AGENTS | Yes (note) | Low-resource invariant annotated: Brand Mode font/motion exception (CR-002) | [ ] |
-| QAD | Yes | Add perf assertion: landing route still < 5s on 3G with the display font | [ ] |
-| client/ app | Yes | Brand Mode display font wired with `font-display: optional` + preload; scroll-reveal CSS | [ ] |
-
----
-
-## 5. Impact Summary
-
-- **Scope:** Marketing/Brand Mode only. No change to the learner read path or any dashboard.
-- **Perf:** Net-neutral by construction (`font-display: optional`, no blocking paint, CSS-only motion). Gated by the existing perf budget; font is the first thing dropped on regression.
-- **A11y:** Motion respects `prefers-reduced-motion`; contrast/targets unchanged.
-- **Rollback:** Remove the `@font-face`/preload and the `reveal` classes from Brand Mode; system-font stack resumes with zero other changes.
-
----
-
-## 6. Rollback
-
-Fully reversible and low-risk: delete the Brand Mode `@font-face` declaration + preload link and the `.reveal` usage. Because the system stack is the fallback, removal causes no layout shift or functional change.
+- [prd-aniskwela.md](prd-aniskwela.md)
+- [sdd-aniskwela.md](sdd-aniskwela.md)
+- [build-aniskwela.md](build-aniskwela.md)
+- [index.md](index.md)

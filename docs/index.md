@@ -40,6 +40,7 @@ Every material change to a Locked document is recorded as a Change Record. Newes
 
 | CR ID | Date | Summary | Trigger doc | Docs touched | File |
 |-------|------|---------|-------------|--------------|------|
+| CR-002 | 2026-06-26 | Allow demo-only Stellar Testnet payout drill from simulated grant snapshots | Demo requirement (PRD/SDD/BUILD) | PRD, SDD, BUILD, index | [cr-aniskwela-002.md](cr-aniskwela-002.md) |
 | CR-001 | 2026-06-23 | Rebrand Gaia → Aniskwela + farmer-first repositioning (docs + client app) | Brand decision (PRD) | PRD, BRD, DSD, GTM, CLR, BUILD, index; all file slugs + client/ | [cr-aniskwela-001.md](cr-aniskwela-001.md) |
 
 > Provenance: this suite supersedes the standalone `LearnChain_PRD_v2.md` (and v1). The PRD content was migrated into [prd-aniskwela.md](prd-aniskwela.md) and rebranded LearnChain → Gaia → Aniskwela (final name locked 2026-06-23 via CR-001). The original PRD markdown files were removed as superseded; the v2 changelog is preserved inside the PRD's history note.
@@ -82,7 +83,7 @@ Quick triage an agent runs at the start of a session. Anything that fails gets s
 
 ## 6. Build Progress (M3 — living tracker)
 
-The application lives in **`client/`** (Next.js 16.2.9, Supabase, Azure AI Foundry). Migrations: `client/db/migrations/` (`0001_init` … `0007_grant_disbursements`).
+The application lives in **`client/`** (Next.js 16.2.9, Supabase, Azure AI Foundry). Migrations: `client/db/migrations/` (`0001_init` … `0008_testnet_payout_drills`).
 
 | PRD-F# | Feature | Status | Notes |
 |--------|---------|--------|-------|
@@ -95,8 +96,8 @@ The application lives in **`client/`** (Next.js 16.2.9, Supabase, Azure AI Found
 | F7 | Learner dashboard & wallet | **Done** | `/learner`, `/learner/credentials`, grant status, share links, QR |
 | F8 | Landing + waitlist | **Done** | Brand Mode `/`, `POST /api/waitlist`, PR [#14](https://github.com/Axon-Enjin/feat/prd-f8-landing-waitlist) |
 | F9 | Localization EN/Fil | **Done** | `next-intl`, cookie-persisted locale, localized metadata/nav/shells, locale-aware dates and numbers |
-| F10 | Funder grant (mock) | **Done** | `/funder`, `POST /api/grants/evaluate`, `POST /api/grants/disburse`, audit CSV |
-| F11 | Freighter wallet | **Done** | Client-side Freighter connect panel on learner wallet and funder dashboard |
+| F10 | Funder grant (mock) | **Done** | `/funder`, `POST /api/grants/evaluate`, `POST /api/grants/disburse`, audit CSV, demo-only Testnet payout drill |
+| F11 | Freighter wallet | **Done** | Client-side Freighter connect panel on learner wallet and funder dashboard, learner payout-address save, funder-side Testnet signing |
 | F12–F15 | Phase 1 / out of MVP | **Deferred** | Per PRD §6 |
 
 ### Suggested next PRDs (no blockers beyond env/infra)

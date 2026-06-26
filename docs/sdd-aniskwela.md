@@ -18,13 +18,13 @@
 - **Low-resource first is a constraint, not a goal.** Every architectural choice is checked against sub-3G / 1GB-RAM Android. Server-render by default; ship the minimum JS.
 - **AI decides, deterministic code does the work.** Claude is called only at course-creation and (Phase 1) session boundaries — never on the learner read path. All money/identity-critical operations are deterministic and auditable.
 - **Open standards over proprietary blobs.** Credentials are W3C VC + Open Badges 3.0; only a hash touches the chain.
-- **Eligibility layer, not money transmitter.** Aniskwela evaluates criteria and produces verified recipient lists; a licensed VASP moves funds. No private custody of learner funds in the platform.
+- **Eligibility layer, not money transmitter.** Aniskwela evaluates criteria and produces verified recipient lists; a licensed VASP moves funds. No private custody of learner funds in the platform. A separate demo-only Testnet payout drill may replay a simulated snapshot via funder-controlled Freighter signing.
 - **Fail loudly in dev, gracefully in prod.** Demo-critical paths (on-chain anchoring) have a labelled fallback.
 
 **Key trade-offs made (documented debt):**
 - Single Supabase instance for MVP — read replicas/partitioning deferred until well past demo scale.
 - No job queue in MVP — AI generation runs in a bounded serverless request; if generation time exceeds limits at scale, move to a background worker (Phase 1 debt).
-- Mock disbursement in MVP — the real VASP integration is a Phase 1 boundary, isolated behind an interface so the funder UI doesn't change.
+- Mock disbursement in MVP — the real VASP integration is a Phase 1 boundary, isolated behind an interface so the funder UI doesn't change. A demo-only Testnet payout drill is allowed as a parallel verification surface and does not replace the simulation record.
 - Open-standard VC adds signing/schema/issuer-key complexity over a custom memo — accepted for interoperability and credibility.
 
 ---
@@ -75,6 +75,8 @@ graph TD
 | `role` | TEXT | No | `'learner'` | — | CHECK in ('learner','teacher','funder') |
 | `display_name` | TEXT | Yes | — | — | — |
 | `locale` | TEXT | No | `'en'` | — | CHECK in ('en','fil') |
+| `payout_testnet_address` | TEXT | Yes | — | — | demo-only learner payout destination |
+| `payout_testnet_verified_at` | TIMESTAMPTZ | Yes | — | — | last learner-confirmed save from Freighter |
 | `created_at` | TIMESTAMPTZ | No | now() | — | — |
 
 **Table: `courses`**
@@ -178,10 +180,44 @@ graph TD
 | `source` | TEXT | Yes | `'landing'` | — | e.g. landing, campaign |
 | `created_at` | TIMESTAMPTZ | No | now() | — | — |
 
+**Table: `grant_payout_drills`** *(demo-only Testnet payout drill audit)*
+
+| Column | Type | Null? | Default | Key / Index | Constraint |
+|--------|------|-------|---------|-------------|------------|
+| `id` | UUID | No | gen_random_uuid() | PK | — |
+| `program_id` | UUID | No | — | FK → `grant_programs.id` | ON DELETE CASCADE |
+| `funder_id` | UUID | No | — | FK → `profiles.id` | ON DELETE CASCADE |
+| `source_disbursement_id` | UUID | No | — | FK → `grant_disbursements.id` | ON DELETE CASCADE |
+| `network` | TEXT | No | `'testnet'` | — | CHECK = 'testnet' |
+| `funder_address` | TEXT | No | — | — | Freighter-signed source wallet |
+| `prepared_xdr` | TEXT | No | — | — | unsigned Testnet transaction envelope |
+| `demo_amount_xlm` | NUMERIC | No | — | — | demo-only per-learner XLM amount |
+| `recipient_count` | INT | No | — | — | >= 0 |
+| `total_amount_xlm` | NUMERIC | No | — | — | >= 0 |
+| `status` | TEXT | No | — | — | CHECK in ('prepared','signed','submitted','failed') |
+| `tx_hash` | TEXT | Yes | — | — | submitted Testnet tx hash |
+| `signed_xdr` | TEXT | Yes | — | — | signed envelope for audit/debug |
+| `failure_code` | TEXT | Yes | — | — | last submission failure reason |
+| `created_at` | TIMESTAMPTZ | No | now() | — | — |
+| `submitted_at` | TIMESTAMPTZ | Yes | — | — | — |
+
+**Table: `grant_payout_drill_recipients`** *(snapshot of included/skipped payout recipients)*
+
+| Column | Type | Null? | Default | Key / Index | Constraint |
+|--------|------|-------|---------|-------------|------------|
+| `id` | UUID | No | gen_random_uuid() | PK | — |
+| `drill_id` | UUID | No | — | FK → `grant_payout_drills.id` | ON DELETE CASCADE |
+| `learner_id` | UUID | No | — | FK → `profiles.id` | ON DELETE CASCADE |
+| `destination_address` | TEXT | Yes | — | — | null when skipped |
+| `amount_xlm` | NUMERIC | No | — | — | > 0 |
+| `included` | BOOLEAN | No | false | — | true only when wallet-ready |
+| `created_at` | TIMESTAMPTZ | No | now() | — | — |
+
 RLS enabled; **no** anon/auth policies — public capture only through `POST /api/waitlist` (server service role).
 
 **Key relationships:**
 - `profiles` 1:N `courses` (teacher), `enrollments` / `merit_ledger` / `badges` / `credentials` (learner), `grant_programs` (funder).
+- `grant_disbursements` 1:N `grant_payout_drills`; `grant_payout_drills` 1:N `grant_payout_drill_recipients`.
 - `courses` 1:N `lessons` 1:N `quiz_questions`; `courses` 1:N `credentials`.
 
 **Indexes & performance:** composite `(learner_id, created_at)` on `merit_ledger` for XP sums and feeds; `(course_id, order_index)` on `lessons`; UNIQUE on `credential_hash` and `(learner_id, course_id)` enrollment.
@@ -215,9 +251,9 @@ RLS enabled; **no** anon/auth policies — public capture only through `POST /ap
 | Azure AI Foundry (OpenAI GPT) | Course generation (`gpt-5.4`) + cheap tasks (`gpt-5.4-mini`) — Azure deployment names use dashes: `gpt-5-4` / `gpt-5-4-mini` | 429 → bounded retry w/ backoff; hard token cap per call; never on learner read path. Auth: `DefaultAzureCredential` (Managed Identity) preferred; `AZURE_OPENAI_API_KEY` fallback. Verify deployment name + region quota at M2. |
 | Supabase | Auth, Postgres, Storage | RLS enforced; pooled connections; storage size limits monitored |
 | Stellar Horizon (Testnet) | Anchor credential hash; read tx for verifier | Public node downtime → `ENABLE_ONCHAIN_ANCHOR=false` mock-anchor fallback for demo; retry on submit |
-| Freighter (wallet) | Client-side Stellar signing (demo) | Not installed → inline "create wallet" guide; learning never requires it |
+| Freighter (wallet) | Client-side Stellar signing (demo) | Not installed → inline "create wallet" guide; learning never requires it; used for demo-only Testnet payout signing and optional learner payout-address save |
 | Cloudflare R2 | Larger assets (Phase 1 video/images) | Deferred; MVP uses Supabase Storage |
-| Licensed VASP / e-money | Real disbursement (Phase 1) | Interface-only in MVP (mock); all real payouts partner-executed |
+| Licensed VASP / e-money | Real disbursement (Phase 1) | Interface-only in MVP (mock); all real payouts partner-executed; demo-only Testnet drills remain outside this production payout path |
 | PostHog | Product analytics | Free-tier; client + server events |
 
 ---
