@@ -6,7 +6,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project state
 
-Pre-build. There is **no application code yet** — the FMD document suite in [docs/](docs/) is the source of truth. Start at [docs/index.md](docs/index.md) (the manifest), then the PRD/SDD/RFCs. Once the Next.js app is scaffolded (PRD §8 stack), the usual `npm run dev` / `build` / `lint` / `test` commands will apply — confirm against the generated `package.json`, don't assume.
+**Build in progress.** The M3 slice lives in [`client/`](client/) (Next.js 16.2.9): Supabase auth, AI course generation (PRD-F1), teacher publish flow, cached learner catalog/detail, EN/Fil toggle, full schema + RLS. The FMD document suite in [docs/](docs/) remains the source of truth for what to build next. Start at [docs/index.md](docs/index.md) (manifest + §6 Build Status), then the PRD/SDD/RFCs. Run from `client/`: `npm run dev`, `npm run build`, `npm run typecheck` (see `client/package.json`).
 
 ## Claude-Code-specific notes
 

@@ -4,6 +4,8 @@
 
 **Aniskwela** (*ani* harvest + *eskwela* school) — an AI educational tool built for Filipino farmers, with blockchain-anchored, standards-based credentials, engineered for low-bandwidth rural use (Philippines-first, EN + Filipino). The learning engine is content-agnostic, but the product is built for and goes to market with farmers first.
 
+**Build in progress.** The M3 slice lives in `client/` (Next.js 16.2.9). See [docs/index.md](docs/index.md) §6 Build Status for PRD-F# coverage.
+
 ---
 
 ## 1. How to Build From These Docs

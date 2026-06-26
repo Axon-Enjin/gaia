@@ -14,6 +14,12 @@
 
 ---
 
+## 0. Project state
+
+**Build in progress.** The M3 slice lives in `client/` (Next.js 16.2.9): Supabase SSR auth, AI course generation (PRD-F1), teacher publish flow, cached learner catalog/detail, EN/Fil toggle, and the full initial schema + RLS migration. See [index.md](index.md) §6 Build Status for per-feature coverage. DSD earthen palette tokens are documented but not yet applied in `client/src/app/globals.css`.
+
+---
+
 ## 1. How to Build From These Docs
 
 The `docs/` suite is the source of truth. Read in this order before writing code:

@@ -1,4 +1,4 @@
-# FMD is a separate tool with its own git repository and remote — not part of the Gaia repo.
+# FMD is a separate tool with its own git repository and remote — not part of the Aniskwela repo.
 FMD/
 
 # Dependencies / build output (once the app is scaffolded)
