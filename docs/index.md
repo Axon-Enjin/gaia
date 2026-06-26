@@ -2,7 +2,7 @@
 
 **Project slug:** `aniskwela`
 **Maintained by:** Carlos Jerico Dela Torre
-**Last updated:** 2026-06-25 (build progress §6 refreshed)
+**Last updated:** 2026-06-26 (pitch deck + docs refresh)
 
 > **Aniskwela** (formerly "LearnChain", then "Gaia") — an AI educational tool built for Filipino farmers, with blockchain-anchored, standards-based credentials, engineered for low-bandwidth rural use (Philippines-first, EN + Filipino). The name is *ani* (harvest) + *eskwela* (school) — "harvest school": you learn, you reap, and the proof is yours to keep (echoed in the learner levels Seed → Sprout → Scholar → Expert → Mentor). The learning engine is content-agnostic, but the product is built for, and goes to market with, farmers first.
 
@@ -14,16 +14,16 @@
 
 | Document | File | Version | Status | Last Updated | Last Reconciled |
 |----------|------|---------|--------|--------------|-----------------|
-| BRD — Business Requirements | [brd-aniskwela.md](brd-aniskwela.md) | 1.1 | Locked | 2026-06-23 | N/A — pre-build |
-| PRD — Product Requirements | [prd-aniskwela.md](prd-aniskwela.md) | 1.2 | Locked | 2026-06-23 | 2026-06-23 |
-| DSD — Design System | [dsd-aniskwela.md](dsd-aniskwela.md) | 0.2 | Draft | 2026-06-23 | N/A — pre-build |
-| SDD — System Design | [sdd-aniskwela.md](sdd-aniskwela.md) | 1.1 | Locked | 2026-06-23 | 2026-06-23 |
-| QAD — QA & Test Plan | [qad-aniskwela.md](qad-aniskwela.md) | 0.1 | Draft | 2026-06-23 | N/A — pre-build |
-| SAD — Subagents | [sad-aniskwela.md](sad-aniskwela.md) | 1.0 | Locked | 2026-06-23 | N/A — pre-build |
-| BUILD — Build Guide | [build-aniskwela.md](build-aniskwela.md) | 1.2 | Locked | 2026-06-23 | 2026-06-23 |
-| CLR — Compliance & Legal | [clr-aniskwela.md](clr-aniskwela.md) | 0.2 | Draft | 2026-06-23 | N/A — pre-build |
-| GTM — Go-To-Market | [gtm-aniskwela.md](gtm-aniskwela.md) | 0.2 | Draft | 2026-06-23 | N/A — pre-build |
-| OPS — Ops & Observability | [ops-aniskwela.md](ops-aniskwela.md) | 0.1 | Draft | 2026-06-23 | N/A — pre-build |
+| BRD — Business Requirements | [brd-aniskwela.md](brd-aniskwela.md) | 1.1 | Locked | 2026-06-23 | 2026-06-26 |
+| PRD — Product Requirements | [prd-aniskwela.md](prd-aniskwela.md) | 1.2 | Locked | 2026-06-23 | 2026-06-26 |
+| DSD — Design System | [dsd-aniskwela.md](dsd-aniskwela.md) | 0.2 | Draft | 2026-06-23 | 2026-06-26 |
+| SDD — System Design | [sdd-aniskwela.md](sdd-aniskwela.md) | 1.1 | Locked | 2026-06-23 | 2026-06-26 |
+| QAD — QA & Test Plan | [qad-aniskwela.md](qad-aniskwela.md) | 0.1 | Draft | 2026-06-23 | 2026-06-26 |
+| SAD — Subagents | [sad-aniskwela.md](sad-aniskwela.md) | 1.0 | Locked | 2026-06-23 | 2026-06-26 |
+| BUILD — Build Guide | [build-aniskwela.md](build-aniskwela.md) | 1.2 | Locked | 2026-06-23 | 2026-06-26 |
+| CLR — Compliance & Legal | [clr-aniskwela.md](clr-aniskwela.md) | 0.2 | Draft | 2026-06-23 | 2026-06-26 |
+| GTM — Go-To-Market | [gtm-aniskwela.md](gtm-aniskwela.md) | 0.2 | Draft | 2026-06-23 | 2026-06-26 |
+| OPS — Ops & Observability | [ops-aniskwela.md](ops-aniskwela.md) | 0.1 | Draft | 2026-06-23 | 2026-06-26 |
 
 ### RFCs (one per major feature)
 
@@ -68,6 +68,7 @@ Quick triage an agent runs at the start of a session. Anything that fails gets s
 - [x] The SAD roster matches the materialized agent files (`.claude/agents/`).
 - [x] The BUILD guide's pinned versions and golden-path samples have been re-verified recently. *(Next.js 16.2.x verified 2026-06-23 via nextjs.org; Azure AI Foundry GPT models verified 2026-06-23 via learn.microsoft.com.)*
 - [x] Every open Postmortem's action items are closed. *(None.)*
+- [x] Build Status matrix (§6) matches the current `client/` codebase.
 
 ---
 
@@ -76,7 +77,7 @@ Quick triage an agent runs at the start of a session. Anything that fails gets s
 - **Scale:** Full (public users, three roles, NGO/government partners, regulated-adjacent flows, compliance program). All 11 numbered docs apply.
 - **Application onboarding:** [client/README.md](../client/README.md) — env, Supabase dev, migrations, auth.
 - **Two source-of-truth materializations:** the BUILD guide materializes to root `AGENTS.md` (+ `CLAUDE.md` pointer); the SAD materializes to `.claude/agents/`. Edit the canonical `docs/` copies, then re-materialize — never hand-edit the materialized copies.
-- **Pitch deck:** `LearnChain_VC_Pitch_Deck.pptx/.pdf` still carry the old name and need a rebrand pass to Aniskwela before any external use.
+- **Pitch deck:** [`Aniskwela-Grant-Pitch.pptx`](../Aniskwela-Grant-Pitch.pptx) (grant/partner deck) with speaker script in [`pitch-script-aniskwela.md`](pitch-script-aniskwela.md). Regenerate via [`scripts/build_pitch_deck.py`](../scripts/build_pitch_deck.py).
 
 ---
 
