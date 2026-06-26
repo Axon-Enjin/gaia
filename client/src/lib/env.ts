@@ -46,4 +46,5 @@ export const serverEnv = {
 export const flags = {
   aiGeneration: process.env.ENABLE_AI_GENERATION === "true",
   onchainAnchor: process.env.ENABLE_ONCHAIN_ANCHOR === "true",
+  testnetPayoutDrill: process.env.ENABLE_TESTNET_PAYOUT_DRILL === "true",
 };

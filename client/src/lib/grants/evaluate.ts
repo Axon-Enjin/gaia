@@ -20,19 +20,27 @@ export interface LearnerMeritRow {
   credential_industries: string[];
 }
 
+function normalizeIndustry(value: string): string {
+  return value.trim().toLocaleLowerCase();
+}
+
 /** Pure filter — unit-tested without DB. */
 export function filterEligibleRecipients(
   learners: LearnerMeritRow[],
   criteria: GrantCriteria,
 ): EligibleRecipient[] {
-  const industry = criteria.industry.trim();
+  const industry = normalizeIndustry(criteria.industry);
   const required = criteria.required_badges ?? [];
 
   const matched = learners.filter((row) => {
     if (row.total_xp < criteria.min_xp) return false;
-    if (!row.completed_industries.some((i) => i === industry)) return false;
+    if (!row.completed_industries.some((i) => normalizeIndustry(i) === industry)) {
+      return false;
+    }
     if (criteria.require_credential) {
-      if (!row.credential_industries.some((i) => i === industry)) return false;
+      if (!row.credential_industries.some((i) => normalizeIndustry(i) === industry)) {
+        return false;
+      }
     }
     for (const badge of required) {
       if (!row.badge_types.includes(badge)) return false;
@@ -46,7 +54,7 @@ export function filterEligibleRecipients(
       display_name: row.display_name,
       total_xp: row.total_xp,
       badge_types: [...row.badge_types],
-      matched_industry: industry,
+      matched_industry: criteria.industry.trim(),
     }))
     .sort((a, b) => b.total_xp - a.total_xp);
 }

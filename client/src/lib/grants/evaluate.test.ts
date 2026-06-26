@@ -68,6 +68,21 @@ describe("filterEligibleRecipients", () => {
     assert.equal(result.length, 1);
   });
 
+  it("matches industry case-insensitively", () => {
+    const lowercaseIndustryLearner: LearnerMeritRow = {
+      ...maricel,
+      completed_industries: ["agriculture"],
+      credential_industries: ["agriculture"],
+    };
+
+    const result = filterEligibleRecipients([lowercaseIndustryLearner], {
+      ...baseCriteria,
+      industry: "Agriculture",
+    });
+
+    assert.equal(result.length, 1);
+  });
+
   it("requires credential when flag set", () => {
     const noCred = { ...maricel, credential_industries: [] as string[] };
     const criteria: GrantCriteria = {

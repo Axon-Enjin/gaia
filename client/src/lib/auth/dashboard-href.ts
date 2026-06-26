@@ -15,7 +15,7 @@ export async function getSessionDashboardHref(): Promise<{
   if (!user) return { user: null, dashboardHref: null };
 
   const profile = await ensureProfile();
-  if (!profile) return { user, dashboardHref: "/courses" };
+  if (!profile) return { user, dashboardHref: "/learner" };
 
   return { user, dashboardHref: dashboardHrefFromProfile(profile) };
 }

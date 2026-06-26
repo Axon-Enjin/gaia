@@ -1,12 +1,14 @@
 import Link from "next/link";
 import { getLocale, getTranslations } from "next-intl/server";
 import { createClient } from "@/lib/supabase/server";
-import { getSessionUser } from "@/lib/auth";
+import { ensureProfile, getSessionUser } from "@/lib/auth";
 import { listLearnerCredentials } from "@/lib/credentials/list";
 import { EmptyState } from "@/components/states/empty-state";
 import { formatLocaleDate } from "@/lib/i18n/format";
 import { FreighterConnectPanel } from "@/components/wallet/freighter-connect-panel";
+import { TestnetPayoutReceivePanel } from "@/components/wallet/testnet-payout-receive-panel";
 import { IconAward, IconArrowRight } from "@/components/icons";
+import { flags } from "@/lib/env";
 
 export default async function LearnerCredentialsPage() {
   const user = await getSessionUser();
@@ -17,6 +19,7 @@ export default async function LearnerCredentialsPage() {
   const locale = await getLocale();
   const supabase = await createClient();
   const credentials = await listLearnerCredentials(supabase, user.id);
+  const profile = await ensureProfile();
 
   return (
     <div>
@@ -31,6 +34,12 @@ export default async function LearnerCredentialsPage() {
       </p>
 
       <FreighterConnectPanel className="mt-6" surface="learner" />
+      {flags.testnetPayoutDrill && profile && (
+        <TestnetPayoutReceivePanel
+          savedAddress={profile.payout_testnet_address ?? null}
+          verifiedAt={profile.payout_testnet_verified_at ?? null}
+        />
+      )}
 
       {credentials.length === 0 ? (
         <div className="mt-10">

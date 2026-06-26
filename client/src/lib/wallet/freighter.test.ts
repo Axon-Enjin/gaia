@@ -2,7 +2,10 @@ import assert from "node:assert/strict";
 import { describe, it } from "node:test";
 import {
   connectFreighter,
+  isTestnetPassphrase,
+  isTestnetWalletState,
   readFreighterState,
+  signFreighterTransaction,
   shortenAddress,
   type FreighterAdapter,
 } from "./freighter";
@@ -15,6 +18,10 @@ function adapter(
     isAllowed: async () => ({ isAllowed: true }),
     requestAccess: async () => ({ address: "GABCDEFGH1234567890XYZ" }),
     getAddress: async () => ({ address: "GABCDEFGH1234567890XYZ" }),
+    signTransaction: async () => ({
+      signedTxXdr: "signed-xdr",
+      signerAddress: "GABCDEFGH1234567890XYZ",
+    }),
     getNetworkDetails: async () => ({
       network: "TESTNET",
       networkPassphrase: "Test SDF Network ; September 2015",
@@ -77,5 +84,51 @@ describe("connectFreighter", () => {
       }),
     );
     assert.deepEqual(result, { status: "error", code: "network_failed" });
+  });
+});
+
+describe("isTestnet helpers", () => {
+  it("recognizes the Stellar testnet passphrase", () => {
+    assert.equal(isTestnetPassphrase("Test SDF Network ; September 2015"), true);
+    assert.equal(isTestnetPassphrase("Public Global Stellar Network ; September 2015"), false);
+  });
+
+  it("recognizes connected testnet wallet state", () => {
+    assert.equal(
+      isTestnetWalletState({
+        status: "connected",
+        address: "GABCDEFGH1234567890XYZ",
+        shortAddress: "GABCDE...0XYZ",
+        network: "TESTNET",
+        networkPassphrase: "Test SDF Network ; September 2015",
+      }),
+      true,
+    );
+  });
+});
+
+describe("signFreighterTransaction", () => {
+  it("returns signed xdr and signer address on success", async () => {
+    const result = await signFreighterTransaction("unsigned-xdr", {}, adapter({}));
+    assert.deepEqual(result, {
+      ok: true,
+      signedTxXdr: "signed-xdr",
+      signerAddress: "GABCDEFGH1234567890XYZ",
+    });
+  });
+
+  it("returns sign_failed when Freighter rejects signing", async () => {
+    const result = await signFreighterTransaction(
+      "unsigned-xdr",
+      {},
+      adapter({
+        signTransaction: async () => ({
+          signedTxXdr: "",
+          signerAddress: "",
+          error: "denied",
+        }),
+      }),
+    );
+    assert.deepEqual(result, { ok: false, code: "sign_failed" });
   });
 });

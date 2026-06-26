@@ -1,3 +1,5 @@
+import { Networks } from "@stellar/stellar-sdk";
+
 export type WalletConnectionState =
   | { status: "checking" }
   | { status: "not_installed" }
@@ -16,7 +18,8 @@ export type WalletErrorCode =
   | "connection_failed"
   | "access_denied"
   | "address_failed"
-  | "network_failed";
+  | "network_failed"
+  | "sign_failed";
 
 type FreighterResponse<T> = T & { error?: unknown };
 
@@ -25,6 +28,13 @@ export interface FreighterAdapter {
   isAllowed: () => Promise<FreighterResponse<{ isAllowed: boolean }>>;
   requestAccess: () => Promise<FreighterResponse<{ address: string }>>;
   getAddress: () => Promise<FreighterResponse<{ address: string }>>;
+  signTransaction: (
+    transactionXdr: string,
+    opts?: {
+      networkPassphrase?: string;
+      address?: string;
+    },
+  ) => Promise<FreighterResponse<{ signedTxXdr: string; signerAddress: string }>>;
   getNetworkDetails: () => Promise<
     FreighterResponse<{
       network: string;
@@ -56,6 +66,10 @@ export const freighterAdapter: FreighterAdapter = {
     const api = await loadFreighterApi();
     return api.getAddress();
   },
+  async signTransaction(transactionXdr, opts) {
+    const api = await loadFreighterApi();
+    return api.signTransaction(transactionXdr, opts);
+  },
   async getNetworkDetails() {
     const api = await loadFreighterApi();
     return api.getNetworkDetails();
@@ -65,6 +79,18 @@ export const freighterAdapter: FreighterAdapter = {
 export function shortenAddress(address: string): string {
   if (address.length <= 12) return address;
   return `${address.slice(0, 6)}...${address.slice(-4)}`;
+}
+
+export function isTestnetPassphrase(networkPassphrase: string): boolean {
+  return networkPassphrase.trim() === Networks.TESTNET;
+}
+
+export function isTestnetWalletState(
+  state: WalletConnectionState,
+): state is Extract<WalletConnectionState, { status: "connected" }> {
+  return (
+    state.status === "connected" && isTestnetPassphrase(state.networkPassphrase)
+  );
 }
 
 function hasError(value: { error?: unknown }): boolean {
@@ -104,6 +130,29 @@ export async function connectFreighter(
   }
 
   return loadAuthorizedWallet(adapter, access.address);
+}
+
+export async function signFreighterTransaction(
+  transactionXdr: string,
+  opts?: {
+    networkPassphrase?: string;
+    address?: string;
+  },
+  adapter: FreighterAdapter = freighterAdapter,
+): Promise<
+  | { ok: true; signedTxXdr: string; signerAddress: string }
+  | { ok: false; code: WalletErrorCode }
+> {
+  const result = await adapter.signTransaction(transactionXdr, opts);
+  if (hasError(result) || !result.signedTxXdr.trim() || !result.signerAddress.trim()) {
+    return { ok: false, code: "sign_failed" };
+  }
+
+  return {
+    ok: true,
+    signedTxXdr: result.signedTxXdr,
+    signerAddress: result.signerAddress,
+  };
 }
 
 async function loadAuthorizedWallet(

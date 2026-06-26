@@ -3,6 +3,7 @@ import { getLocale, getTranslations } from "next-intl/server";
 import Link from "next/link";
 import { createClient } from "@/lib/supabase/server";
 import { getSessionUser } from "@/lib/auth";
+import { createAdminClient } from "@/lib/supabase/admin";
 import {
   getFunderProgram,
   getLatestDisbursement,
@@ -10,8 +11,11 @@ import {
 import { GrantProgramBuilder } from "@/components/funder/grant-program-builder";
 import { SimulateDisburseButton } from "@/components/funder/simulate-disburse-button";
 import { DeleteGrantProgramButton } from "@/components/funder/delete-grant-program-button";
+import { TestnetPayoutDrillPanel } from "@/components/funder/testnet-payout-drill-panel";
 import { formatLocaleDate } from "@/lib/i18n/format";
 import { IconArrowRight } from "@/components/icons";
+import { flags, serverEnv } from "@/lib/env";
+import { getPayoutDrillReadiness } from "@/lib/grants/payout-drill";
 
 export default async function GrantProgramDetailPage({
   params,
@@ -30,6 +34,23 @@ export default async function GrantProgramDetailPage({
   if (!program) notFound();
 
   const latest = await getLatestDisbursement(supabase, user.id, id);
+  const payoutReadiness =
+    flags.testnetPayoutDrill && serverEnv.supabaseServiceRoleKey
+      ? await getPayoutDrillReadiness(
+          createAdminClient(serverEnv.supabaseServiceRoleKey),
+          user.id,
+          id,
+        )
+      : {
+          available: false,
+          latestDisbursementId: null,
+          latestDisbursementCreatedAt: null,
+          latestSimulationRecipientCount: 0,
+          recipientsWithWallets: 0,
+          recipientsMissingWallets: 0,
+          latestDrill: null,
+          errorCode: "service_unavailable" as const,
+        };
 
   return (
     <>
@@ -67,6 +88,12 @@ export default async function GrantProgramDetailPage({
       <GrantProgramBuilder mode="edit" program={program} />
 
       <SimulateDisburseButton programId={program.id} />
+      {flags.testnetPayoutDrill && (
+        <TestnetPayoutDrillPanel
+          programId={program.id}
+          readiness={payoutReadiness}
+        />
+      )}
 
       <div className="mt-10 border-t border-border-brand pt-8">
         <DeleteGrantProgramButton programId={program.id} programName={program.name} />

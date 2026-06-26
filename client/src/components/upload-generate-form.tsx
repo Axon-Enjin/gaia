@@ -1,11 +1,11 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useRef } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useTranslations } from "next-intl";
 import { PublishButton } from "@/components/publish-button";
-import { IconSpark, IconArrowRight } from "@/components/icons";
+import { IconSpark, IconArrowRight, IconUpload, IconCheck } from "@/components/icons";
 
 interface DraftResult {
   course_id: string;
@@ -29,6 +29,64 @@ export function UploadGenerateForm() {
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [result, setResult] = useState<DraftResult | null>(null);
+  const [file, setFile] = useState<File | null>(null);
+  const [isDragActive, setIsDragActive] = useState(false);
+  const fileInputRef = useRef<HTMLInputElement>(null);
+
+  function handleDrag(e: React.DragEvent) {
+    e.preventDefault();
+    e.stopPropagation();
+    if (e.type === "dragenter" || e.type === "dragover") {
+      setIsDragActive(true);
+    }
+  }
+
+  function handleDragLeave(e: React.DragEvent) {
+    e.preventDefault();
+    e.stopPropagation();
+    if (e.type === "dragleave") {
+      setIsDragActive(false);
+    }
+  }
+
+  function handleDrop(e: React.DragEvent) {
+    e.preventDefault();
+    e.stopPropagation();
+    setIsDragActive(false);
+
+    if (e.dataTransfer.files && e.dataTransfer.files[0]) {
+      const droppedFile = e.dataTransfer.files[0];
+      const name = droppedFile.name.toLowerCase();
+      if (
+        name.endsWith(".pdf") ||
+        name.endsWith(".txt") ||
+        name.endsWith(".md") ||
+        name.endsWith(".markdown") ||
+        droppedFile.type === "application/pdf" ||
+        droppedFile.type === "text/plain"
+      ) {
+        setFile(droppedFile);
+        if (fileInputRef.current) {
+          const dataTransfer = new DataTransfer();
+          dataTransfer.items.add(droppedFile);
+          fileInputRef.current.files = dataTransfer.files;
+        }
+      } else {
+        setError(t("errorFile"));
+      }
+    }
+  }
+
+  function handleChange(e: React.ChangeEvent<HTMLInputElement>) {
+    e.preventDefault();
+    if (e.target.files && e.target.files[0]) {
+      setFile(e.target.files[0]);
+    }
+  }
+
+  function onButtonClick() {
+    fileInputRef.current?.click();
+  }
 
   async function onSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -71,17 +129,77 @@ export function UploadGenerateForm() {
       <p className="text-sm text-text-muted-brand">{t("uploadAutoMetaHint")}</p>
 
       <div className="field">
-        <label htmlFor="file" className="field-label">
+        <label className="field-label mb-2 block text-sm font-semibold text-text-brand">
           {t("fileLabel")}
         </label>
-        <input
-          id="file"
-          name="file"
-          type="file"
-          required
-          accept=".pdf,.txt,.md,.markdown,text/plain,application/pdf"
-          className="field-input text-sm file:mr-3 file:rounded file:border-0 file:bg-growth-brand/10 file:px-3 file:py-1.5 file:text-sm file:font-semibold file:text-growth-strong-brand"
-        />
+        
+        <div
+          onDragEnter={handleDrag}
+          onDragOver={handleDrag}
+          onDragLeave={handleDragLeave}
+          onDrop={handleDrop}
+          onClick={onButtonClick}
+          className={`relative flex flex-col items-center justify-center p-8 rounded-2xl border-2 border-dashed transition cursor-pointer text-center ${
+            isDragActive
+              ? "border-growth-strong-brand bg-growth-brand/8 scale-[0.99] shadow-inner"
+              : file
+              ? "border-growth-brand/50 bg-growth-brand/5"
+              : "border-border-brand bg-white hover:border-soil-brand/60 hover:bg-soil-brand/5"
+          }`}
+        >
+          <input
+            ref={fileInputRef}
+            id="file"
+            name="file"
+            type="file"
+            required={!file}
+            accept=".pdf,.txt,.md,.markdown,text/plain,application/pdf"
+            onChange={handleChange}
+            className="hidden"
+          />
+
+          {file ? (
+            <div className="flex flex-col items-center gap-3">
+              <span className="flex h-12 w-12 items-center justify-center rounded-xl bg-growth-brand/15 text-2xl text-growth-strong-brand animate-pulse">
+                <IconCheck />
+              </span>
+              <div className="max-w-xs">
+                <p className="font-semibold text-text-brand truncate text-sm">
+                  {file.name}
+                </p>
+                <p className="text-xs text-text-muted-brand mt-0.5">
+                  {(file.size / 1024 / 1024).toFixed(2)} MB
+                </p>
+              </div>
+              <button
+                type="button"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  setFile(null);
+                  if (fileInputRef.current) fileInputRef.current.value = "";
+                }}
+                className="text-xs font-bold text-error-brand hover:underline mt-1"
+              >
+                {t("removeFile")}
+              </button>
+            </div>
+          ) : (
+            <div className="flex flex-col items-center gap-3">
+              <span className="flex h-12 w-12 items-center justify-center rounded-xl bg-soil-brand/10 text-2xl text-soil-brand">
+                <IconUpload />
+              </span>
+              <div>
+                <p className="text-sm font-bold text-soil-brand">
+                  {t("dragDropLabel")}{" "}
+                  <span className="text-primary-brand hover:underline">{t("browse")}</span>
+                </p>
+                <p className="text-xs text-text-muted-brand mt-1.5">
+                  {t("fileLimitHint")}
+                </p>
+              </div>
+            </div>
+          )}
+        </div>
       </div>
 
       <button type="submit" disabled={submitting} className="btn btn-growth w-fit">

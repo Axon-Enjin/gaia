@@ -1,4 +1,5 @@
 import { redirect } from "next/navigation";
+import { connection } from "next/server";
 import { getTranslations } from "next-intl/server";
 import { FunderShell } from "@/components/funder/shell/funder-shell";
 import { getSessionUser, ensureProfile } from "@/lib/auth";
@@ -8,6 +9,7 @@ export default async function FunderLayout({
 }: {
   children: React.ReactNode;
 }) {
+  await connection();
   const user = await getSessionUser();
   if (!user) redirect("/login");
 

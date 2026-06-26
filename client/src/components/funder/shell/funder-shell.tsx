@@ -1,5 +1,6 @@
 "use client";
 
+import { useState } from "react";
 import { usePathname } from "next/navigation";
 import { FunderSidebar } from "@/components/funder/shell/funder-sidebar";
 import { FunderBottomNav } from "@/components/funder/shell/funder-bottom-nav";
@@ -23,9 +24,10 @@ export function FunderShell({
   ariaLabels,
 }: FunderShellProps) {
   const pathname = usePathname();
+  const [isCollapsed, setIsCollapsed] = useState(false);
 
   return (
-    <div className="funder-shell product-page">
+    <div className={`funder-shell product-page ${isCollapsed ? "is-sidebar-collapsed" : ""}`}>
       <FunderSidebar
         pathname={pathname}
         displayName={displayName}
@@ -33,6 +35,8 @@ export function FunderShell({
         roleLabel={roleLabel}
         navLabels={navLabels}
         ariaLabels={ariaLabels}
+        isCollapsed={isCollapsed}
+        onToggleCollapse={() => setIsCollapsed(!isCollapsed)}
       />
       <main id="main-content" className="dashboard-main">
         <div className="dashboard-main-inner">{children}</div>

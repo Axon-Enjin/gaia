@@ -1,4 +1,5 @@
 import { notFound } from "next/navigation";
+import { connection } from "next/server";
 import { getTranslations } from "next-intl/server";
 import { ProductHeader } from "@/components/product/product-header";
 import { getPublishedCourseDetail } from "@/lib/courses/detail";
@@ -18,6 +19,7 @@ export default async function CourseDetailPage({
 }: {
   params: Promise<{ id: string }>;
 }) {
+  await connection();
   const tLanding = await getTranslations("Landing");
   const { id } = await params;
   const course = await getPublishedCourseDetail(id);

@@ -1,5 +1,6 @@
 "use client";
 
+import { useState } from "react";
 import { usePathname } from "next/navigation";
 import { TeacherSidebar } from "@/components/teacher/shell/teacher-sidebar";
 import { TeacherBottomNav } from "@/components/teacher/shell/teacher-bottom-nav";
@@ -23,9 +24,10 @@ export function TeacherShell({
   ariaLabels,
 }: TeacherShellProps) {
   const pathname = usePathname();
+  const [isCollapsed, setIsCollapsed] = useState(false);
 
   return (
-    <div className="teacher-shell product-page">
+    <div className={`teacher-shell product-page ${isCollapsed ? "is-sidebar-collapsed" : ""}`}>
       <TeacherSidebar
         pathname={pathname}
         displayName={displayName}
@@ -33,6 +35,8 @@ export function TeacherShell({
         roleLabel={roleLabel}
         navLabels={navLabels}
         ariaLabels={ariaLabels}
+        isCollapsed={isCollapsed}
+        onToggleCollapse={() => setIsCollapsed(!isCollapsed)}
       />
       <main id="main-content" className="dashboard-main">
         <div className="dashboard-main-inner">{children}</div>

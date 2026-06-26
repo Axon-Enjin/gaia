@@ -1,5 +1,6 @@
 "use server";
 
+import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import { z } from "zod";
 import { createClient } from "@/lib/supabase/server";
@@ -29,6 +30,21 @@ export interface AuthState {
   error?: string;
 }
 
+function revalidateAuthPaths() {
+  revalidatePath("/", "layout");
+  revalidatePath("/", "page");
+  revalidatePath("/login");
+  revalidatePath("/login", "page");
+  revalidatePath("/courses");
+  revalidatePath("/courses", "page");
+  revalidatePath("/learner", "layout");
+  revalidatePath("/learner", "page");
+  revalidatePath("/teacher", "layout");
+  revalidatePath("/teacher", "page");
+  revalidatePath("/funder", "layout");
+  revalidatePath("/funder", "page");
+}
+
 /** Sign in with email/password, then route by role. */
 export async function signInAction(
   _prev: AuthState,
@@ -45,6 +61,7 @@ export async function signInAction(
   if (error) return { error: "sign_in_failed" };
 
   const profile = await ensureProfile();
+  revalidateAuthPaths();
   redirect(dashboardForRole(profile?.role ?? "learner"));
 }
 
@@ -86,6 +103,7 @@ export async function signUpAction(
     if (signInError) return { error: "sign_up_failed" };
 
     await ensureProfile();
+    revalidateAuthPaths();
     redirect(dashboardForRole(parsed.data.role));
   }
 
@@ -113,6 +131,7 @@ export async function signUpAction(
   // mailer_autoconfirm on → session exists immediately; else confirm via email.
   if (data.session) {
     await ensureProfile();
+    revalidateAuthPaths();
     redirect(dashboardForRole(parsed.data.role));
   }
   return { error: "confirm_email" };
@@ -121,6 +140,7 @@ export async function signUpAction(
 /** Sign out and return home. */
 export async function signOutAction(): Promise<void> {
   const supabase = await createClient();
-  await supabase.auth.signOut();
+  await supabase.auth.signOut({ scope: "local" });
+  revalidateAuthPaths();
   redirect("/");
 }

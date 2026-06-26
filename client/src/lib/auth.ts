@@ -9,6 +9,8 @@ export interface Profile {
   role: Role;
   display_name: string | null;
   locale: "en" | "fil";
+  payout_testnet_address?: string | null;
+  payout_testnet_verified_at?: string | null;
 }
 
 /** Current authenticated user, or null. Never throws. Deduplicated per request via React cache. */
@@ -27,7 +29,7 @@ export async function getProfile(
 ): Promise<Profile | null> {
   const { data } = await supabase
     .from("profiles")
-    .select("id, role, display_name, locale")
+    .select("id, role, display_name, locale, payout_testnet_address, payout_testnet_verified_at")
     .eq("id", userId)
     .maybeSingle();
   return (data as Profile | null) ?? null;
@@ -58,7 +60,7 @@ export const ensureProfile = cache(async (): Promise<Profile | null> => {
   const { data, error } = await supabase
     .from("profiles")
     .insert({ id: user.id, role, display_name: displayName })
-    .select("id, role, display_name, locale")
+    .select("id, role, display_name, locale, payout_testnet_address, payout_testnet_verified_at")
     .single();
 
   if (error || !data) {

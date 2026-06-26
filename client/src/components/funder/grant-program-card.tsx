@@ -16,41 +16,41 @@ export async function GrantProgramCard({ program }: GrantProgramCardProps) {
   return (
     <Link
       href={`/funder/programs/${program.id}`}
-      className="course-card group block"
+      className="course-card group block p-6 md:p-8 rounded-2xl"
     >
-      <div className="flex flex-wrap items-start justify-between gap-3">
+      <div className="flex flex-wrap items-start justify-between gap-4">
         <div className="min-w-0 flex-1">
-          <h2 className="text-lg font-semibold text-soil-brand group-hover:text-growth-strong-brand">
+          <h2 className="text-xl font-bold text-soil-brand md:text-2xl group-hover:text-growth-strong-brand transition-colors">
             {program.name}
           </h2>
-          <div className="mt-2 flex flex-wrap gap-2">
-            <span className="industry-pill">{criteria.industry}</span>
-            <span className="text-xs text-text-muted-brand">
+          <div className="mt-3 flex flex-wrap gap-2">
+            <span className="industry-pill text-xs px-2.5 py-1">{criteria.industry}</span>
+            <span className="rounded-full bg-soil-brand/6 px-3 py-1 text-xs font-semibold text-text-muted-brand">
               {t("minXpChip", { xp: criteria.min_xp })}
             </span>
             {(criteria.required_badges ?? []).map((badge) => (
               <span
                 key={badge}
-                className="rounded-full bg-bg-brand px-2 py-0.5 text-xs font-medium text-text-muted-brand"
+                className="rounded-full bg-bg-brand px-3 py-1 text-xs font-semibold text-text-muted-brand"
               >
                 {t(`badges.${badge}`)}
               </span>
             ))}
             {criteria.require_credential && (
-              <span className="text-xs font-medium text-growth-strong-brand">
+              <span className="rounded-full bg-growth-brand/10 px-3 py-1 text-xs font-bold text-growth-strong-brand">
                 {t("credentialRequired")}
               </span>
             )}
           </div>
           {program.amount_per_learner !== null && (
-            <p className="mt-2 font-mono text-sm tabular-nums text-text-brand">
+            <p className="mt-3 font-mono text-base font-bold tabular-nums text-text-brand">
               {t("amountPerLearner", {
                 amount: formatLocaleNumber(locale, program.amount_per_learner),
               })}
             </p>
           )}
         </div>
-        <span className="inline-flex items-center gap-1 text-sm font-medium text-primary-brand">
+        <span className="inline-flex items-center gap-1.5 text-base font-bold text-primary-brand">
           {t("openProgram")} <IconArrowRight aria-hidden="true" />
         </span>
       </div>

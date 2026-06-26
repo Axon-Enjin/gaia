@@ -18,22 +18,22 @@ export default async function FunderHomePage() {
 
   return (
     <>
-      <div className="mb-8 flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
+      <div className="mb-8 flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
         <div>
-          <p className="text-xs font-semibold uppercase tracking-wider text-growth-strong-brand">
+          <p className="text-sm font-bold uppercase tracking-wider text-growth-strong-brand">
             {t("eyebrow")}
           </p>
-          <h1 className="mt-2 text-2xl font-bold tracking-tight text-soil-brand sm:text-3xl">
+          <h1 className="mt-2 text-3xl font-extrabold tracking-tight text-soil-brand sm:text-4xl lg:text-5xl">
             {t("dashboardTitle")}
           </h1>
-          <p className="mt-2 max-w-xl text-sm text-text-muted-brand">
+          <p className="mt-3 max-w-2xl text-base lg:text-lg text-text-muted-brand">
             {t("homeSubtitle")}
           </p>
         </div>
         <Link
           href="/funder/programs/new"
           prefetch={false}
-          className="btn btn-primary btn-sm shrink-0"
+          className="btn btn-primary shrink-0"
         >
           <IconPlus aria-hidden="true" />
           {t("newProgram")}
@@ -41,7 +41,7 @@ export default async function FunderHomePage() {
       </div>
 
       <section
-        className="mb-8 rounded-[var(--radius-surface)] border border-warning-brand/30 bg-warning-brand/8 px-4 py-3 text-sm text-soil-brand"
+        className="mb-8 rounded-2xl border border-warning-brand/30 bg-warning-brand/8 p-5 text-base text-soil-brand font-medium"
         role="note"
       >
         {t("simulationNotice")}

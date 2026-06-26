@@ -127,6 +127,29 @@ describe("buildLearnerGrantStatusCards", () => {
 
     assert.equal(cards.length, 0);
   });
+
+  it("treats industry matching case-insensitively in learner grant status", () => {
+    const lowercaseSnapshot: LearnerMeritRow = {
+      ...baseSnapshot,
+      completed_industries: ["agriculture"],
+      credential_industries: ["agriculture"],
+    };
+
+    const cards = buildLearnerGrantStatusCards(
+      learnerId,
+      [
+        makeProgram("p1", {
+          ...baseCriteria,
+          industry: "Agriculture",
+        }),
+      ],
+      lowercaseSnapshot,
+      new Map(),
+    );
+
+    assert.equal(cards.length, 1);
+    assert.equal(cards[0].eligibleNow, true);
+  });
 });
 
 describe("selectLatestDisbursements", () => {

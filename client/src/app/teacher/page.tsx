@@ -23,41 +23,41 @@ export default async function TeacherHomePage() {
 
   return (
     <>
-      <div className="mb-8 flex flex-col gap-1">
-        <h1 className="text-2xl font-bold tracking-tight text-soil-brand sm:text-3xl">
+      <div className="mb-8 flex flex-col gap-2">
+        <h1 className="text-3xl font-extrabold tracking-tight text-soil-brand sm:text-4xl lg:text-5xl">
           {t("dashboardTitle")}
         </h1>
-        <p className="text-sm text-text-muted-brand">{t("homeSubtitle")}</p>
+        <p className="text-base lg:text-lg text-text-muted-brand">{t("homeSubtitle")}</p>
       </div>
 
-      <section className="mb-8 grid grid-cols-2 gap-3">
-        <div className="rounded-[var(--radius-surface)] border border-border-brand bg-surface-brand p-5">
-          <p className="text-sm text-text-muted-brand">{t("statPublished")}</p>
-          <p className="mt-1 text-3xl font-bold tabular-nums text-growth-strong-brand">
+      <section className="mb-8 grid grid-cols-2 gap-6">
+        <div className="rounded-[var(--radius-surface)] border border-border-brand bg-surface-brand p-6 md:p-8">
+          <p className="text-base font-semibold text-text-muted-brand">{t("statPublished")}</p>
+          <p className="mt-2 text-5xl font-extrabold tabular-nums text-growth-strong-brand md:text-6xl">
             {stats.publishedCount}
           </p>
         </div>
-        <div className="rounded-[var(--radius-surface)] border border-border-brand bg-surface-brand p-5">
-          <p className="text-sm text-text-muted-brand">{t("statDrafts")}</p>
-          <p className="mt-1 text-3xl font-bold tabular-nums text-soil-brand">
+        <div className="rounded-[var(--radius-surface)] border border-border-brand bg-surface-brand p-6 md:p-8">
+          <p className="text-base font-semibold text-text-muted-brand">{t("statDrafts")}</p>
+          <p className="mt-2 text-5xl font-extrabold tabular-nums text-soil-brand md:text-6xl">
             {stats.draftCount}
           </p>
         </div>
       </section>
 
-      <section className="callout-card mb-8">
-        <div className="mb-5 flex items-start gap-3">
+      <section className="callout-card p-6 md:p-8 mb-8">
+        <div className="mb-6 flex items-start gap-4">
           <span
-            className="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-[var(--radius-control)] bg-growth-brand/12 text-lg text-growth-strong-brand"
+            className="flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-[var(--radius-control)] bg-growth-brand/12 text-xl text-growth-strong-brand"
             aria-hidden
           >
             <IconSpark />
           </span>
           <div>
-            <h2 className="text-lg font-semibold text-soil-brand">
+            <h2 className="text-xl font-bold text-soil-brand md:text-2xl">
               {t("uploadTitle")}
             </h2>
-            <p className="mt-1 text-sm text-text-muted-brand">
+            <p className="mt-1 text-base text-text-muted-brand">
               {t("uploadHint")}
             </p>
           </div>
@@ -67,13 +67,13 @@ export default async function TeacherHomePage() {
 
       <section>
         <div className="mb-4 flex items-center justify-between gap-3">
-          <h2 className="text-lg font-semibold text-soil-brand">
+          <h2 className="text-xl font-bold text-soil-brand lg:text-2xl">
             {t("recentCourses")}
           </h2>
           {courses.length > 0 && (
             <Link
               href="/teacher/courses"
-              className="inline-flex items-center gap-1 text-sm font-medium text-primary-brand hover:underline"
+              className="inline-flex items-center gap-1 text-base font-semibold text-primary-brand hover:underline"
             >
               {t("viewAllCourses")} <IconArrowRight aria-hidden="true" />
             </Link>

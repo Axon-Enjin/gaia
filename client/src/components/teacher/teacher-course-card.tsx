@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { PublishButton } from "@/components/publish-button";
 import { DeleteCourseButton } from "@/components/teacher/delete-course-button";
-import { IconArrowRight } from "@/components/icons";
+import { IconArrowRight, IconExternalLink } from "@/components/icons";
 
 export interface TeacherCourseCardProps {
   id: string;
@@ -35,21 +35,21 @@ export function TeacherCourseCard({
   const isPublished = status === "published";
 
   return (
-    <li className="rounded-xl border border-border-brand bg-surface-brand p-4 transition hover:border-soil-brand/30 hover:shadow-sm">
+    <li className="rounded-2xl border border-border-brand bg-surface-brand p-6 transition hover:border-soil-brand/30 hover:shadow-md">
       <div className="flex flex-wrap items-start justify-between gap-4">
         <Link
           href={isPublished ? `/teacher/courses/${id}` : `/teacher/courses/${id}/edit`}
           className="min-w-0 flex-1"
         >
-          <div className="flex items-start gap-3">
-            <div className="course-thumb text-sm" aria-hidden>
+          <div className="flex items-start gap-4">
+            <div className="course-thumb text-base h-12 w-12 flex-shrink-0 flex items-center justify-center" aria-hidden>
               {initial}
             </div>
             <div className="min-w-0 flex-1">
-              <div className="mb-2 flex flex-wrap items-center gap-2">
-                <span className="industry-pill">{industry}</span>
+              <div className="mb-2.5 flex flex-wrap items-center gap-2">
+                <span className="industry-pill text-xs px-2.5 py-1">{industry}</span>
                 <span
-                  className={`inline-flex items-center gap-1 rounded-full px-2 py-0.5 text-xs font-semibold ${
+                  className={`inline-flex items-center gap-1.5 rounded-full px-2.5 py-1 text-xs font-semibold ${
                     isPublished
                       ? "bg-growth-brand/12 text-growth-strong-brand"
                       : "bg-warning-brand/12 text-warning-brand"
@@ -62,15 +62,15 @@ export function TeacherCourseCard({
                   {isPublished ? statusPublishedLabel : statusDraftLabel}
                 </span>
                 {lessonCount > 0 && (
-                  <span className="text-xs text-text-muted-brand">
+                  <span className="text-xs text-text-muted-brand font-medium">
                     {lessonsLabel}
                   </span>
                 )}
               </div>
-              <h2 className="font-semibold text-text-brand hover:text-soil-brand">
+              <h2 className="text-base md:text-lg font-bold text-text-brand hover:text-soil-brand">
                 {title}
               </h2>
-              <p className="mt-2 inline-flex items-center gap-1 text-sm font-semibold text-growth-strong-brand">
+              <p className="mt-2.5 inline-flex items-center gap-1 text-base font-semibold text-growth-strong-brand">
                 {isPublished ? previewLabel : editLabel}
                 <IconArrowRight aria-hidden="true" />
               </p>
@@ -78,18 +78,20 @@ export function TeacherCourseCard({
           </div>
         </Link>
 
-        <div className="flex shrink-0 flex-col items-end gap-2">
+        <div className="flex shrink-0 items-center gap-3">
           {!isPublished ? (
             <PublishButton courseId={id} />
           ) : (
             <Link
               href={`/courses/${id}`}
-              className="text-sm font-medium text-primary-brand hover:underline"
+              className="flex h-9 w-9 items-center justify-center rounded-lg hover:bg-primary-brand/10 text-primary-brand transition"
+              title={viewPublicLabel}
+              aria-label={viewPublicLabel}
             >
-              {viewPublicLabel}
+              <IconExternalLink className="text-lg" />
             </Link>
           )}
-          <DeleteCourseButton courseId={id} courseTitle={title} />
+          <DeleteCourseButton courseId={id} courseTitle={title} variant="icon" />
         </div>
       </div>
     </li>

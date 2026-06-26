@@ -7,6 +7,7 @@ import {
   deleteCourseAction,
   type DeleteCourseState,
 } from "@/app/actions/delete-course";
+import { IconTrash } from "@/components/icons";
 
 const initial: DeleteCourseState = {};
 
@@ -17,7 +18,7 @@ export function DeleteCourseButton({
 }: {
   courseId: string;
   courseTitle: string;
-  variant?: "inline" | "destructive";
+  variant?: "inline" | "destructive" | "icon";
 }) {
   const t = useTranslations("Teacher");
   const router = useRouter();
@@ -67,6 +68,8 @@ export function DeleteCourseButton({
   const triggerClassName =
     variant === "destructive"
       ? "btn btn-sm border border-error-brand/40 bg-error-brand/5 text-error-brand hover:bg-error-brand/10"
+      : variant === "icon"
+      ? "flex h-9 w-9 items-center justify-center rounded-lg hover:bg-error-brand/10 text-error-brand transition disabled:opacity-60"
       : "text-sm font-medium text-error-brand hover:underline disabled:opacity-60";
 
   return (
@@ -76,8 +79,16 @@ export function DeleteCourseButton({
         onClick={() => setOpen(true)}
         disabled={pending}
         className={triggerClassName}
+        title={variant === "icon" ? t("deleteCourse") : undefined}
+        aria-label={t("deleteCourse")}
       >
-        {pending ? t("deleting") : t("deleteCourse")}
+        {variant === "icon" ? (
+          <IconTrash className="text-lg" />
+        ) : pending ? (
+          t("deleting")
+        ) : (
+          t("deleteCourse")
+        )}
       </button>
 
       {state.error && !open ? (

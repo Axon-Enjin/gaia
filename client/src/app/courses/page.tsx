@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { connection } from "next/server";
 import { getTranslations } from "next-intl/server";
 import { ProductHeader } from "@/components/product/product-header";
 import { CourseCard } from "@/components/product/course-card";
@@ -11,6 +12,7 @@ import {
 } from "@/lib/auth/dashboard-href";
 
 export default async function CoursesPage() {
+  await connection();
   const t = await getTranslations("Catalog");
   const tLanding = await getTranslations("Landing");
   const courses = await getPublishedCourses();

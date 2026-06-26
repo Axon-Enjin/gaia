@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { redirect } from "next/navigation";
+import { connection } from "next/server";
 import { getTranslations } from "next-intl/server";
 import { ensureProfile, getSessionUser } from "@/lib/auth";
 import { AuthForm } from "@/components/auth-form";
@@ -13,6 +14,7 @@ export default async function LoginPage({
 }: {
   searchParams: Promise<Search>;
 }) {
+  await connection();
   const user = await getSessionUser();
   if (user) {
     const profile = await ensureProfile();
@@ -110,7 +112,10 @@ export default async function LoginPage({
               </p>
             </div>
 
-            <AuthForm mode={isSignUp ? "sign-up" : "sign-in"} />
+            <AuthForm
+              key={isSignUp ? "sign-up" : "sign-in"}
+              mode={isSignUp ? "sign-up" : "sign-in"}
+            />
 
             <div className="mt-6 pt-5 border-t border-border-brand/30 text-center">
               <p className="text-sm text-text-muted-brand">
